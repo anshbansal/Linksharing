@@ -6,6 +6,8 @@ class ReadingItem {
     User user
     Boolean isRead
 
+    static belongsTo = [resource: Resource, user: User]
+
     def scaffold = true
 
     static constraints = {

@@ -10,10 +10,18 @@ class Topic {
     Date lastUpdated
     Visibility scope
 
+    static belongsTo = [createdBy: User]
     static hasMany = [resources: Resource]
 
     def scaffold = true
 
+    def afterInsert = {
+        Subscription self = new Subscription(user: createdBy, topic: this,
+                                                dateCreated: dateCreated)
+        self.save()
+    }
+
     static constraints = {
+        name unique: 'createdBy'
     }
 }

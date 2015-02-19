@@ -6,6 +6,8 @@ class ResourceRating {
     User user
     Integer score
 
+    static belongsTo = [resource: Resource, user : User]
+
     def scaffold = true
 
     static constraints = {

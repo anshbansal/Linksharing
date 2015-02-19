@@ -9,8 +9,11 @@ class Subscription {
     Seriousness seriousness
     Date dateCreated
 
+    static belongsTo = [user: User, topic: Topic]
+
     def scaffold = true
 
     static constraints = {
+        seriousness nullable: true
     }
 }

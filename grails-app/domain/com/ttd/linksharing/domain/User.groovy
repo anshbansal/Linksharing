@@ -18,5 +18,7 @@ class User {
     def scaffold = true
 
     static constraints = {
+        email unique: true
+        username unique: true
     }
 }

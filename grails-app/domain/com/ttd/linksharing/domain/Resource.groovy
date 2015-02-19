@@ -8,7 +8,7 @@ class Resource {
     Date dateCreated
     Date lastUpdated
 
-    static belongsTo = [topic: Topic]
+    static belongsTo = [createdBy: User, topic: Topic]
 
     static constraints = {
     }
