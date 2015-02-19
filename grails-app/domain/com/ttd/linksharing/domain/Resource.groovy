@@ -1,6 +1,6 @@
 package com.ttd.linksharing.domain
 
-class Resource {
+abstract class Resource {
 
     String description
     User createdBy
@@ -9,7 +9,9 @@ class Resource {
     Date lastUpdated
 
     static belongsTo = [createdBy: User, topic: Topic]
+    static hasMany = [readingItem: ReadingItem, ratings: ResourceRating]
 
-    static constraints = {
+    static mapping = {
+        tablePerHierarchy false
     }
 }

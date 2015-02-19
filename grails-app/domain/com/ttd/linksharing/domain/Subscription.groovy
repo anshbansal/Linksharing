@@ -11,9 +11,8 @@ class Subscription {
 
     static belongsTo = [user: User, topic: Topic]
 
-    def scaffold = true
-
     static constraints = {
         seriousness nullable: true
+        topic unique: 'user'
     }
 }

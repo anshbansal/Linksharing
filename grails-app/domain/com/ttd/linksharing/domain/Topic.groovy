@@ -11,17 +11,21 @@ class Topic {
     Visibility scope
 
     static belongsTo = [createdBy: User]
-    static hasMany = [resources: Resource]
-
-    def scaffold = true
+    static hasMany = [resources: Resource, subscriptions: Subscription]
 
     def afterInsert = {
-        Subscription self = new Subscription(user: createdBy, topic: this,
-                                                dateCreated: dateCreated)
-        self.save()
+        Subscription self = new Subscription(user: createdBy, topic: this, dateCreated: dateCreated)
+        withNewSession {
+            self.save()
+        }
     }
 
     static constraints = {
         name unique: 'createdBy'
+    }
+
+    @Override
+    String toString() {
+        "$name created by $createdBy"
     }
 }

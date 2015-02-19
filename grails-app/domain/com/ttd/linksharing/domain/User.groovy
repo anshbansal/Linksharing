@@ -8,17 +8,28 @@ class User {
     String firstName
     String lastName
     Byte photo
-    Boolean admin
-    Boolean active
+    Boolean admin  = Boolean.FALSE
+    Boolean active = Boolean.TRUE
     Date dateCreated
     Date lastUpdated
 
-    static hasMany = [topics: Topic]
-
-    def scaffold = true
+    static hasMany = [
+            topics: Topic,
+            subscriptions: Subscription,
+            ratings: ResourceRating,
+            readingsItems: ReadingItem,
+            resources: Resource
+    ]
 
     static constraints = {
-        email unique: true
+        email unique: true, email: true
         username unique: true
+        lastName nullable: true
+        photo nullable: true
+    }
+
+    @Override
+    String toString() {
+        "$username"
     }
 }

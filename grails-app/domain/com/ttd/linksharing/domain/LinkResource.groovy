@@ -4,8 +4,7 @@ class LinkResource extends Resource{
 
     String url
 
-    def scaffold = true
-
     static constraints = {
+        url url: true
     }
 }
