@@ -4,7 +4,7 @@ class ReadingItem {
 
     Resource resource
     User user
-    Boolean isRead
+    Boolean isRead = Boolean.FALSE
 
     static belongsTo = [resource: Resource, user: User]
 }
