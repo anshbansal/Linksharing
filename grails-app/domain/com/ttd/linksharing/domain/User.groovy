@@ -7,7 +7,7 @@ class User {
     String password
     String firstName
     String lastName
-    Byte photo
+    Byte[] photo
     Boolean admin  = Boolean.FALSE
     Boolean active = Boolean.TRUE
     Date dateCreated
@@ -25,7 +25,7 @@ class User {
         email unique: true, email: true
         username unique: true
         lastName nullable: true
-        photo nullable: true
+        photo size: 0..576
     }
 
     @Override
