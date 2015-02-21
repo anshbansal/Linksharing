@@ -11,13 +11,7 @@ class Topic {
     Visibility scope = Visibility.PUBLIC
 
     def afterInsert = {
-        withNewSession {
-            //Subscribing Owner to the topic
-            new Subscription(
-                    user: createdBy,
-                    topic: this
-            )?.save()
-        }
+        addSubscription(createdBy)
     }
 
     static belongsTo = [createdBy: User]
@@ -25,6 +19,17 @@ class Topic {
 
     static constraints = {
         name unique: 'createdBy'
+    }
+
+    List<User> getSubscribedUsers() {
+        return this.subscriptions*.user
+    }
+
+    void addSubscription(User user) {
+        addToSubscriptions(
+                new Subscription(user: user, topic: this)
+        )
+        save()
     }
 
     @Override

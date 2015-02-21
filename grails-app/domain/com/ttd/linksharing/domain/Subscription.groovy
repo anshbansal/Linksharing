@@ -10,12 +10,7 @@ class Subscription {
     Date dateCreated
 
     def afterInsert = {
-        withNewSession {
-            //Adding all existing resources to reading items of user
-            Resource.findAllWhere(topic: this.topic).each { Resource resource ->
-                new ReadingItem(resource: resource, user: this.user).save()
-            }
-        }
+        this.updateReadingLists()
     }
 
     static belongsTo = [user: User, topic: Topic]
@@ -23,5 +18,14 @@ class Subscription {
     static constraints = {
         seriousness nullable: true
         topic unique: 'user'
+    }
+
+    def updateReadingLists = {
+        topic.resources.each { Resource resource ->
+            user.addToReadingsItems(
+                    new ReadingItem(resource: resource, user: user)
+            )
+            save()
+        }
     }
 }

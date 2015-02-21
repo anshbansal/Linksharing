@@ -17,8 +17,8 @@ class TestUtil {
         new User(email: emailAddress, username: emailAddress, password: 'igdefault', firstName: emailAddress)
     }
 
-    static Topic createTopic(User user) {
-        new Topic(name: "topic", createdBy: user)
+    static Topic createTopic(User user, int it) {
+        new Topic(name: "topic${it}", createdBy: user)
     }
 
     static LinkResource createLinkResource(Topic topic) {
