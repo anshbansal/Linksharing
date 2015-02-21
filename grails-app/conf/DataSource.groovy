@@ -20,9 +20,7 @@ environments {
         dataSource {
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:mysql://localhost:3306/linksharing"
-        }
-        hibernate {
-            show_sql = true
+            logSql = true
         }
     }
     test {
