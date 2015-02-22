@@ -1,0 +1,26 @@
+.left-side {
+    float:left;
+    width: 8%;
+}
+
+.right-side {
+    float: right;
+    width: 87%;
+}
+
+.right-side > header {
+    font-size: 13px;
+}
+
+.post:before,
+.post:after {
+    content: "";
+    display: table;
+}
+.post:after {
+    clear: both;
+}
+.post {
+    clear: both;
+    *zoom: 1;
+}

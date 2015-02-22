@@ -7,13 +7,11 @@ class ListUtil {
     //TODO Depending on User and topic type change results
 
     static List<Resource> getRecentShares() {
+        //TODO Posts of public topics will be shown only
         return Resource.list(
                 sort: 'dateCreated', order: 'desc',
                 max: 5
         )
-    }
-
-    static List<Resource> getTopPosts() {
     }
 
 }

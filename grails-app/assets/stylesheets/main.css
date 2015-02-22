@@ -7,3 +7,7 @@
     width: 37%;
     display: inline-block;
 }
+
+.photo {
+    border: solid thin;
+}

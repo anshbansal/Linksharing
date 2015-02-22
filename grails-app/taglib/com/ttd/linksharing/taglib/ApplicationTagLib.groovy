@@ -28,6 +28,7 @@ class ApplicationTagLib {
 
     /**
      * Creates a Post's container as per predefined post types
+     *
      * @attr title The title of the Posts' container
      * @attr postsType REQUIRED The type of posts to be shown
      * @attr user The logged in user
@@ -44,5 +45,12 @@ class ApplicationTagLib {
 
         attrs.title = attrs.title ?: title
         out << posts(attrs)
+    }
+
+    //TODO Test User image present
+    def photo = { attrs ->
+        out << render(template: "/templates/commons/photo",
+                        model: [user: attrs.user]
+        )
     }
 }

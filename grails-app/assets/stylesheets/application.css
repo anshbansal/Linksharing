@@ -10,5 +10,6 @@
 *= require main
 *= require container
 *= require header
+*= require post
 *= require_self
 */
