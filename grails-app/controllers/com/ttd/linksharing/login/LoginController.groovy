@@ -18,4 +18,9 @@ class LoginController {
             forward action: "index"
         }
     }
+
+    def logout() {
+        session.invalidate()
+        redirect action: "index"
+    }
 }
