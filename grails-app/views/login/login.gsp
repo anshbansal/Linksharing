@@ -4,13 +4,28 @@
     <title>Login</title>
 </head>
 <body>
-    <g:applyLayout name="container" params="[title: 'Login']">
-        <g:form action="login">
-            Email<g:textField name="email"/>
-            Password<g:passwordField name="password"/>
-            <g:submitButton name="Submit"/>
-        </g:form>
-    </g:applyLayout>
+    <div class="major-part">
+        <ls:posts title="Recent Shares" posts="none"/>
+        <ls:posts title="Top Posts" posts="none"/>
+    </div>
+
+    <div class="minor-part">
+        <g:applyLayout name="container" params="[title: 'Login']">
+            <g:form action="login">
+                Email<g:textField name="email"/><br/>
+                Password<g:passwordField name="password"/><br/>
+                <g:submitButton name="Login"/>
+            </g:form>
+        </g:applyLayout>
+        <br/>
+
+        <g:applyLayout name="container" params="[title: 'Register']">
+            <g:form action="login">
+                First Name <g:textField name="firstName"/><br/>
+                Last Name <g:textField name="lastName"/><br/>
+            </g:form>
+        </g:applyLayout>
+    </div>
 
 </body>
 </html>

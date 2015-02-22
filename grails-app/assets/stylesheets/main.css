@@ -1,1 +1,9 @@
+.major-part {
+    width: 60%;
+    display: inline-block;
+}
 
+.minor-part {
+    width: 37%;
+    display: inline-block;
+}
