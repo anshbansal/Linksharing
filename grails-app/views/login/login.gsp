@@ -4,11 +4,11 @@
     <title>Login</title>
 </head>
 <body>
-    <div class="major-part">
+    <section id="major-part">
         <ls:predefinedPosts postsType="recentShares"/>
-    </div>
+    </section>
 
-    <div class="minor-part">
+    <section id="minor-part">
         <g:applyLayout name="container" params="[title: 'Login']">
             <g:form action="login">
                 Email<g:textField name="email"/><br/>
@@ -24,7 +24,7 @@
                 Last Name <g:textField name="lastName"/><br/>
             </g:form>
         </g:applyLayout>
-    </div>
+    </section>
 
 </body>
 </html>

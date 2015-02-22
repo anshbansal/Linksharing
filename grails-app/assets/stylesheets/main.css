@@ -1,13 +1,19 @@
-.major-part {
-    width: 60%;
+body {
+    margin: 0 70px;
+}
+
+#main-contents {
+    margin: 0 30px;
+}
+
+#main-contents > * {
     display: inline-block;
 }
 
-.minor-part {
+#major-part {
+    width: 61%;
+}
+
+#minor-part {
     width: 37%;
-    display: inline-block;
-}
-
-.photo {
-    border: solid thin;
 }

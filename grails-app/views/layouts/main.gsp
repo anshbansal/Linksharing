@@ -17,8 +17,8 @@
 	</head>
 	<body>
         <g:render template="/templates/header" />
-        <div class="main-contents">
+        <section id="main-contents">
 		    <g:layoutBody/>
-        </div>
+        </section>
 	</body>
 </html>

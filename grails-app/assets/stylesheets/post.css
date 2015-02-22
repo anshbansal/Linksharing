@@ -1,16 +1,4 @@
-.left-side {
-    float:left;
-    width: 8%;
-}
-
-.right-side {
-    float: right;
-    width: 87%;
-}
-
-.right-side > header {
-    font-size: 13px;
-}
+/* TODO Check whether this can be refactored for all units posted*/
 
 .post:before,
 .post:after {
@@ -23,4 +11,17 @@
 .post {
     clear: both;
     *zoom: 1;
+}
+.post > * {
+    display: inline-block;
+}
+
+.photo {
+    float:left;
+    height: 50px;
+    border: solid thin;
+}
+
+.details {
+    margin-left: 10px;
 }

@@ -1,13 +1,13 @@
-<div class="post">
-    <aside class="left-side photo">
+<section class="post">
+    <section class="photo">
         <ls:photo user="${post.createdBy}"/>
-    </aside>
-
-    <section class="right-side">
-        <header>${post.createdBy.firstName}  @${post.createdBy.username}</header>
-        <section>${post.description} a ba ab aba aba aba aba aba aba aba ab ab</section>
-        <footer>
-
-        </footer>
     </section>
-</div>
+
+    <section class="details">
+        <div>${post.createdBy.firstName}  @${post.createdBy.username}</div>
+        <div>${post.description} a ba ab aba aba aba aba aba aba aba ab ab</div>
+        <div>
+
+        </div>
+    </section>
+</section>

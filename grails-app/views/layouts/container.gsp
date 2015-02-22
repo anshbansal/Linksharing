@@ -1,7 +1,7 @@
-<div class="generic-container">
-    <div class="heading">${pageProperty(name: 'title')}</div>
+<section class="generic-container">
+    <header class="heading">${pageProperty(name: 'title')}</header>
 
-    <div class="container-contents">
+    <section class="container-contents">
         <g:layoutBody />
-    </div>
-</div>
+    </section>
+</section>
