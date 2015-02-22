@@ -10,10 +10,14 @@
 .heading {
     background-color: darkseagreen;
     margin-bottom: 5px;
-    padding-left: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-left: 15px;
+
 }
 
 .container-contents > * {
-    margin: 10px;
+    margin: 5px;
+    padding: 5px;
     position: relative;
 }

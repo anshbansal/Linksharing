@@ -5,8 +5,7 @@
 </head>
 <body>
     <div class="major-part">
-        <ls:posts title="Recent Shares" posts="none"/>
-        <ls:posts title="Top Posts" posts="none"/>
+        <ls:predefinedPosts postsType="recentShares"/>
     </div>
 
     <div class="minor-part">
