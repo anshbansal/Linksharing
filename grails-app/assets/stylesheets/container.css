@@ -1,0 +1,17 @@
+.generic-container {
+    margin: 10px;
+    border: 2px solid;
+    border-radius: 10px 10px 0 0;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.heading {
+    background-color: darkseagreen;
+    margin-bottom: 5px;
+    padding-left: 10px;
+}
+
+.container-contents > * {
+    margin: 10px;
+}
