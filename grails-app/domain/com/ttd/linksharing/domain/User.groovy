@@ -25,7 +25,7 @@ class User {
         email unique: true, email: true
         username unique: true
         lastName nullable: true
-        photo size: 0..576
+        photo size: 0..576, nullable: true
     }
 
     @Override

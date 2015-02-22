@@ -25,7 +25,7 @@ class BootStrap {
                     item.isRead = true
                 }
             }
-            user.save()
+            user.save(failOnError: true, flush: true)
         }
     }
 
