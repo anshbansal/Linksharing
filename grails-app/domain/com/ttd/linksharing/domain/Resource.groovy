@@ -16,8 +16,4 @@ abstract class Resource {
     static mapping = {
         tablePerHierarchy false
     }
-
-    List<User> getSubscribedUsers() {
-        return topic.subscribedUsers
-    }
 }

@@ -3,14 +3,15 @@ package com.ttd.linksharing.service.domain
 import com.ttd.linksharing.domain.User
 import grails.transaction.Transactional
 
+import static com.ttd.linksharing.util.ServiceUtil.validateAndSave
+
 @Transactional
 class UserService {
 
-    User save(User user, Boolean isFlushEnabled = false, Boolean failOnError = false) {
-        if(user.validate() && user.save(flush: isFlushEnabled, failOnError: failOnError)) {
+    User save(User user, Map args) {
 
-        } else {
-            user = null
+        if (!validateAndSave(user, args)) {
+            return null
         }
         user
     }

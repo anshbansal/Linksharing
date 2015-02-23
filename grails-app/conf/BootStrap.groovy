@@ -1,5 +1,6 @@
 import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.Resource
+import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
 
@@ -27,7 +28,7 @@ class BootStrap {
                 }
             }
 
-            user.readingsItems.each { ReadingItem item ->
+            ReadingItem.findAllWhere(user: user).each { ReadingItem item ->
                 if (item.id % 3 == 0) {
                     item.isRead = true
                 }

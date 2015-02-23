@@ -12,8 +12,4 @@ class Subscription {
         seriousness nullable: true
         topic unique: 'user'
     }
-
-    List<Resource> getResources() {
-        return this.topic.resources
-    }
 }

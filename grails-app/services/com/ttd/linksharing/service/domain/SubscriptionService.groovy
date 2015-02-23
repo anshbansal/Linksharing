@@ -3,22 +3,24 @@ package com.ttd.linksharing.service.domain
 import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
-import com.ttd.linksharing.domain.Topic
 import grails.transaction.Transactional
+
+import static com.ttd.linksharing.util.ServiceUtil.validateAndSave
 
 @Transactional
 class SubscriptionService {
 
     def readingItemService
 
-    Subscription save(Subscription subscription, Boolean isFlushEnabled = false, Boolean failOnError = false) {
-        if(subscription.validate() && subscription.save(flush: isFlushEnabled, failOnError: failOnError)) {
-            subscription.resources.each { Resource resource ->
-                ReadingItem readingItem = new ReadingItem(resource: resource, user: subscription.user)
-                readingItemService.save(readingItem, isFlushEnabled, failOnError)
-            }
-        } else {
-            subscription = null
+    Subscription save(Subscription subscription, Map args) {
+
+        if (!validateAndSave(subscription, args)) {
+            return null
+        }
+
+        Resource.findAllWhere(topic: subscription.topic).each { Resource resource ->
+            ReadingItem readingItem = new ReadingItem(resource: resource, user: subscription.user)
+            readingItemService.save(readingItem, args)
         }
         subscription
     }

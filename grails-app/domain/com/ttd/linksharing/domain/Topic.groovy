@@ -15,10 +15,6 @@ class Topic {
         name unique: 'createdBy'
     }
 
-    List<User> getSubscribedUsers() {
-        return this.subscriptions*.user
-    }
-
     @Override
     String toString() {
         "$name created by $createdBy"
