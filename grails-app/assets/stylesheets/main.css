@@ -10,10 +10,39 @@ body {
     display: inline-block;
 }
 
-#major-part {
+.major-part {
     width: 61%;
 }
 
-#minor-part {
+.minor-part {
     width: 37%;
+}
+
+.right-part {
+    float: right;
+}
+
+.left-part {
+    float: left;
+}
+
+/*Style for forms*/
+.lines-container > * {
+    margin-bottom: 10px;
+    width: 45%;
+    display: inline-block;
+}
+
+/*Clearfix for containing floats*/
+.group:before,
+.group:after {
+    content: "";
+    display: table;
+}
+.group:after {
+    clear: both;
+}
+.group {
+    clear: both;
+    *zoom: 1;
 }

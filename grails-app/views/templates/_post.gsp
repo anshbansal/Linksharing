@@ -1,4 +1,4 @@
-<section class="post">
+<section class="post group">
     <section class="photo">
         <ls:photo user="${post.createdBy}"/>
     </section>
