@@ -11,7 +11,7 @@ class TopicService {
 
     def subscriptionService
 
-    Topic save(Topic topic, Map args) {
+    Topic save(Topic topic, Map args = [:]) {
 
         if (!validateAndSave(topic, args)) {
             return null

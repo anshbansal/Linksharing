@@ -12,7 +12,7 @@ class SubscriptionService {
 
     def readingItemService
 
-    Subscription save(Subscription subscription, Map args) {
+    Subscription save(Subscription subscription, Map args = [:]) {
 
         if (!validateAndSave(subscription, args)) {
             return null

@@ -13,7 +13,7 @@ class ResourceService {
 
     def readingItemService
 
-    Resource save(Resource resource, Map args) {
+    Resource save(Resource resource, Map args = [:]) {
 
         if (!validateAndSave(resource, args)) {
             return null

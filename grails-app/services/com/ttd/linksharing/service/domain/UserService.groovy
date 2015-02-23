@@ -8,7 +8,7 @@ import static com.ttd.linksharing.util.ServiceUtil.validateAndSave
 @Transactional
 class UserService {
 
-    User save(User user, Map args) {
+    User save(User user, Map args = [:]) {
 
         if (!validateAndSave(user, args)) {
             return null
