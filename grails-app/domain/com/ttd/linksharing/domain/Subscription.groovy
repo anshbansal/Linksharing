@@ -3,15 +3,8 @@ package com.ttd.linksharing.domain
 import com.ttd.linksharing.enums.Seriousness
 
 class Subscription {
-
-    User user
-    Topic topic
     Seriousness seriousness
     Date dateCreated
-
-    def afterInsert = {
-        this.updateReadingLists()
-    }
 
     static belongsTo = [user: User, topic: Topic]
 
@@ -20,12 +13,7 @@ class Subscription {
         topic unique: 'user'
     }
 
-    def updateReadingLists = {
-        topic.resources.each { Resource resource ->
-            user.addToReadingsItems(
-                    new ReadingItem(resource: resource, user: user)
-            )
-            save()
-        }
+    List<Resource> getResources() {
+        return this.topic.resources
     }
 }

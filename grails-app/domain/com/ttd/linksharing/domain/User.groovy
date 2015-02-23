@@ -1,7 +1,6 @@
 package com.ttd.linksharing.domain
 
 class User {
-
     String email
     String username
     String password
@@ -14,11 +13,11 @@ class User {
     Date lastUpdated
 
     static hasMany = [
-            topics: Topic,
-            subscriptions: Subscription,
-            ratings: ResourceRating,
-            readingsItems: ReadingItem,
-            resources: Resource
+        topics: Topic,
+        subscriptions: Subscription,
+        ratings: ResourceRating,
+        readingsItems: ReadingItem,
+        resources: Resource
     ]
 
     static constraints = {
