@@ -17,6 +17,6 @@ class Topic {
 
     @Override
     String toString() {
-        "$name created by $createdBy"
+        "$name"
     }
 }

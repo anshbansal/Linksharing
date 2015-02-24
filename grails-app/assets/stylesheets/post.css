@@ -1,13 +1,7 @@
-.post > * {
-    display: inline-block;
-}
-
-.photo {
-    float:left;
-    height: 50px;
-    border: solid thin;
+.details > * {
+    margin-bottom: 5px;
 }
 
 .details {
-    margin-left: 10px;
+    margin-left: 10%;
 }

@@ -1,13 +1,16 @@
 <section class="post group">
-    <section class="photo">
+    <div class="left-part">
         <ls:photo user="${post.createdBy}"/>
-    </section>
+    </div>
 
-    <section class="details">
-        <div>${post.createdBy.firstName}  @${post.createdBy.username}</div>
-        <div>${post.description} a ba ab aba aba aba aba aba aba aba ab ab</div>
-        <div>
-
+    <div class="details">
+        <div class="small-part">
+            <span>${post.createdBy.firstName}  @${post.createdBy.username}</span>
+            <span class="right-part">${post.topic}</span>
         </div>
-    </section>
+        <div>${post.description}</div>
+        <div class="small-part">
+            Dummy
+        </div>
+    </div>
 </section>

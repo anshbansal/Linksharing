@@ -15,7 +15,11 @@ body {
 }
 
 .minor-part {
-    width: 37%;
+    width: 39%;
+}
+
+.small-part {
+    font-size: 12px;
 }
 
 .right-part {
@@ -29,7 +33,7 @@ body {
 /*Style for forms*/
 .lines-container > * {
     margin-bottom: 10px;
-    width: 45%;
+    width: 48%;
     display: inline-block;
 }
 
