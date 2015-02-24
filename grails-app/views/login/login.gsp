@@ -25,7 +25,7 @@
 
     <section class="minor-part right-part">
         <g:applyLayout name="container" params="[title: 'Register']">
-            <g:form action="login" class="lines-container">
+            <g:form action="register" enctype="multipart/form-data" class="lines-container">
                 <span>First Name *</span>
                 <g:textField name="firstName" required="true"/>
 
