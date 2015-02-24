@@ -12,6 +12,5 @@ class HomeController {
     }
 
     def dashboard() {
-        render session.username
     }
 }

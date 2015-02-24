@@ -4,6 +4,6 @@ class UserController {
 
     def loginHandler() {
         session.username = params.username
-        forward controller: 'home', action: 'dashboard'
+        redirect controller: 'home', action: 'dashboard'
     }
 }

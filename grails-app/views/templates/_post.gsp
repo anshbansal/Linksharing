@@ -8,7 +8,7 @@
             <span>${post.createdBy.firstName}  @${post.createdBy.username}</span>
             <span class="right-part">${post.topic}</span>
         </div>
-        <div>${post.description}</div>
+        <div style="text-overflow: ellipsis">${post.description} nsvdasn sd sads ad s ds d sd s d sdfsd fs fads ad s ds d sd s d sdfsd fs fads ad s ds d sd s d sdfsd fs fads ad s ds d sd s d sdfsd fs fads ad s ds d sd s d sdfsd fs fdfdsf dsf</div>
         <div class="small-part">
             Dummy
         </div>
