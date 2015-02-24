@@ -10,7 +10,8 @@ abstract class Resource {
     static hasMany = [readingItem: ReadingItem, ratings: ResourceRating]
 
     static constraints = {
-        description unique: 'topic'
+        description type: 'text'
+        id composite: ['description', 'topic']
     }
 
     static mapping = {

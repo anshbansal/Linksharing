@@ -16,7 +16,8 @@ class TestUtil {
     }
 
     static User createUser(String emailAddress) {
-        new User(email: emailAddress, username: emailAddress, password: 'igdefault', firstName: emailAddress)
+        new User(email: emailAddress, username: emailAddress, password: 'igdefault',
+                firstName: emailAddress, lastName: emailAddress)
     }
 
     static Topic createTopic(User user, int it) {

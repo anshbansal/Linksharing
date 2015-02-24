@@ -23,7 +23,6 @@ class User {
     static constraints = {
         email unique: true, email: true
         username unique: true
-        lastName nullable: true
         photo size: 0..576, nullable: true
     }
 
