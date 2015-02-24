@@ -10,6 +10,27 @@ class ApplicationTagLib {
     static namespace = "ls"
 
     /**
+     * Creates a Generic Listings' container.
+     *
+     * @attr title REQUIRED The title of the Posts' container
+     * @attr posts REQUIRED The posts to be shown
+     * @attr template REQUIRED The template of the listing to be rendered
+     * @attr user The logged in user
+     */
+    def listings = { attrs ->
+        out << render(
+                template: "/templates/listings",
+                model: [
+                        renderTemplate: attrs.template,
+                        title: attrs.title,
+                        listings: attrs.listings,
+                        user: attrs.user ?: "none"
+                ]
+        )
+    }
+
+
+    /**
      * Creates a Post's container.
      *
      * @attr title REQUIRED The title of the Posts' container
@@ -17,13 +38,10 @@ class ApplicationTagLib {
      * @attr user The logged in user
      */
     def posts = { attrs ->
-        out << render(template: "/templates/posts",
-                        model: [
-                                title: attrs.title,
-                                posts: attrs.posts,
-                                user: attrs.user ?: "none"
-                        ]
-        )
+        attrs.template = "/templates/post"
+        attrs.listings = attrs.posts
+
+        out << listings(attrs)
     }
 
     /**

@@ -1,3 +1,3 @@
-<g:if test="${post.createdBy.photo == null}">
+<g:if test="${listing.createdBy.photo == null}">
     <asset:image src="anonymous.jpg" width="50" height="50" alt="Anonymous"/>
 </g:if>
