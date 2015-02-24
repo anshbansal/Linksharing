@@ -4,5 +4,7 @@
     <title>DashBoard</title>
 </head>
 <body>
-${session.username}
+    <section class="major-part right-part">
+        <ls:predefinedPosts postsType="recentShares"/>
+    </section>
 </body>

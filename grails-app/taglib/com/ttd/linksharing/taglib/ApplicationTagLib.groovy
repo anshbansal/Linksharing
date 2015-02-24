@@ -1,6 +1,6 @@
 package com.ttd.linksharing.taglib
 
-import com.ttd.linksharing.domain.Resource
+import com.ttd.linksharing.domain.User
 import com.ttd.linksharing.util.ListUtil
 
 class ApplicationTagLib {
@@ -9,13 +9,15 @@ class ApplicationTagLib {
 
     static namespace = "ls"
 
+    def userService
+    def resourceService
+
     /**
      * Creates a Generic Listings' container.
      *
      * @attr title REQUIRED The title of the Posts' container
      * @attr posts REQUIRED The posts to be shown
      * @attr template REQUIRED The template of the listing to be rendered
-     * @attr user The logged in user
      */
     def listings = { attrs ->
         out << render(
@@ -23,8 +25,7 @@ class ApplicationTagLib {
                 model: [
                         renderTemplate: attrs.template,
                         title: attrs.title,
-                        listings: attrs.listings,
-                        user: attrs.user ?: "none"
+                        listings: attrs.listings
                 ]
         )
     }
@@ -35,10 +36,9 @@ class ApplicationTagLib {
      *
      * @attr title REQUIRED The title of the Posts' container
      * @attr posts REQUIRED The posts to be shown
-     * @attr user The logged in user
      */
     def posts = { attrs ->
-        attrs.template = "/templates/post"
+        attrs.template = "/templates/commons/post/post"
         attrs.listings = attrs.posts
 
         out << listings(attrs)
@@ -49,7 +49,6 @@ class ApplicationTagLib {
      *
      * @attr title The title of the Posts' container
      * @attr postsType REQUIRED The type of posts to be shown
-     * @attr user The logged in user
      */
     def predefinedPosts = { attrs ->
         String title = ""
@@ -63,6 +62,23 @@ class ApplicationTagLib {
 
         attrs.title = attrs.title ?: title
         out << posts(attrs)
+    }
+
+    /**
+     * Allows to mark a post as (Un)Read for logged in user
+     *
+     * @attr post REQUIRED The type of posts to be shown
+     */
+    def markRead = { attrs ->
+        out << render(
+                template: "/templates/commons/post/markRead",
+                model: [
+                        isRead: session.user ?
+                                resourceService.isRead(attrs.post, userService.findByUsername(session.user)) :
+                                Boolean.FALSE
+                ]
+        )
+
     }
 
     //TODO Test User image present

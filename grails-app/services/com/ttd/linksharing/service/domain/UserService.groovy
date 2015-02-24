@@ -15,4 +15,8 @@ class UserService {
         }
         user
     }
+
+    User findByUsername(String username) {
+        User.findByUsername(username)
+    }
 }

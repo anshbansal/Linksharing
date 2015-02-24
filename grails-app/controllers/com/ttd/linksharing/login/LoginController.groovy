@@ -13,7 +13,7 @@ class LoginController {
         User user = User.findWhere(email: params.email, password: params.password)
 
         if (user) {
-            forward controller: "user", action: "loginHandler", params: [username: user?.username]
+            forward controller: "user", action: "loginHandler", params: [user: user]
         } else {
             forward action: "index"
         }

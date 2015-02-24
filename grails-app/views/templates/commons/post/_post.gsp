@@ -8,9 +8,9 @@
             <span>${listing.createdBy.firstName}  @${listing.createdBy.username}</span>
             <span class="right-part">${listing.topic}</span>
         </div>
-        <div style="text-overflow: ellipsis">${listing.description} nsvdasn  d sd s d sdfsd fs fads ad s ds d sd s d sdfsd fs fads ad s ds d sd s d sdfsd fs fads ad s ds d sd s d sdfsd fs fdfdsf dsf</div>
+        <div>${listing.description}</div>
         <div class="small-part">
-            Dummy
+            <ls:markRead post="${listing}"/>
         </div>
     </div>
 </section>
