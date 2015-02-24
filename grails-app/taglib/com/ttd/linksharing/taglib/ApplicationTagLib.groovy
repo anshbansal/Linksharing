@@ -1,8 +1,5 @@
 package com.ttd.linksharing.taglib
 
-import com.ttd.linksharing.domain.User
-import com.ttd.linksharing.util.ListUtil
-
 class ApplicationTagLib {
     static defaultEncodeAs = [taglib:'raw']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
@@ -56,7 +53,7 @@ class ApplicationTagLib {
         switch (attrs.postsType) {
             case "recentShares":
                 title = "Recent Shares"
-                attrs.posts = ListUtil.recentShares
+                attrs.posts = resourceService.recentShares
                 break
         }
 
