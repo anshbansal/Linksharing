@@ -6,17 +6,12 @@ class ApplicationTagLib {
 
     static namespace = "ls"
 
+    def topicService
     def userService
     def resourceService
+    def subscriptionService
 
-    /**
-     * Creates a Generic Listings' container.
-     *
-     * @attr title REQUIRED The title of the Posts' container
-     * @attr posts REQUIRED The posts to be shown
-     * @attr template REQUIRED The template of the listing to be rendered
-     */
-    def listings = { attrs ->
+    private def listings = { attrs ->
         out << render(
                 template: "/templates/listings",
                 model: [
@@ -27,38 +22,40 @@ class ApplicationTagLib {
         )
     }
 
-
-    /**
-     * Creates a Post's container.
-     *
-     * @attr title REQUIRED The title of the Posts' container
-     * @attr posts REQUIRED The posts to be shown
-     */
-    def posts = { attrs ->
-        attrs.template = "/templates/commons/post/post"
-        attrs.listings = attrs.posts
-
-        out << listings(attrs)
-    }
-
     /**
      * Creates a Post's container as per predefined post types
      *
      * @attr title The title of the Posts' container
      * @attr postsType REQUIRED The type of posts to be shown
      */
-    def predefinedPosts = { attrs ->
-        String title = ""
+    def posts = { attrs ->
+        def title = ""
 
         switch (attrs.postsType) {
             case "recentShares":
                 title = "Recent Shares"
-                attrs.posts = resourceService.recentShares
+                attrs.listings = resourceService.recentShares
                 break
         }
 
+        attrs.template = "/templates/commons/post/post"
         attrs.title = attrs.title ?: title
-        out << posts(attrs)
+        out << listings(attrs)
+    }
+
+    def topics = { attrs ->
+        def title = ""
+
+        switch(attrs.topicsType) {
+            case "subscriptions":
+                title = "Subscriptions"
+                attrs.listings = subscriptionService.getSubscriptionsForUser session.user
+                break
+        }
+
+        attrs.template = "/templates/commons/topic/topic"
+        attrs.title = attrs.title ?: title
+        out << listings(attrs)
     }
 
     /**

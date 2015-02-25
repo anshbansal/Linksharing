@@ -5,6 +5,6 @@
 </head>
 <body>
     <section class="major-part right-part">
-        <ls:predefinedPosts postsType="recentShares"/>
+        <ls:topics topicsType="subscriptions"/>
     </section>
 </body>

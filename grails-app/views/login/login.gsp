@@ -5,7 +5,7 @@
 </head>
 <body>
     <section class="major-part left-part">
-        <ls:predefinedPosts postsType="recentShares"/>
+        <ls:posts postsType="recentShares"/>
     </section>
 
     <section class="minor-part right-part">

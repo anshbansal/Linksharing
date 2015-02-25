@@ -3,6 +3,8 @@ package com.ttd.linksharing.service.domain
 import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
+import com.ttd.linksharing.domain.Topic
+import com.ttd.linksharing.domain.User
 import grails.transaction.Transactional
 
 import static com.ttd.linksharing.util.ServiceUtil.validateAndSave
@@ -10,6 +12,7 @@ import static com.ttd.linksharing.util.ServiceUtil.validateAndSave
 @Transactional
 class SubscriptionService {
 
+    def userService
     def readingItemService
 
     Subscription save(Subscription subscription, Map args = [:]) {
@@ -23,5 +26,10 @@ class SubscriptionService {
             readingItemService.save(readingItem, args)
         }
         subscription
+    }
+
+    List<Topic> getSubscriptionsForUser(String username) {
+        User currentUser = userService.findByUsername username
+        Subscription.list(user: currentUser, sort: 'dateCreated', order: 'desc', max: 5)
     }
 }
