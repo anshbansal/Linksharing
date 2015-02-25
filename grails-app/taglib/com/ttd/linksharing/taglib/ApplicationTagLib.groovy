@@ -6,9 +6,10 @@ class ApplicationTagLib {
 
     static namespace = "ls"
 
-    def userService
     def resourceService
     def subscriptionService
+    def topicService
+    def userService
 
     def listings = { attrs ->
         out << render(
@@ -48,7 +49,7 @@ class ApplicationTagLib {
         switch(attrs.topicsType) {
             case "subscriptions":
                 title = "Subscriptions"
-                attrs.listings = subscriptionService.getSubscriptionsForUser session.user
+                attrs.listings = userService.getSubscribedTopicsForUser session.user
                 break
         }
 

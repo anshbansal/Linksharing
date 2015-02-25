@@ -27,12 +27,4 @@ class SubscriptionService {
         }
         subscription
     }
-
-    List<Topic> getSubscriptionsForUser(String username) {
-
-        Subscription.findAllWhere(
-                user: userService.findByUsername(username),
-                [sort: 'dateCreated', order: 'desc', max: 5]
-        )*.topic
-    }
 }
