@@ -1,4 +1,4 @@
-<section class="post group">
+<section class="group">
     <div class="left-part">
         <ls:photo user="${listing.createdBy}"/>
     </div>

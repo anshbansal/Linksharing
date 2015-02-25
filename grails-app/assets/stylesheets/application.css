@@ -12,5 +12,6 @@
 *= require container
 *= require header
 *= require post
+*= require topic
 *= require_self
 */
