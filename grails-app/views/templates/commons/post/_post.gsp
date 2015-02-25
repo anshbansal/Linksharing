@@ -10,6 +10,7 @@
         </div>
         <div>${listing.description}</div>
         <div class="small-part">
+            <ls:resourceType post="${listing}"/>
             <ls:markRead post="${listing}"/>
         </div>
     </div>

@@ -64,7 +64,7 @@ class ApplicationTagLib {
     /**
      * Allows to mark a post as (Un)Read for logged in user
      *
-     * @attr post REQUIRED The type of posts to be shown
+     * @attr post REQUIRED The post
      */
     def markRead = { attrs ->
         out << render(
@@ -76,6 +76,18 @@ class ApplicationTagLib {
                 ]
         )
 
+    }
+
+    /**
+     * @attr post REQUIRED The post
+     */
+    def resourceType = { attrs ->
+        out << render(
+                template: "/templates/commons/post/resourceType",
+                model: [
+                    post: attrs.post
+                ]
+        )
     }
 
     //TODO Test User image present
