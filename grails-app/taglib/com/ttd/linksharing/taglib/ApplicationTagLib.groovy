@@ -6,12 +6,11 @@ class ApplicationTagLib {
 
     static namespace = "ls"
 
-    def topicService
     def userService
     def resourceService
     def subscriptionService
 
-    private def listings = { attrs ->
+    def listings = { attrs ->
         out << render(
                 template: "/templates/listings",
                 model: [

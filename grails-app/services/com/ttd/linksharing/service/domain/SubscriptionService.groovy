@@ -30,6 +30,6 @@ class SubscriptionService {
 
     List<Topic> getSubscriptionsForUser(String username) {
         User currentUser = userService.findByUsername username
-        Subscription.list(user: currentUser, sort: 'dateCreated', order: 'desc', max: 5)
+        Subscription.list(user: currentUser, sort: 'dateCreated', order: 'desc', max: 5)*.topic
     }
 }
