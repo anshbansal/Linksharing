@@ -53,5 +53,9 @@
         </g:applyLayout>
     </section>
 
+    <section class="major-part left-part">
+        <ls:posts postsType="topPosts"/>
+    </section>
+
 </body>
 </html>
