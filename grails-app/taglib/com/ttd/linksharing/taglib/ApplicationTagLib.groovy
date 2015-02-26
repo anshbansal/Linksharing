@@ -1,5 +1,7 @@
 package com.ttd.linksharing.taglib
 
+import com.ttd.linksharing.domain.ReadingItem
+
 class ApplicationTagLib {
     static defaultEncodeAs = [taglib:'raw']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
@@ -35,6 +37,10 @@ class ApplicationTagLib {
             case "recentShares":
                 title = "Recent Shares"
                 attrs.listings = resourceService.recentShares
+                break
+            case "inbox":
+                title = "Inbox"
+                attrs.listings = ReadingItem.unreadForUser(userService.findByUsername(session.user)).list(max: 5)
                 break
         }
 
