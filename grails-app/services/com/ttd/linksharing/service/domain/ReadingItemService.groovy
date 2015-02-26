@@ -3,14 +3,12 @@ package com.ttd.linksharing.service.domain
 import com.ttd.linksharing.domain.ReadingItem
 import grails.transaction.Transactional
 
-import static com.ttd.linksharing.util.ServiceUtil.validateAndSave
-
 @Transactional
 class ReadingItemService {
 
-    ReadingItem save(ReadingItem readingItem, Map args = [:]) {
+    def save(ReadingItem readingItem, Boolean isFlushEnabled = false) {
 
-        if (!validateAndSave(readingItem, args)) {
+        if (! readingItem.save(flush: isFlushEnabled)) {
             return null
         }
         readingItem

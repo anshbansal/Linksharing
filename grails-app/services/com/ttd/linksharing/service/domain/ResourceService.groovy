@@ -6,16 +6,14 @@ import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.User
 import grails.transaction.Transactional
 
-import static com.ttd.linksharing.util.ServiceUtil.validateAndSave
-
 @Transactional
 class ResourceService {
 
     def readingItemService
 
-    Resource save(Resource resource, Map args = [:]) {
+    def save(Resource resource, Boolean isFlushEnabled = false) {
 
-        if (!validateAndSave(resource, args)) {
+        if (! resource.save(flush: isFlushEnabled)) {
             return null
         }
 
@@ -23,7 +21,7 @@ class ResourceService {
 
         resourceSubscriptions*.user.each { User subscribedUser ->
             ReadingItem readingItem = new ReadingItem(resource: resource, user: subscribedUser)
-            readingItemService.save(readingItem, args)
+            readingItemService.save(readingItem, isFlushEnabled)
         }
         resource
     }

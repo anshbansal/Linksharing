@@ -5,14 +5,12 @@ import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
 import grails.transaction.Transactional
 
-import static com.ttd.linksharing.util.ServiceUtil.validateAndSave
-
 @Transactional
 class UserService {
 
-    User save(User user, Map args = [:]) {
+    def save(User user, Boolean isFlushEnabled = false) {
 
-        if (!validateAndSave(user, args)) {
+        if (! user.save(flush: isFlushEnabled)) {
             return null
         }
         user
