@@ -1,5 +1,7 @@
 package com.ttd.linksharing.domain
 
+import com.ttd.linksharing.enums.Visibility
+
 abstract class Resource {
 
     String description
@@ -16,5 +18,14 @@ abstract class Resource {
 
     static mapping = {
         tablePerHierarchy false
+    }
+
+    static namedQueries = {
+        recentPublicResources {
+            'topic' {
+                eq('scope', Visibility.PUBLIC)
+            }
+            order("dateCreated", "desc")
+        }
     }
 }

@@ -30,9 +30,4 @@ class ResourceService {
         ReadingItem readingItem = ReadingItem.findWhere(resource: resource, user: user)
         readingItem ? readingItem.isRead : Boolean.FALSE
     }
-
-    List<Resource> getRecentShares() {
-        //TODO Depending on User and topic type change results
-        return Resource.list(sort: 'dateCreated', order: 'desc', max: 5)
-    }
 }
