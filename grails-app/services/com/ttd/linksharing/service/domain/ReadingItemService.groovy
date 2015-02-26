@@ -1,6 +1,7 @@
 package com.ttd.linksharing.service.domain
 
 import com.ttd.linksharing.domain.ReadingItem
+import com.ttd.linksharing.domain.User
 import grails.transaction.Transactional
 
 @Transactional
@@ -12,5 +13,9 @@ class ReadingItemService {
             return null
         }
         readingItem
+    }
+
+    List<ReadingItem> findForUser(User user) {
+        ReadingItem.findAllWhere(user: user)
     }
 }
