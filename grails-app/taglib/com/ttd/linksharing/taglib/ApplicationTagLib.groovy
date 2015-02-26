@@ -51,7 +51,7 @@ class ApplicationTagLib {
                 break
         }
 
-        attrs.template = "/templates/commons/post/post"
+        attrs.template = "/templates/post/post"
         attrs.title = attrs.title ?: title
         out << listings(attrs)
     }
@@ -66,7 +66,7 @@ class ApplicationTagLib {
                 break
         }
 
-        attrs.template = "/templates/commons/topic/topic"
+        attrs.template = "/templates/topic/topic"
         attrs.title = attrs.title ?: title
         out << listings(attrs)
     }
@@ -83,7 +83,7 @@ class ApplicationTagLib {
         }
 
         out << render(
-                template: "/templates/commons/post/markRead",
+                template: "/templates/post/markRead",
                 model: [isRead: ReadingItem.isReadForUserName(attrs.post as Resource, session.user).get() ]
         )
 
@@ -94,7 +94,7 @@ class ApplicationTagLib {
      */
     def resourceType = { attrs ->
         out << render(
-                template: "/templates/commons/post/resourceType",
+                template: "/templates/post/resourceType",
                 model: [
                     post: attrs.post
                 ]
