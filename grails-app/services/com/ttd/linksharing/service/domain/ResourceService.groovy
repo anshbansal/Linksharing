@@ -25,9 +25,4 @@ class ResourceService {
         }
         resource
     }
-
-    Boolean isRead(Resource resource, User user) {
-        ReadingItem readingItem = ReadingItem.findWhere(resource: resource, user: user)
-        readingItem ? readingItem.isRead : Boolean.FALSE
-    }
 }

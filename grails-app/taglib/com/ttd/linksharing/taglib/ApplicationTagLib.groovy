@@ -2,6 +2,7 @@ package com.ttd.linksharing.taglib
 
 import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.Resource
+import com.ttd.linksharing.domain.Subscription
 
 class ApplicationTagLib {
     static defaultEncodeAs = [taglib:'raw']
@@ -39,6 +40,11 @@ class ApplicationTagLib {
                 title = "Recent Shares"
                 attrs.listings = Resource.recentPublicResources.list(max: 5)
                 break
+            case "topPosts":
+                title = "Top Posts"
+                //TODO Add logic for Top Posts
+                attrs.listings = Resource.recentPublicResources.list(max: 5)
+                break
             case "inbox":
                 title = "Inbox"
                 attrs.listings = ReadingItem.unreadForUserName(session.user).list(max: 5)
@@ -56,7 +62,7 @@ class ApplicationTagLib {
         switch(attrs.topicsType) {
             case "subscriptions":
                 title = "Subscriptions"
-                attrs.listings = userService.getSubscribedTopicsForUser session.user
+                attrs.listings = Subscription.subscribedTopicsForUser(session.user).list(max: 5)
                 break
         }
 
@@ -78,7 +84,7 @@ class ApplicationTagLib {
 
         out << render(
                 template: "/templates/commons/post/markRead",
-                model: [isRead: resourceService.isRead(attrs.post, userService.findByUsername(session.user))]
+                model: [isRead: ReadingItem.isReadForUserName(attrs.post as Resource, session.user).get() ]
         )
 
     }
