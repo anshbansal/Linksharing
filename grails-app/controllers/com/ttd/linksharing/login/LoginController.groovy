@@ -4,13 +4,14 @@ import com.ttd.linksharing.domain.User
 
 class LoginController {
 
+    def userService
+
     def index() {
         render view: "login"
     }
 
     def login() {
-        //TODO Change below for email or username
-        User user = User.findWhere(email: params.email, password: params.password)
+        User user = userService.isValidUser(params.uniqueIdentifier, params.loginPassword)
 
         if (user) {
             forward controller: "user", action: "loginHandler", params: [user: user]
