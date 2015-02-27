@@ -1,4 +1,4 @@
-<%@ page import="com.ttd.linksharing.enums.Seriousness" %>
+<%@ page import="com.ttd.linksharing.enums.Visibility; com.ttd.linksharing.enums.Seriousness" %>
 <section class="group">
     <div>
         <div class="left-part">
@@ -30,9 +30,10 @@
     </div>
 
     <div>
-        <g:select name="seriousness"
-                  from="${Seriousness.values()}"
-                  value="${listing.createdBy.subscriptions.seriousness}"/>
-        Visibility Invite Edit Delete
+        <g:select name="seriousness" from="${Seriousness.values()}"/>
+        <g:select name="visibility" from="${Visibility.values()}"/>
+        Invite
+        Edit
+        Delete
     </div>
 </section>

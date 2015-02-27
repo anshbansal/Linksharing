@@ -3,6 +3,7 @@ package com.ttd.linksharing.taglib
 import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
+import com.ttd.linksharing.domain.User
 
 class ApplicationTagLib {
     static defaultEncodeAs = [taglib:'raw']
@@ -56,6 +57,12 @@ class ApplicationTagLib {
         out << listings(attrs)
     }
 
+    /**
+     * Creates a Post's container as per predefined post types
+     *
+     * @attr title The title of the Posts' container
+     * @attr topicsType REQUIRED The type of topics to be shown
+     */
     def topics = { attrs ->
         def title = ""
 
@@ -103,8 +110,22 @@ class ApplicationTagLib {
 
     //TODO Test User image present
     def photo = { attrs ->
+
+        if (attrs.username) {
+            attrs.user = User.findByUsername(attrs.username)
+        }
+
         out << render(template: "/templates/commons/photo",
                         model: [user: attrs.user]
+        )
+    }
+
+    /**
+     * @attr username
+     */
+    def user = { attrs ->
+        out << render(template: "/templates/user/user",
+                model: [listing: User.findByUsername(attrs.username)]
         )
     }
 }

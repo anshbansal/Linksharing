@@ -12,7 +12,6 @@
         <title><g:layoutTitle default="Linksharing"/></title>
 
   		<asset:stylesheet src="application.css"/>
-		<asset:javascript src="application.js"/>
 		<g:layoutHead/>
 	</head>
 	<body>
@@ -20,5 +19,6 @@
         <section id="main-contents">
 		    <g:layoutBody/>
         </section>
+        <asset:javascript src="application.js"/>
 	</body>
 </html>
