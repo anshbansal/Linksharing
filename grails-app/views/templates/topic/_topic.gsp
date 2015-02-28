@@ -15,7 +15,7 @@
                 <div><g:submitButton name="save"/></div>
                 <div>Subscriptions</div>
                 <div>
-                    ${listing.createdBy.subscriptions.size()}
+                    ${listing.subscriptions.size()}
                 </div>
             </div>
 
