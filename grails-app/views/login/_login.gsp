@@ -1,5 +1,5 @@
 <g:applyLayout name="container" params="[title: 'Login']">
-    <g:form action="login" class="lines-container" name="login-form">
+    <g:form action="login" class="lines-container tooltipster-form" name="login-form">
         <label for="uniqueIdentifier">Email/Username</label>
         <g:textField name="uniqueIdentifier" required="true"/>
 

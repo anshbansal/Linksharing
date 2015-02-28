@@ -6,5 +6,6 @@
 // to create separate JavaScript files as needed.
 //
 //= require jquery
-//= require_tree .
-//= require_self
+//= require_tree lib
+//= require jquery_config
+//= require home

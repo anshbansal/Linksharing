@@ -1,5 +1,6 @@
 package com.ttd.linksharing.service.domain
 
+import com.ttd.linksharing.co.LoginCO
 import com.ttd.linksharing.domain.User
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
@@ -16,13 +17,13 @@ class UserService {
     }
 
     @NotTransactional
-    User isValidUser(String uniqueIdentifier, String password) {
+    User isValidUser(LoginCO loginCO) {
         User.createCriteria().get {
             or {
-                eq 'email', uniqueIdentifier
-                eq 'username', uniqueIdentifier
+                eq 'email', loginCO.uniqueIdentifier
+                eq 'username', loginCO.uniqueIdentifier
             }
-            eq 'password', password
+            eq 'password', loginCO.loginPassword
         }
     }
 }

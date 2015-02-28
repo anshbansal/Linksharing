@@ -1,5 +1,5 @@
 <g:applyLayout name="container" params="[title: 'Register']">
-    <g:form action="register" enctype="multipart/form-data" class="lines-container">
+    <g:form controller="user" action="register" enctype="multipart/form-data" class="lines-container tooltipster-form" name="registration-form">
         <label for="firstName">First Name</label>
         <g:textField name="firstName" required="true"/>
 
