@@ -19,8 +19,10 @@
         <section id="main-contents">
 		    <g:layoutBody/>
         </section>
+
         <g:javascript>
-            var uniqueIdentifierURL = "${createLink(controller:'user',action:'isUniqueIdentifierValid')}"
+            var uniqueIdentifierURL = "${createLink(controller:'user',action:'isUniqueIdentifierValid')}";
+            var createTopicTemplateURL = "${createLink(controller: 'topic', action: 'createTopic')}";
         </g:javascript>
         <asset:javascript src="application.js"/>
 	</body>

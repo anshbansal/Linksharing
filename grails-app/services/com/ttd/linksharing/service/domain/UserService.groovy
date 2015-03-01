@@ -32,11 +32,12 @@ class UserService {
         user.hasErrors()
     }
 
-    Boolean isUniqueIdentifierValid(String oldIdentifier, String newIdentifier) {
+    Boolean isUniqueIdentifierValid(String newIdentifier, String loggedUserName) {
 
-        User user = forUsername(oldIdentifier)
-        println user.id
-        println newIdentifier
+        User user = forUsername(loggedUserName)
+        if (! user) {
+            return true
+        }
 
         User.createCriteria().count() {
             not {
@@ -47,5 +48,9 @@ class UserService {
                 eq 'email', newIdentifier
             }
         } == 0
+    }
+
+    Boolean isUniqueIdentifierValid(String newIdentifier) {
+        User.isUniqueIdentifierUsed(newIdentifier).count() == 0
     }
 }

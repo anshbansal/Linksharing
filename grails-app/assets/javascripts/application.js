@@ -8,7 +8,6 @@
 //= require jquery
 //= require_tree lib
 //= require jquery_config
-//= require home
-//= require profile
+//= require jquery_validation
 //= require header
 

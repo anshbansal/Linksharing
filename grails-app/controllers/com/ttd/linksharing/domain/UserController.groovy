@@ -15,11 +15,15 @@ class UserController {
         render view: "profile", model: [loggedUser: loggedUser]
     }
 
-    def isUniqueIdentifierValid(String username) {
+    def isUniqueIdentifierValid() {
 
-        Boolean isValid = userService.isUniqueIdentifierValid(session.username, username)
-        println (">>>" * 30)
-        println isValid
+        String uniqueIdentifier = params.username ?: params.email
+        Boolean isValid = false
+        if (session?.username) {
+            isValid = userService.isUniqueIdentifierValid(uniqueIdentifier, session?.username)
+        } else {
+            isValid = userService.isUniqueIdentifierValid(uniqueIdentifier)
+        }
         render isValid ? "true" : "false"
     }
 
