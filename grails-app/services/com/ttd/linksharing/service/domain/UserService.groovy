@@ -18,12 +18,6 @@ class UserService {
 
     @NotTransactional
     User isValidUser(LoginCO loginCO) {
-        User.createCriteria().get {
-            or {
-                eq 'email', loginCO.uniqueIdentifier
-                eq 'username', loginCO.uniqueIdentifier
-            }
-            eq 'password', loginCO.loginPassword
-        }
+        User.isValidUser(loginCO).get()
     }
 }

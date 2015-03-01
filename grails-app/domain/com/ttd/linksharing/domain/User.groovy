@@ -1,5 +1,7 @@
 package com.ttd.linksharing.domain
 
+import com.ttd.linksharing.co.LoginCO
+
 class User {
     String email
     String username
@@ -29,5 +31,19 @@ class User {
     @Override
     String toString() {
         "$username"
+    }
+
+    static namedQueries = {
+        isUniqueIdentifierUsed { String uniqueIdentifier ->
+            or {
+                eq 'email', uniqueIdentifier
+                eq 'username', uniqueIdentifier
+            }
+        }
+
+        isValidUser { LoginCO loginCO ->
+            isUniqueIdentifierUsed loginCO.uniqueIdentifier
+            eq 'password', loginCO.loginPassword
+        }
     }
 }
