@@ -15,14 +15,12 @@ class Subscription {
     }
 
     static namedQueries = {
-        subscribedTopicsForUser { String username ->
+        subscribedTopics { User user ->
             projections {
                 property('topic')
             }
 
-            'user' {
-                eq('username', username)
-            }
+            eq 'user', user
             order("dateCreated", "desc")
 
             fetchMode('user', FetchMode.JOIN)

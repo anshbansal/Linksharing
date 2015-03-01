@@ -3,7 +3,7 @@ package com.ttd.linksharing.domain
 class UserController {
 
     def loginHandler() {
-        session.user = params.user
+        session.username = params.username
         redirect controller: 'home', action: 'dashboard'
     }
 }

@@ -20,4 +20,9 @@ class UserService {
     User isValidUser(LoginCO loginCO) {
         User.isValidUser(loginCO).get()
     }
+
+    @NotTransactional
+    User forUsername(String username) {
+        User.findByUsername(username)
+    }
 }

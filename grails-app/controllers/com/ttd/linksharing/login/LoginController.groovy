@@ -15,7 +15,7 @@ class LoginController {
         User user = userService.isValidUser(loginCO)
 
         if (user) {
-            forward controller: "user", action: "loginHandler", params: [user: user]
+            forward controller: "user", action: "loginHandler", params: [username: user.username]
         } else {
             redirect action: "index"
         }

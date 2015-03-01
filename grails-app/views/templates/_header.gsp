@@ -1,10 +1,15 @@
 <header class="header">
     <g:link uri="/">Link Sharing</g:link>
-    <g:if test="${session.user != null}">
+    <g:if test="${loggedUser?.username != null}">
         <nav>
-            <div id="currentUserName">${session.user}</div>
+            <div id="currentUserName">${loggedUser?.username}</div>
             <ul id="nav-menu">
                 <li>Profile</li>
+                <g:if test="${loggedUser.admin}">
+                    <li>Users</li>
+                    <li>Topics</li>
+                    <li>Posts</li>
+                </g:if>
                 <li>
                     <a href="${createLink(controller: "login", action: "logout")}">Logout</a>
                 </li>

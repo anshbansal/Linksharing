@@ -15,7 +15,7 @@
 		<g:layoutHead/>
 	</head>
 	<body>
-        <g:render template="/templates/header" />
+        <g:render template="/templates/header" model="[loggedUser: loggedUser]"/>
         <section id="main-contents">
 		    <g:layoutBody/>
         </section>

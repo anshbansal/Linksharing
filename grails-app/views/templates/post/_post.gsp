@@ -11,7 +11,9 @@
         <div>${listing.description}</div>
         <div class="small-part">
             <ls:resourceType post="${listing}"/>
-            <ls:markRead post="${listing}"/>
+            <g:if test="${loggedUser}">
+                <ls:markRead post="${listing}" loggedUser="${loggedUser}"/>
+            </g:if>
         </div>
     </div>
 </section>

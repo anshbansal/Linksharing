@@ -9,26 +9,22 @@ class ReadingItem {
 
     static namedQueries = {
 
-        isReadForUserName { Resource resource, String username ->
+        isReadForUser { Resource resource, User user ->
             projections {
                 property('isRead')
             }
-            'user' {
-                eq 'username', username
-            }
+            eq 'user', user
             eq 'resource', resource
 
             fetchMode('user', FetchMode.JOIN)
         }
 
-        unreadForUserName { String username ->
+        unreadForUser { User user ->
             projections {
                 property('resource')
             }
 
-            'user' {
-                eq('username',username)
-            }
+            eq ('user', user)
             eq('isRead', Boolean.FALSE)
 
             fetchMode('resource', FetchMode.JOIN)

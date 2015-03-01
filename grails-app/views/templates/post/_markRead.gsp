@@ -1,4 +1,4 @@
-<g:if test="${session.user != null}">
+<g:if test="${session.username != null}">
     <g:if test="${isRead}">
         Mark as Unread
     </g:if>

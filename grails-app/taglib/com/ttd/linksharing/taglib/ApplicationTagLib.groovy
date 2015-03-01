@@ -6,7 +6,7 @@ import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.User
 
 class ApplicationTagLib {
-    static defaultEncodeAs = [taglib:'raw']
+    static defaultEncodeAs = [taglib: 'raw']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
 
     static namespace = "ls"
@@ -21,8 +21,8 @@ class ApplicationTagLib {
                 template: "/templates/listings",
                 model: [
                         renderTemplate: attrs.template,
-                        title: attrs.title,
-                        listings: attrs.listings
+                        title         : attrs.title,
+                        listings      : attrs.listings
                 ]
         )
     }
@@ -32,8 +32,11 @@ class ApplicationTagLib {
      *
      * @attr title The title of the Posts' container
      * @attr postsType REQUIRED The type of posts to be shown
+     * @attr user The user for which posts to be shown
      */
     def posts = { attrs ->
+
+        User loggedUser = attrs.loggedUser
         def title = ""
 
         switch (attrs.postsType) {
@@ -48,7 +51,7 @@ class ApplicationTagLib {
                 break
             case "inbox":
                 title = "Inbox"
-                attrs.listings = ReadingItem.unreadForUserName(session.user).list(max: 5)
+                attrs.listings = ReadingItem.unreadForUser(loggedUser).list(max: 5)
                 break
         }
 
@@ -64,12 +67,13 @@ class ApplicationTagLib {
      * @attr topicsType REQUIRED The type of topics to be shown
      */
     def topics = { attrs ->
+        User loggedUser = attrs.loggedUser
         def title = ""
 
-        switch(attrs.topicsType) {
+        switch (attrs.topicsType) {
             case "subscriptions":
                 title = "Subscriptions"
-                attrs.listings = Subscription.subscribedTopicsForUser(session.user).list(max: 5)
+                attrs.listings = Subscription.subscribedTopics(loggedUser).list(max: 5)
                 break
         }
 
@@ -84,48 +88,43 @@ class ApplicationTagLib {
      * @attr post REQUIRED The post
      */
     def markRead = { attrs ->
-
-        if (! session.user) {
-            return null
-        }
+        Resource resource = attrs.post
+        User loggedUser = attrs.loggedUser
 
         out << render(
                 template: "/templates/post/markRead",
-                model: [isRead: ReadingItem.isReadForUserName(attrs.post as Resource, session.user).get() ]
+                model: [isRead: ReadingItem.isReadForUser(resource, loggedUser).get()]
         )
-
     }
 
     /**
      * @attr post REQUIRED The post
      */
     def resourceType = { attrs ->
+        Resource resource = attrs.post
+
         out << render(
                 template: "/templates/post/resourceType",
-                model: [
-                    post: attrs.post
-                ]
+                model: [post: resource]
         )
     }
 
     //TODO Test User image present
     def photo = { attrs ->
+        User user = attrs.user
 
-        if (attrs.username) {
-            attrs.user = User.findByUsername(attrs.username)
-        }
-
-        out << render(template: "/templates/commons/photo",
-                        model: [user: attrs.user]
+        out << render(
+                template: "/templates/commons/photo",
+                model: [user: user]
         )
     }
 
-    /**
-     * @attr username
-     */
     def user = { attrs ->
-        out << render(template: "/templates/user/user",
-                model: [listing: User.findByUsername(attrs.username)]
+        User user = attrs.user
+
+        out << render(
+                template: "/templates/user/user",
+                model: [listing: user]
         )
     }
 }
