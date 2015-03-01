@@ -1,5 +1,9 @@
 <g:applyLayout name="container" params="[title: 'Change Password']">
-    <g:form controller="user" action="updatePassword" class="lines-container tooltipster-form"
+    <g:if test="${flash.message}">
+        ${flash.message}
+    </g:if>
+
+    <g:form controller="login" action="updatePassword" class="lines-container tooltipster-form" method="post"
             name="password-update-form">
         <label for="password">Password</label>
         <g:passwordField name="password" required="true"/>

@@ -19,6 +19,9 @@
         <section id="main-contents">
 		    <g:layoutBody/>
         </section>
+        <g:javascript>
+            var uniqueIdentifierURL = "${createLink(controller:'user',action:'isUniqueIdentifierValid')}"
+        </g:javascript>
         <asset:javascript src="application.js"/>
 	</body>
 </html>

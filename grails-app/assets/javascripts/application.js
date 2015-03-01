@@ -9,5 +9,6 @@
 //= require_tree lib
 //= require jquery_config
 //= require home
+//= require profile
 //= require header
 

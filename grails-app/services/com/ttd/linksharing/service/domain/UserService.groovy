@@ -25,4 +25,27 @@ class UserService {
     User forUsername(String username) {
         User.findByUsername(username)
     }
+
+    Boolean updatePassword(User user, String newPassword) {
+        user.setPassword(newPassword)
+        save(user)
+        user.hasErrors()
+    }
+
+    Boolean isUniqueIdentifierValid(String oldIdentifier, String newIdentifier) {
+
+        User user = forUsername(oldIdentifier)
+        println user.id
+        println newIdentifier
+
+        User.createCriteria().count() {
+            not {
+                eq 'id', user.id
+            }
+            or {
+                eq 'username', newIdentifier
+                eq 'email', newIdentifier
+            }
+        } == 0
+    }
 }

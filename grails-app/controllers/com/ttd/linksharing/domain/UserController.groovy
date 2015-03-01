@@ -1,6 +1,5 @@
 package com.ttd.linksharing.domain
 
-import com.ttd.linksharing.domain.User
 
 class UserController {
 
@@ -14,5 +13,18 @@ class UserController {
     def profile() {
         User loggedUser = userService.forUsername(session.username)
         render view: "profile", model: [loggedUser: loggedUser]
+    }
+
+    def isUniqueIdentifierValid(String username) {
+
+        Boolean isValid = userService.isUniqueIdentifierValid(session.username, username)
+        println (">>>" * 30)
+        println isValid
+        render isValid ? "true" : "false"
+    }
+
+    def updateDetails() {
+        //TODO Implement this
+        println (">>>" * 30)
     }
 }
