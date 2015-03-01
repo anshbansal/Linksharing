@@ -10,5 +10,10 @@
 }
 
 .header > nav {
+    padding-left: 3%;
     float: right;
+}
+
+#nav-menu {
+    position: absolute;
 }
