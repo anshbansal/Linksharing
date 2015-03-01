@@ -12,22 +12,26 @@
             <div class="grid-3">
                 <div>${topic.name}</div>
                 <div>${creator}</div>
-                <div>.</div>
+                <div>Subscribe</div>
             </div>
 
             <div class="grid-3">
-                <div><g:submitButton name="save"/></div>
+                <div>
+                    <g:submitButton name="save"/>
+                </div>
                 <div>Subscriptions</div>
                 <div>
-                    %{--${topic.subscriptions.size()}--}%
+                    ${topic.subscriptions.size()}
                 </div>
             </div>
 
             <div class="grid-3">
-                <div><g:submitButton name="cancel"/></div>
+                <div>
+                    <g:submitButton name="cancel"/>
+                </div>
                 <div>Post</div>
                 <div>
-                    %{--${topic.resources.size()}--}%
+                    ${topic.resources.size()}
                 </div>
             </div>
         </div>
@@ -35,9 +39,11 @@
 
     <div>
         <g:select name="seriousness" from="${Seriousness.values()}"/>
-        <g:select name="visibility" from="${Visibility.values()}"/>
-        Invite
-        Edit
+        <g:if test="${topic.createdBy == loggedUser || topic.createdBy.admin}">
+            <g:select name="visibility" from="${Visibility.values()}" value="${topic.scope}"/>
+            Invite
+            Edit
+        </g:if>
         Delete
     </div>
 </section>

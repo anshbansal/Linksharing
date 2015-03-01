@@ -4,7 +4,9 @@
         <nav>
             <div id="currentUserName">${loggedUser?.username}</div>
             <ul id="nav-menu">
-                <li>Profile</li>
+                <li>
+                    <a href="${createLink(controller: "user", action: "profile")}">Profile</a>
+                </li>
                 <g:if test="${loggedUser.admin}">
                     <li>Users</li>
                     <li>Topics</li>
