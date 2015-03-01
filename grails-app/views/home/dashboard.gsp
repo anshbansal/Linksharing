@@ -13,4 +13,10 @@
     <section class="minor-part left-part">
         <ls:topics topicsType="subscriptions"/>
     </section>
+
+
+    <a href="#" onclick="createTopicPopup('${createLink(controller: 'topic', action: 'createTopic')}')">Create Topic</a>
+
+    <section id="popup" hidden="hidden">
+    </section>
 </body>

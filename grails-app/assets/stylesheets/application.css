@@ -14,5 +14,6 @@
 *= require header
 *= require post
 *= require topic
+*= require user
 *= require_self
 */
