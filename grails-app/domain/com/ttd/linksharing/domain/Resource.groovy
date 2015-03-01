@@ -1,6 +1,7 @@
 package com.ttd.linksharing.domain
 
 import com.ttd.linksharing.enums.Visibility
+import org.hibernate.FetchMode
 
 abstract class Resource {
 
@@ -26,6 +27,8 @@ abstract class Resource {
                 eq('scope', Visibility.PUBLIC)
             }
             order("dateCreated", "desc")
+
+            fetchMode('createdBy', FetchMode.JOIN)
         }
     }
 }

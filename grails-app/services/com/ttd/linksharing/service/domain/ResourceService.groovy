@@ -1,5 +1,6 @@
 package com.ttd.linksharing.service.domain
 
+import com.ttd.linksharing.co.ReadingItemCO
 import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
@@ -24,5 +25,15 @@ class ResourceService {
             readingItemService.save(readingItem, isFlushEnabled)
         }
         resource
+    }
+
+    List<ReadingItemCO> recentPublicResources() {
+        List<ReadingItemCO> recentResources = []
+
+        Resource.recentPublicResources.list(max: 5).each { Resource resource ->
+            recentResources << new ReadingItemCO(resource: resource)
+        }
+
+        return recentResources
     }
 }

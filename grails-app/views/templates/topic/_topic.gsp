@@ -1,13 +1,17 @@
 <%@ page import="com.ttd.linksharing.enums.Visibility; com.ttd.linksharing.enums.Seriousness" %>
+
+<g:set var="topic" value="${listing}"/>
+<g:set var="creator" value="${topic.createdBy}"/>
+
 <section class="group">
     <div>
         <div class="left-part">
-            <ls:photo user="${listing.createdBy}"/>
+            <ls:photo user="${creator}"/>
         </div>
         <div class="right-part">
             <div class="grid-3">
-                <div>${listing.name}</div>
-                <div>${listing.createdBy}</div>
+                <div>${topic.name}</div>
+                <div>${creator}</div>
                 <div>.</div>
             </div>
 
@@ -15,7 +19,7 @@
                 <div><g:submitButton name="save"/></div>
                 <div>Subscriptions</div>
                 <div>
-                    ${listing.subscriptions.size()}
+                    %{--${topic.subscriptions.size()}--}%
                 </div>
             </div>
 
@@ -23,7 +27,7 @@
                 <div><g:submitButton name="cancel"/></div>
                 <div>Post</div>
                 <div>
-                    ${listing.resources.size()}
+                    %{--${topic.resources.size()}--}%
                 </div>
             </div>
         </div>

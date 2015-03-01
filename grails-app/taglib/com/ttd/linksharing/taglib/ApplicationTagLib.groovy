@@ -1,8 +1,6 @@
 package com.ttd.linksharing.taglib
 
-import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.Resource
-import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.User
 
 class ApplicationTagLib {
@@ -15,6 +13,7 @@ class ApplicationTagLib {
     def subscriptionService
     def topicService
     def userService
+    def readingItemService
 
     def listings = { attrs ->
         out << render(
@@ -42,16 +41,16 @@ class ApplicationTagLib {
         switch (attrs.postsType) {
             case "recentShares":
                 title = "Recent Shares"
-                attrs.listings = Resource.recentPublicResources.list(max: 5)
+                attrs.listings = resourceService.recentPublicResources()
                 break
             case "topPosts":
                 title = "Top Posts"
                 //TODO Add logic for Top Posts
-                attrs.listings = Resource.recentPublicResources.list(max: 5)
+                attrs.listings = resourceService.recentPublicResources()
                 break
             case "inbox":
                 title = "Inbox"
-                attrs.listings = ReadingItem.unreadForUser(loggedUser).list(max: 5)
+                attrs.listings = readingItemService.getReadingItemsForUser(loggedUser)
                 break
         }
 
@@ -73,28 +72,13 @@ class ApplicationTagLib {
         switch (attrs.topicsType) {
             case "subscriptions":
                 title = "Subscriptions"
-                attrs.listings = Subscription.subscribedTopics(loggedUser).list(max: 5)
+                attrs.listings = topicService.getSubscriptionsForUser(loggedUser)
                 break
         }
 
         attrs.template = "/templates/topic/topic"
         attrs.title = attrs.title ?: title
         out << listings(attrs)
-    }
-
-    /**
-     * Allows to mark a post as (Un)Read for logged in user
-     *
-     * @attr post REQUIRED The post
-     */
-    def markRead = { attrs ->
-        Resource resource = attrs.post
-        User loggedUser = attrs.loggedUser
-
-        out << render(
-                template: "/templates/post/markRead",
-                model: [isRead: ReadingItem.isReadForUser(resource, loggedUser).get()]
-        )
     }
 
     /**

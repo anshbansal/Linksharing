@@ -16,14 +16,11 @@ class Subscription {
 
     static namedQueries = {
         subscribedTopics { User user ->
-            projections {
-                property('topic')
-            }
-
             eq 'user', user
             order("dateCreated", "desc")
 
-            fetchMode('user', FetchMode.JOIN)
+            fetchMode('topic', FetchMode.JOIN)
+            fetchMode('topic.createdBy', FetchMode.JOIN)
         }
     }
 }

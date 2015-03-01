@@ -20,14 +20,11 @@ class ReadingItem {
         }
 
         unreadForUser { User user ->
-            projections {
-                property('resource')
-            }
-
             eq ('user', user)
             eq('isRead', Boolean.FALSE)
 
             fetchMode('resource', FetchMode.JOIN)
+            fetchMode('resource.createdBy', FetchMode.JOIN)
         }
     }
 }
