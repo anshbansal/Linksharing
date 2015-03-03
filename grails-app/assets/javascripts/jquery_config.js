@@ -3,8 +3,7 @@
 var tooltipsterOptions = {
     trigger: 'custom',
     onlyOne: false,
-    position: 'bottom-right',
-    timer: 1000
+    position: 'bottom-right'
 };
 
 //Apply tooltipster options to all tooltipster forms
