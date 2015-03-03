@@ -2,6 +2,7 @@ package com.ttd.linksharing.service.domain
 
 import com.ttd.linksharing.co.user.LoginCO
 import com.ttd.linksharing.co.user.RegistrationCO
+import com.ttd.linksharing.co.user.UserDetailsCO
 import com.ttd.linksharing.domain.User
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
@@ -9,7 +10,7 @@ import grails.transaction.Transactional
 @Transactional
 class UserService {
 
-    def save(User user, Boolean isFlushEnabled = false) {
+    User save(User user, Boolean isFlushEnabled = false) {
 
         if (! user.save(flush: isFlushEnabled)) {
             return null
@@ -57,5 +58,14 @@ class UserService {
 
     Boolean isUniqueIdentifierValid(String newIdentifier) {
         User.isUniqueIdentifierUsed(newIdentifier).count() == 0
+    }
+
+    User updateDetails(UserDetailsCO userDetailsCO, String username) {
+        User user = User.findByUsername(username)
+        user.firstName = userDetailsCO.firstName
+        user.lastName = userDetailsCO.lastName
+        user.email = userDetailsCO.email
+        user.photo = userDetailsCO.photo
+        save(user)
     }
 }

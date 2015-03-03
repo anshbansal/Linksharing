@@ -1,5 +1,6 @@
 package com.ttd.linksharing.domain
 
+import com.ttd.linksharing.co.user.UserDetailsCO
 
 class UserController {
 
@@ -11,24 +12,37 @@ class UserController {
     }
 
     def profile() {
-        User loggedUser = userService.forUsername(session.username)
+        User loggedUser = userService.forUsername(session?.username)
         render view: "profile", model: [loggedUser: loggedUser]
     }
 
     def isUniqueIdentifierValid() {
-
         String uniqueIdentifier = params.username ?: params.email
-        Boolean isValid = false
-        if (session?.username) {
-            isValid = userService.isUniqueIdentifierValid(uniqueIdentifier, session?.username)
-        } else {
-            isValid = userService.isUniqueIdentifierValid(uniqueIdentifier)
-        }
-        render isValid ? "true" : "false"
+        render isValidUniqueIdentifier(uniqueIdentifier) ? "true" : "false"
     }
 
-    def updateDetails() {
-        //TODO Implement this
-        println (">>>" * 30)
+    def updateDetails(UserDetailsCO userDetailsCO) {
+
+        //TODO Field error in photo object. Fix.
+        println "Aseem before hasErrors ${userDetailsCO.errors}"
+
+        if (userDetailsCO.hasErrors()) {
+            redirect action: "profile"
+            return
+        }
+        if (isValidUniqueIdentifier(userDetailsCO.email)) {
+            userService.updateDetails(userDetailsCO, session?.username)
+        } else {
+            flash['editProfileMessage'] = "Email is already used"
+        }
+        redirect action: "profile"
+    }
+
+    private Boolean isValidUniqueIdentifier(String uniqueIdentifier) {
+        if (session?.username) {
+            return userService.isUniqueIdentifierValid(uniqueIdentifier, session?.username)
+        } else {
+            return userService.isUniqueIdentifierValid(uniqueIdentifier)
+        }
     }
 }

@@ -1,25 +1,17 @@
 ;
 //Common validation rules
-var uniqueIdentifierValidation = {
-    remote: {
-        url: uniqueIdentifierURL
-    }
-};
+var uniqueIdentifierValidation = {url: uniqueIdentifierURL};
 
 //Specific Form validations
-var login_form = $("#login_form").validate();
+$("#login_form").validate();
 
 $("#registration_form").validate({
     rules: {
         username: {
-            remote: {
-                url: uniqueIdentifierURL
-            }
+            remote: uniqueIdentifierValidation
         },
         email: {
-            remote: {
-                url: uniqueIdentifierURL
-            },
+            remote: uniqueIdentifierValidation,
             email: true
         },
         rePassword: {
@@ -44,12 +36,17 @@ $("#password-update-form").validate({
     }
 });
 
-$("#details-update-form").validate({
+$("#details_update_form").validate({
     rules: {
-        username: uniqueIdentifierValidation
+        email: {
+            remote: uniqueIdentifierValidation,
+            email: true
+        }
     },
     messages: {
-        username: usernameTaken
+        email: {
+            remote: "This email is already taken"
+        }
     }
 });
 
