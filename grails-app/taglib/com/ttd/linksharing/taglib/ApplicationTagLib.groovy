@@ -111,4 +111,8 @@ class ApplicationTagLib {
                 model: [listing: user]
         )
     }
+
+    def flash = { attrs ->
+        out << render(template: "/templates/commons/flash_message", model: [type: attrs.type])
+    }
 }
