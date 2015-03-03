@@ -1,6 +1,6 @@
 package com.ttd.linksharing.service.domain
 
-import com.ttd.linksharing.co.LoginCO
+import com.ttd.linksharing.co.user.LoginCO
 import com.ttd.linksharing.domain.User
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
@@ -35,13 +35,10 @@ class UserService {
     Boolean isUniqueIdentifierValid(String newIdentifier, String loggedUserName) {
 
         User user = forUsername(loggedUserName)
-        if (! user) {
-            return true
-        }
 
         User.createCriteria().count() {
             not {
-                eq 'id', user.id
+                idEq(user.id)
             }
             or {
                 eq 'username', newIdentifier

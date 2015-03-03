@@ -1,6 +1,6 @@
 package com.ttd.linksharing.domain
 
-import com.ttd.linksharing.co.LoginCO
+import com.ttd.linksharing.co.user.LoginCO
 
 class User {
     String email

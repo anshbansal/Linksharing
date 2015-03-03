@@ -1,7 +1,7 @@
 package com.ttd.linksharing.login
 
-import com.ttd.linksharing.co.LoginCO
-import com.ttd.linksharing.co.PasswordCO
+import com.ttd.linksharing.co.user.LoginCO
+import com.ttd.linksharing.co.user.PasswordCO
 import com.ttd.linksharing.domain.User
 
 class LoginController {
