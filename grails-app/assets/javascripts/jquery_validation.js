@@ -1,6 +1,4 @@
 ;
-$("#login-form").validate();
-
 //Common validation rules
 var uniqueIdentifierValidation = {
     remote: {
@@ -8,26 +6,35 @@ var uniqueIdentifierValidation = {
     }
 };
 
-//Common validation messages
-var usernameTaken = {
-    remote: "This username is already taken"
-};
-var emailTaken = {
-    remote: "This email is already taken"
-};
-
 //Specific Form validations
-$("#registration-form").validate({
+var login_form = $("#login_form").validate();
+
+$("#registration_form").validate({
     rules: {
-        username: uniqueIdentifierValidation,
-        email: uniqueIdentifierValidation
+        username: {
+            remote: {
+                url: uniqueIdentifierURL
+            }
+        },
+        email: {
+            remote: {
+                url: uniqueIdentifierURL
+            },
+            email: true
+        },
+        rePassword: {
+            equalTo: '#password'
+        }
     },
     messages: {
-        username: usernameTaken,
-        email: emailTaken
+        username: {
+            remote: "This username is already taken"
+        },
+        email: {
+            remote: "This email is already taken"
+        }
     }
 });
-
 
 $("#password-update-form").validate({
     rules: {

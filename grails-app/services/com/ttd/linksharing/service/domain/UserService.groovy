@@ -1,6 +1,7 @@
 package com.ttd.linksharing.service.domain
 
 import com.ttd.linksharing.co.user.LoginCO
+import com.ttd.linksharing.co.user.RegistrationCO
 import com.ttd.linksharing.domain.User
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
@@ -14,6 +15,13 @@ class UserService {
             return null
         }
         user
+    }
+
+    User registerUser(RegistrationCO registrationCO) {
+        if (! isUniqueIdentifierValid(registrationCO.username) && isUniqueIdentifierValid(registrationCO.email)) {
+            return null
+        }
+        save(registrationCO.user)
     }
 
     @NotTransactional

@@ -10,6 +10,7 @@ class PasswordCO {
     static constraints = {
         password validator: { val, obj ->
             obj.rePassword == val
-        }
+        }, blank: false
+        rePassword blank: false
     }
 }

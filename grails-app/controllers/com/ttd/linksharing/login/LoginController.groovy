@@ -13,11 +13,16 @@ class LoginController {
     }
 
     def login(LoginCO loginCO) {
+        if (loginCO.hasErrors()) {
+            redirect action: "index"
+            return
+        }
         User user = userService.isValidUser(loginCO)
 
         if (user) {
             forward controller: "user", action: "loginHandler", params: [username: user.username]
         } else {
+            flash['loginMessage'] = "Invalid Login Credentials"
             redirect action: "index"
         }
     }
