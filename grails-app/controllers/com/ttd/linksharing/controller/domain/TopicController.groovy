@@ -1,11 +1,11 @@
-package com.ttd.linksharing.domain
+package com.ttd.linksharing.controller.domain
 
 class TopicController {
 
     def topicService
 
-    def createTopic() {
-        render template: "/templates/commons/create_topic"
+    def index() {
+        render view: "create"
     }
 
     def isTopicPresent() {

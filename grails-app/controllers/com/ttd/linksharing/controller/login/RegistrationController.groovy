@@ -1,4 +1,4 @@
-package com.ttd.linksharing.login
+package com.ttd.linksharing.controller.login
 
 import com.ttd.linksharing.co.user.RegistrationCO
 import com.ttd.linksharing.domain.User

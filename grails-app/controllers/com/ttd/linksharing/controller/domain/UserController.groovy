@@ -1,6 +1,7 @@
-package com.ttd.linksharing.domain
+package com.ttd.linksharing.controller.domain
 
 import com.ttd.linksharing.co.user.UserDetailsCO
+import com.ttd.linksharing.domain.User
 
 class UserController {
 
