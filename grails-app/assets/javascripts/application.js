@@ -7,7 +7,6 @@
 //
 //= require jquery
 //= require_tree lib
-//= require jquery_config
-//= require jquery_validation
 //= require header
+//= require main_validation
 

@@ -1,4 +1,5 @@
-;
+//= require config/jquery_config
+
 //Common validation rules
 var uniqueIdentifierValidation = {url: uniqueIdentifierURL};
 
@@ -49,4 +50,3 @@ $("#details_update_form").validate({
         }
     }
 });
-

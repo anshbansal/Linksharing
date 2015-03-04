@@ -9,6 +9,7 @@ import grails.transaction.Transactional
 class TopicService {
 
     def subscriptionService
+    def userService
 
     def save(Topic topic, Boolean isFlushEnabled = false) {
 
@@ -24,4 +25,12 @@ class TopicService {
         Subscription.subscribedTopics(user).list(max: 5).topic
     }
 
+    Boolean isTopicPresentForUser(String username, String topicName) {
+        if (username == null) {
+            return false
+        }
+        User user = userService.forUsername(username)
+
+        Topic.findByCreatedBy(user).name == topicName
+    }
 }

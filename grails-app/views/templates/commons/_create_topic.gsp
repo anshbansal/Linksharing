@@ -1,8 +1,7 @@
 <%@ page import="com.ttd.linksharing.enums.Visibility" %>
-<asset:stylesheet src="application.css"/>
 
 <g:applyLayout name="container" params="[title: title]">
-    <g:form action="login" class="lines-container">
+    <g:form action="login" class="lines-container tooltipster-form" name="create_topic_form">
         <label for="topicName">Name</label>
         <g:textField name="topicName" required="true"/>
 
@@ -16,3 +15,4 @@
         </span>
     </g:form>
 </g:applyLayout>
+<asset:javascript src="create_topic.js"/>

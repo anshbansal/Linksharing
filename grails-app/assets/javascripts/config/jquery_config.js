@@ -1,16 +1,4 @@
-;
-//Default tooltipster options
-var tooltipsterOptions = {
-    trigger: 'custom',
-    onlyOne: false,
-    position: 'bottom-right'
-};
-
-//Apply tooltipster options to all tooltipster forms
-$(function () {
-    $('.tooltipster-form').find('input').tooltipster(tooltipsterOptions);
-});
-
+//= require tooltipster_config
 
 //Set jquery validator defaults
 $.validator.setDefaults({
