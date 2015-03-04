@@ -9,7 +9,7 @@ class LoginController {
     def userService
 
     def index() {
-        render view: "login"
+        render view: "home"
     }
 
     def login(LoginCO loginCO) {

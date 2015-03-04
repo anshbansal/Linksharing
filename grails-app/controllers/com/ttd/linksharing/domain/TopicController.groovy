@@ -5,7 +5,7 @@ class TopicController {
     def topicService
 
     def createTopic() {
-        render template: "/templates/commons/create_topic", model: [title: "Create Topic"]
+        render template: "/templates/commons/create_topic"
     }
 
     def isTopicPresent() {

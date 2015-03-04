@@ -1,6 +1,6 @@
 <%@ page import="com.ttd.linksharing.enums.Visibility" %>
 
-<g:applyLayout name="container" params="[title: title]">
+<g:applyLayout name="container" params="[title: 'Create Topic']">
     <g:form action="login" class="lines-container tooltipster-form" name="create_topic_form">
         <label for="topicName">Name</label>
         <g:textField name="topicName" required="true"/>
