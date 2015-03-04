@@ -34,15 +34,15 @@ class User {
     }
 
     static namedQueries = {
-        isUniqueIdentifierUsed { String uniqueIdentifier ->
+        byIdentifier { String uniqueIdentifier ->
             or {
                 eq 'email', uniqueIdentifier
                 eq 'username', uniqueIdentifier
             }
         }
 
-        isValidUser { LoginCO loginCO ->
-            isUniqueIdentifierUsed loginCO.uniqueIdentifier
+        withCredentials { LoginCO loginCO ->
+            byIdentifier loginCO.uniqueIdentifier
             eq 'password', loginCO.loginPassword
         }
     }

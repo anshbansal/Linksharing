@@ -3,8 +3,8 @@
         ${flash.message}
     </g:if>
 
-    <g:form controller="login" action="updatePassword" class="lines-container tooltipster-form" method="post"
-            name="password-update-form">
+    <g:form controller="user" action="updatePassword" class="lines-container tooltipster-form" method="post"
+            name="password_update_form">
         <label for="password">Password</label>
         <g:passwordField name="password" required="true"/>
 

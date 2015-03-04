@@ -24,6 +24,7 @@
             var uniqueIdentifierURL = "${createLink(controller:'user',action:'isUniqueIdentifierValid')}";
             var createTopicTemplateURL = "${createLink(controller: 'topic')}";
             var topicNameURL = "${createLink(controller: "topic", action: "isTopicPresent")}";
+            var resetPasswordURL = "${createLink(controller: "user", action: "resetPassword")}";
         </g:javascript>
         <asset:javascript src="application.js"/>
 	</body>

@@ -7,7 +7,7 @@
         <label for="loginPassword">Password</label>
         <g:passwordField name="loginPassword" required="true"/>
 
-        <span>Forgot Password</span>
+        <span id="forgot_password">Forgot Password</span>
         <g:submitButton name="Login"/>
     </g:form>
 </g:applyLayout>

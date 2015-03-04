@@ -1,5 +1,6 @@
 package com.ttd.linksharing.controller.domain
 
+import com.ttd.linksharing.co.user.PasswordCO
 import com.ttd.linksharing.co.user.UserDetailsCO
 import com.ttd.linksharing.domain.User
 
@@ -39,8 +40,20 @@ class UserController {
         redirect action: "profile"
     }
 
-    def resetPassword(String username) {
+    def updatePassword(PasswordCO passwordCO) {
+        User loggedUser = userService.forUsername(session.username)
 
+        if (passwordCO.hasErrors()) {
+            flash.message = "Passwords do not match"
+        } else {
+            userService.updatePassword(loggedUser, passwordCO.password)
+        }
+
+        redirect action: "profile", model: [loggedUser: loggedUser]
+    }
+
+    def resetPassword(String uniqueIdentifier) {
+        render userService.resetPasswordAndSendMail(uniqueIdentifier) ? "false" : "true"
     }
 
     private Boolean isValidUniqueIdentifier(String uniqueIdentifier) {

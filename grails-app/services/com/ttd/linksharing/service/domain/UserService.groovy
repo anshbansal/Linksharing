@@ -31,7 +31,7 @@ class UserService {
 
     @NotTransactional
     User isValidUser(LoginCO loginCO) {
-        User.isValidUser(loginCO).get()
+        User.withCredentials(loginCO).get()
     }
 
     @NotTransactional
@@ -61,7 +61,7 @@ class UserService {
     }
 
     Boolean isUniqueIdentifierValid(String newIdentifier) {
-        User.isUniqueIdentifierUsed(newIdentifier).count() == 0
+        User.byIdentifier(newIdentifier).count() == 0
     }
 
     User updateDetails(UserDetailsCO userDetailsCO, String username) {
@@ -73,15 +73,17 @@ class UserService {
         save(user)
     }
 
-    def resetPasswordAndSendMail(String username) {
-        String newPassword = resetPassword(username)
-        println newPassword
+    def resetPasswordAndSendMail(String uniqueIdentifier) {
+        String newPassword = resetPassword(uniqueIdentifier)
+        User user = User.byIdentifier(uniqueIdentifier).get()
+
+        sendMailService.sendResetMail(user, newPassword)
     }
 
-    String resetPassword(String username) {
+    String resetPassword(String uniqueIdentifier) {
         String newPassword = RandomStringUtils.random(20, true, true)
 
-        User user = User.findByUsername(username)
+        User user = User.byIdentifier(uniqueIdentifier).get()
         user.password = newPassword
         save(user)
 

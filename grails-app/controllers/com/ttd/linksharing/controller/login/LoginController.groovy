@@ -31,16 +31,4 @@ class LoginController {
         session.invalidate()
         redirect action: "index"
     }
-
-    def updatePassword(PasswordCO passwordCO) {
-        User loggedUser = userService.forUsername(session.username)
-
-        if (passwordCO.hasErrors()) {
-            flash.message = "Passwords do not match"
-        } else {
-            userService.updatePassword(loggedUser, passwordCO.password)
-        }
-
-        redirect controller: "user", action: "profile", model: [loggedUser: loggedUser]
-    }
 }
