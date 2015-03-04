@@ -22,7 +22,7 @@
 
         <g:javascript>
             var uniqueIdentifierURL = "${createLink(controller:'user',action:'isUniqueIdentifierValid')}";
-            var createTopicTemplateURL = "${createLink(controller: 'topic', action: 'createTopic')}";
+            var createTopicTemplateURL = "${createLink(controller: 'topic')}";
             var topicNameURL = "${createLink(controller: "topic", action: "isTopicPresent")}";
         </g:javascript>
         <asset:javascript src="application.js"/>
