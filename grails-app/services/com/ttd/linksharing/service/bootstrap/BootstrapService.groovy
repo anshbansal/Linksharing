@@ -22,7 +22,10 @@ class BootstrapService {
     def init() {
         2.times {
             User user = createUser("aseem${it}@aseem.com")
-            user.admin = true
+            if (it == 1) {
+                user.admin = true
+                user.email = "aseemb@intelligrape.com"
+            }
             userService.save(user)
 
             5.times {
