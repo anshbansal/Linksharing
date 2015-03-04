@@ -29,7 +29,7 @@ $("#registration_form").validate({
     }
 });
 
-$("#password-update-form").validate({
+$("#password_update_form").validate({
     rules: {
         rePassword: {
             equalTo: '#password'
