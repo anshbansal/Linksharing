@@ -7,8 +7,12 @@ import com.ttd.linksharing.domain.User
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
 
+import org.apache.commons.lang.RandomStringUtils
+
 @Transactional
 class UserService {
+
+    def sendMailService
 
     User save(User user, Boolean isFlushEnabled = false) {
 
@@ -67,5 +71,20 @@ class UserService {
         user.email = userDetailsCO.email
         user.photo = userDetailsCO.photo
         save(user)
+    }
+
+    def resetPasswordAndSendMail(String username) {
+        String newPassword = resetPassword(username)
+        println newPassword
+    }
+
+    String resetPassword(String username) {
+        String newPassword = RandomStringUtils.random(20, true, true)
+
+        User user = User.findByUsername(username)
+        user.password = newPassword
+        save(user)
+
+        return  newPassword
     }
 }

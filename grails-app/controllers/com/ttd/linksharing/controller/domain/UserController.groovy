@@ -39,6 +39,10 @@ class UserController {
         redirect action: "profile"
     }
 
+    def resetPassword(String username) {
+
+    }
+
     private Boolean isValidUniqueIdentifier(String uniqueIdentifier) {
         if (session?.username) {
             return userService.isUniqueIdentifierValid(uniqueIdentifier, session?.username)
