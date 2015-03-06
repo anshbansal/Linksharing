@@ -1,6 +1,6 @@
 package com.ttd.linksharing.service.domain
 
-import com.ttd.linksharing.co.user.LoginCO
+import com.ttd.linksharing.co.user.LoginCredentials
 import com.ttd.linksharing.co.user.RegistrationCO
 import com.ttd.linksharing.co.user.UserDetailsCO
 import com.ttd.linksharing.domain.User
@@ -30,8 +30,8 @@ class UserService {
     }
 
     @NotTransactional
-    User isValidUser(LoginCO loginCO) {
-        User.withCredentials(loginCO).get()
+    User isValidUser(LoginCredentials credentials) {
+        User.withCredentials(credentials).get()
     }
 
     @NotTransactional

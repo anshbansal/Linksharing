@@ -1,6 +1,6 @@
 package com.ttd.linksharing.domain
 
-import com.ttd.linksharing.co.user.LoginCO
+import com.ttd.linksharing.co.user.LoginCredentials
 
 class User {
     String email
@@ -41,9 +41,9 @@ class User {
             }
         }
 
-        withCredentials { LoginCO loginCO ->
-            byIdentifier loginCO.uniqueIdentifier
-            eq 'password', loginCO.loginPassword
+        withCredentials { LoginCredentials credentials ->
+            byIdentifier credentials.uniqueIdentifier
+            eq 'password', credentials.loginPassword
         }
     }
 }

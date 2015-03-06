@@ -3,7 +3,7 @@ package com.ttd.linksharing.co.user
 import grails.validation.Validateable
 
 @Validateable
-class LoginCO {
+class LoginCredentials {
     String uniqueIdentifier
     String loginPassword
 

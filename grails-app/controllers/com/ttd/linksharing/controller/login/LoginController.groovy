@@ -1,7 +1,6 @@
 package com.ttd.linksharing.controller.login
 
-import com.ttd.linksharing.co.user.LoginCO
-import com.ttd.linksharing.co.user.PasswordCO
+import com.ttd.linksharing.co.user.LoginCredentials
 import com.ttd.linksharing.domain.User
 
 class LoginController {
@@ -12,12 +11,12 @@ class LoginController {
         render view: "home"
     }
 
-    def login(LoginCO loginCO) {
-        if (loginCO.hasErrors()) {
+    def login(LoginCredentials credentials) {
+        if (credentials.hasErrors()) {
             redirect action: "index"
             return
         }
-        User user = userService.isValidUser(loginCO)
+        User user = userService.isValidUser(credentials)
 
         if (user) {
             forward controller: "user", action: "loginHandler", params: [username: user.username]
