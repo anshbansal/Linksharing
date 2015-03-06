@@ -45,11 +45,11 @@ class UserController {
 
         if (passwordCO.hasErrors()) {
             flash.message = "Passwords do not match"
+            render "Passwords do not match"
         } else {
             userService.updatePassword(loggedUser, passwordCO.password)
+            render "Password has been updated"
         }
-
-        redirect action: "profile", model: [loggedUser: loggedUser]
     }
 
     def resetPassword(String uniqueIdentifier) {

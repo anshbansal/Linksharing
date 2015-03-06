@@ -1,7 +1,7 @@
 <header class="header">
     <g:link uri="/">Link Sharing</g:link>
     <g:if test="${loggedUser?.username != null}">
-        <a href="#" onclick="createTopicPopup(createTopicTemplateURL)">Create Topic</a>
+        <a href="#" onclick="createPopup(createTopicTemplateURL)">Create Topic</a>
 
         <span id="popup" hidden="hidden">
         </span>

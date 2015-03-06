@@ -16,6 +16,6 @@ class TopicController {
     }
 
     def create() {
-
+        render "Ajax call success"
     }
 }
