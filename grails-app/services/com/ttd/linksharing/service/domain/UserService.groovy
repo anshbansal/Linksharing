@@ -49,13 +49,9 @@ class UserService {
 
         User user = forUsername(loggedUserName)
 
-        User.createCriteria().count() {
+        User.byIdentifier(newIdentifier).count {
             not {
                 idEq(user.id)
-            }
-            or {
-                eq 'username', newIdentifier
-                eq 'email', newIdentifier
             }
         } == 0
     }
