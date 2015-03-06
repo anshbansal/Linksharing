@@ -14,4 +14,8 @@ class TopicController {
 
         render isTopicPresent ? "false" : "true"
     }
+
+    def create() {
+
+    }
 }
