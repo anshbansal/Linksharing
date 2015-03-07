@@ -9,7 +9,8 @@ class ApplicationFilters {
             }
         }
 
-        beforeLogin(controller: "*", controllerExclude: 'assets', action: "*", actionExclude: 'home|login*|register|isUniqueIdentifierValid') {
+        beforeLogin(controller: "*", controllerExclude: 'assets|console',
+                    action: "*", actionExclude: 'home|login*|register|isUniqueIdentifierValid') {
             before = {
                 if (!session?.loggedUser) {
                     println "Request to ${controllerName}:${actionName} filtered as user not logged in"
