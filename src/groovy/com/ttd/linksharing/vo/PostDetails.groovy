@@ -1,8 +1,8 @@
-package com.ttd.linksharing.co
+package com.ttd.linksharing.vo
 
 import com.ttd.linksharing.domain.Resource
 
-class ReadingItemCO {
+class PostDetails {
 
     Resource resource
     Boolean isRead

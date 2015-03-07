@@ -1,6 +1,6 @@
 package com.ttd.linksharing.service.domain
 
-import com.ttd.linksharing.co.ReadingItemCO
+import com.ttd.linksharing.vo.PostDetails
 import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.User
 import grails.transaction.Transactional
@@ -20,14 +20,12 @@ class ReadingItemService {
         ReadingItem.findAllWhere(user: user)
     }
 
-    List<ReadingItemCO> getReadingItemsForUser(User user) {
+    List<PostDetails> getReadingItemsForUser(User user) {
 
-        List<ReadingItemCO> readingItemCOList = []
+        ReadingItem.unreadForUser(user).list(max: 5)
+                .collect([]) { ReadingItem readingItem ->
 
-        ReadingItem.unreadForUser(user).list(max: 5).each { ReadingItem readingItem ->
-
-            readingItemCOList << new ReadingItemCO(resource: readingItem.resource, isRead: readingItem.isRead)
+            new PostDetails(resource: readingItem.resource, isRead: readingItem.isRead)
         }
-        return readingItemCOList
     }
 }

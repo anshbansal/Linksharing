@@ -1,6 +1,6 @@
 package com.ttd.linksharing.service.domain
 
-import com.ttd.linksharing.co.ReadingItemCO
+import com.ttd.linksharing.vo.PostDetails
 import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
@@ -27,13 +27,11 @@ class ResourceService {
         resource
     }
 
-    List<ReadingItemCO> recentPublicResources() {
-        List<ReadingItemCO> recentResources = []
+    List<PostDetails> recentPublicResources() {
+        Resource.recentPublicResources.list(max: 5)
+                .collect([]) { Resource resource ->
 
-        Resource.recentPublicResources.list(max: 5).each { Resource resource ->
-            recentResources << new ReadingItemCO(resource: resource)
+            new PostDetails(resource: resource)
         }
-
-        return recentResources
     }
 }
