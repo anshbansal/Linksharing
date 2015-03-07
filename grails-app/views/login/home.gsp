@@ -4,9 +4,9 @@
     <title>Login</title>
 </head>
 <body>
-    <section class="major-part left-part">
-        <ls:posts postsType="recentShares"/>
-    </section>
+    %{--<section class="major-part left-part">--}%
+        %{--<ls:posts type="recentShares"/>--}%
+    %{--</section>--}%
 
     <section class="minor-part right-part">
         <tmpl:login/>
@@ -16,8 +16,8 @@
         <tmpl:registration/>
     </section>
 
-    <section class="major-part left-part">
-        <ls:posts postsType="topPosts"/>
-    </section>
+    %{--<section class="major-part left-part">--}%
+        %{--<ls:posts type="topPosts"/>--}%
+    %{--</section>--}%
 </body>
 </html>

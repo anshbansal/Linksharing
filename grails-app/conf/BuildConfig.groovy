@@ -64,8 +64,7 @@ grails.project.dependency.resolution = {
         compile ":console:1.5.4"
         compile ":asynchronous-mail:1.2"
 //        compile ":quartz:1.0.2"
-//        compile ":remote-pagination:0.4.8"
-
+        compile ":remote-pagination:0.4.8"
 
         // plugins needed at runtime but not for compilation
         runtime ":hibernate4:4.3.6.1" // or ":hibernate:3.6.10.18"

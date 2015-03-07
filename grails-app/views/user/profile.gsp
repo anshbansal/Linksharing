@@ -14,7 +14,7 @@
     </section>
 
     <section class="minor-part left-part">
-        <ls:topics topicsType="subscriptions" title="Topics" loggedUser="${loggedUser}"/>
+        <ls:topics type="subscriptions" title="Topics" loggedUser="${loggedUser}"/>
     </section>
 
     <section class="major-part right-part">

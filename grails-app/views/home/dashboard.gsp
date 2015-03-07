@@ -4,13 +4,13 @@
     <title>DashBoard</title>
 </head>
 <body>
-    <section class="major-part right-part">
-        <ls:posts postsType="inbox" loggedUser="${loggedUser}"/>
+    <section class="major-part right-part" id="inbox">
+        <ls:posts type="inbox"/>
     </section>
-    <section class="minor-part left-part">
-        <ls:user user="${loggedUser}"/>
-    </section>
-    <section class="minor-part left-part">
-        <ls:topics topicsType="subscriptions" loggedUser="${loggedUser}"/>
-    </section>
+    %{--<section class="minor-part left-part">--}%
+        %{--<ls:user user="${loggedUser}"/>--}%
+    %{--</section>--}%
+    %{--<section class="minor-part left-part">--}%
+        %{--<ls:topics type="subscriptions"/>--}%
+    %{--</section>--}%
 </body>

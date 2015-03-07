@@ -1,4 +1,6 @@
 <header class="header">
+    <g:set var="loggedUser" value="${session?.loggedUser}"/>
+
     <g:link uri="/">Link Sharing</g:link>
     <g:if test="${loggedUser?.username != null}">
         <a href="#" onclick="createPopup(createTopicTemplateURL)">Create Topic</a>

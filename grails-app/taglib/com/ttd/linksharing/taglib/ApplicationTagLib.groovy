@@ -2,6 +2,8 @@ package com.ttd.linksharing.taglib
 
 import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.User
+import com.ttd.linksharing.vo.ListingDetails
+import com.ttd.linksharing.vo.PostDetails
 
 class ApplicationTagLib {
     static defaultEncodeAs = [taglib: 'raw']
@@ -15,71 +17,62 @@ class ApplicationTagLib {
     def userService
     def readingItemService
 
-    def listings = { attrs ->
-        out << render(
-                template: "/templates/listings",
-                model: [
-                        renderTemplate: attrs.template,
-                        title         : attrs.title,
-                        listings      : attrs.listings
-                ]
-        )
-    }
+//    private static Map listingMap(Map attrs, ListingDetails listingDetails) {
+//        [template: "/templates/listings",
+//         model   : [
+//                 renderTemplate: listingDetails.templatePath,
+//                 title         : listingDetails.title,
+//                 listings      : listingDetails.listings,
+//                 update        : attrs.type,
+//                 attrs         : attrs
+//         ]
+//        ]
+//    }
 
     /**
-     * Creates a Post's container as per predefined post types
-     *
      * @attr title The title of the Posts' container
-     * @attr postsType REQUIRED The type of posts to be shown
-     * @attr user The user for which posts to be shown
+     * @attr type REQUIRED The type of posts to be shown. Same as ID of the div being paginated
      */
     def posts = { attrs ->
+        ListingDetails<PostDetails> listingDetails =
+                new ListingDetails<>(renderTemplate: "/templates/post/post", attrs: attrs)
 
-        User loggedUser = attrs.loggedUser
-        def title = ""
-
-        switch (attrs.postsType) {
+        switch (attrs.type) {
             case "recentShares":
-                title = "Recent Shares"
-                attrs.listings = resourceService.recentPublicResources()
+                listingDetails.title = "Recent Shares"
+                listingDetails.listings = resourceService.recentPublicResources()
                 break
-            case "topPosts":
-                title = "Top Posts"
-                //TODO Add logic for Top Posts
-                attrs.listings = resourceService.recentPublicResources()
-                break
+//            case "topPosts":
+//                title = "Top Posts"
+//                //TODO Add logic for Top Posts
+//                posts = resourceService.recentPublicResources()
+//                break
             case "inbox":
-                title = "Inbox"
-                attrs.listings = readingItemService.getReadingItemsForUser(loggedUser)
+                listingDetails.title = "Inbox"
+                listingDetails.listings = readingItemService.getReadingItemsForUser(session?.loggedUser)
                 break
         }
 
-        attrs.template = "/templates/post/post"
-        attrs.title = attrs.title ?: title
-        out << listings(attrs)
+        out << render(listingDetails.renderMap)
     }
 
     /**
-     * Creates a Post's container as per predefined topic types
-     *
      * @attr title The title of the Posts' container
-     * @attr topicsType REQUIRED The type of topics to be shown
+     * @attr type REQUIRED The type of topics to be shown
      */
-    def topics = { attrs ->
-        User loggedUser = attrs.loggedUser
-        def title = ""
-
-        switch (attrs.topicsType) {
-            case "subscriptions":
-                title = "Subscriptions"
-                attrs.listings = topicService.getSubscriptionsForUser(loggedUser)
-                break
-        }
-
-        attrs.template = "/templates/topic/topic"
-        attrs.title = attrs.title ?: title
-        out << listings(attrs)
-    }
+//    def topics = { attrs ->
+//        def title = ""
+//        def topics = []
+//
+//        switch (attrs.type) {
+//            case "subscriptions":
+//                title = "Subscriptions"
+//                topics = topicService.getSubscriptionsForUser(session?.loggedUser)
+//                break
+//        }
+//
+//        out << render(listingMap(attrs, "/templates/topic/topic", title, topics))
+//    }
 
     /**
      * @attr post REQUIRED The post

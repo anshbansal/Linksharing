@@ -12,7 +12,5 @@ class HomeController {
         }
     }
 
-    def dashboard() {
-        render view: "dashboard", model: [loggedUser: session?.loggedUser]
-    }
+    def dashboard() {}
 }
