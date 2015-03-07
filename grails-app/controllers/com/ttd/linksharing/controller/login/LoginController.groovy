@@ -5,29 +5,28 @@ import com.ttd.linksharing.domain.User
 
 class LoginController {
 
+    static defaultAction = "home"
+
     def userService
 
-    def index() {
-        render view: "home"
-    }
+    def home() {}
 
     def login(LoginCredentials credentials) {
-        if (credentials.hasErrors()) {
-            redirect action: "index"
-            return
-        }
-        User user = userService.isValidUser(credentials)
+        if (! credentials.hasErrors()) {
+            User user = userService.isValidUser(credentials)
 
-        if (user) {
-            forward controller: "user", action: "loginHandler", params: [username: user.username]
-        } else {
-            flash['loginMessage'] = "Invalid Login Credentials"
-            redirect action: "index"
+            if (user) {
+                forward controller: "user", action: "loginHandler", params: [username: user.username]
+                return
+            } else {
+                flash['loginMessage'] = "Invalid Login Credentials"
+            }
         }
+        redirect action: defaultAction
     }
 
     def logout() {
         session.invalidate()
-        redirect action: "index"
+        redirect action: defaultAction
     }
 }

@@ -1,23 +1,18 @@
 package com.ttd.linksharing.controller.login
 
-//import com.ttd.linksharing.domain.User
-
 class HomeController {
 
-//    def userService
+    static defaultAction = "home"
 
-    def index() {
-//        if (session?.username) {
+    def home() {
         if (session?.loggedUser) {
             forward action: 'dashboard'
         } else {
-            redirect controller: 'login', action: 'index'
+            redirect controller: 'login'
         }
     }
 
     def dashboard() {
-//        User loggedUser = userService.forUsername(session.username)
-
         render view: "dashboard", model: [loggedUser: session?.loggedUser]
     }
 }
