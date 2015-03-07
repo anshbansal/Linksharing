@@ -10,11 +10,12 @@ import grails.transaction.Transactional
 class TopicService {
 
     def subscriptionService
-    def userService
 
-    def create(TopicInfo info, User user) {
-        //TODO Implement
-        save(info.topic)
+    Topic create(TopicInfo info, User user) {
+        if (isTopicPresentForUser(user, info.topicName)) {
+            return null
+        }
+        save(new Topic(info, user))
     }
 
     def save(Topic topic, Boolean isFlushEnabled = false) {
@@ -25,6 +26,8 @@ class TopicService {
 
         Subscription subscription = new Subscription(user: topic?.createdBy, topic: topic)
         subscriptionService.save(subscription, isFlushEnabled)
+
+        topic
     }
 
     List<Topic> getSubscriptionsForUser(User user) {
@@ -32,12 +35,9 @@ class TopicService {
     }
 
     Boolean isTopicPresentForUser(User user, String topicName) {
-//        if (username == null) {
-//            return false
-//        }
-//        User user = userService.forUsername(username)
-
-        //TODO Change to criteria for user and topic name
-        Topic.findByCreatedBy(user).name == topicName
+        Topic.createCriteria().count {
+            eq 'createdBy', user
+            eq 'name', topicName
+        } > 0
     }
 }

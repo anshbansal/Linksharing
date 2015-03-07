@@ -8,8 +8,4 @@ import grails.validation.Validateable
 class TopicInfo {
     String topicName
     Visibility topicVisibility
-
-    Topic getTopic() {
-        new Topic(name: topicName, scope: topicVisibility)
-    }
 }

@@ -20,11 +20,10 @@ class TopicController {
     def create(TopicInfo info) {
         if (info.hasErrors()) {
             render "Info had error ${info.errors}"
-            return
+        } else if (topicService.create(info, session?.loggedUser)) {
+            render "Topic created"
+        } else {
+            render "Error occurred"
         }
-
-        //TODO Implement this
-//        if (topicService.create(info, session?.loggedUser))
-        render "Ajax call success"
     }
 }
