@@ -6,7 +6,6 @@ import com.ttd.linksharing.co.user.UserDetailsCO
 import com.ttd.linksharing.domain.User
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
-import net.sf.ehcache.search.expression.Not
 import org.apache.commons.lang.RandomStringUtils
 
 @Transactional
@@ -16,14 +15,14 @@ class UserService {
 
     User save(User user, Boolean isFlushEnabled = false) {
 
-        if (! user.save(flush: isFlushEnabled)) {
+        if (!user.save(flush: isFlushEnabled)) {
             return null
         }
         user
     }
 
     User registerUser(RegistrationCO registrationCO) {
-        if (! isUniqueIdentifierValid(registrationCO.username) && isUniqueIdentifierValid(registrationCO.email)) {
+        if (!isUniqueIdentifierValid(registrationCO.username) && isUniqueIdentifierValid(registrationCO.email)) {
             return null
         }
         save(registrationCO.user)
@@ -40,20 +39,22 @@ class UserService {
         user.hasErrors()
     }
 
-    Boolean isUniqueIdentifierValid(String newIdentifier, User user) {
+    Boolean isUniqueIdentifierValid(String newIdentifier, User user = null) {
 
-        User.byIdentifier(newIdentifier).count {
-            not {
-                idEq(user.id)
-            }
-        } == 0
-    }
+        def criteria = {}
+        if (user) {
+            criteria = { not { idEq(user.id) } }
+        }
 
-    Boolean isUniqueIdentifierValid(String newIdentifier) {
-        User.byIdentifier(newIdentifier).count() == 0
+        User.byIdentifier(newIdentifier).count(criteria) == 0
     }
 
     User updateDetails(UserDetailsCO userDetailsCO, User user) {
+
+        if (!isUniqueIdentifierValid(userDetailsCO.email, user)) {
+            return null
+        }
+
         user.firstName = userDetailsCO.firstName
         user.lastName = userDetailsCO.lastName
         user.email = userDetailsCO.email
@@ -74,6 +75,6 @@ class UserService {
         user.password = newPassword
         save(user)
 
-        return  newPassword
+        return newPassword
     }
 }

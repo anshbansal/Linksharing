@@ -19,30 +19,24 @@ class UserController {
 
     def isUniqueIdentifierValid() {
         String uniqueIdentifier = params.username ?: params.email
-        render isValidUniqueIdentifier(uniqueIdentifier) ? "true" : "false"
+        render userService.isUniqueIdentifierValid(uniqueIdentifier, session?.loggedUser) ? "true" : "false"
     }
 
     def updateDetails(UserDetailsCO userDetailsCO) {
-
-        //TODO Field error in photo object. Fix.
-        println "Aseem before hasErrors ${userDetailsCO.errors}"
-
         if (userDetailsCO.hasErrors()) {
-            redirect action: "profile"
-            return
-        }
-        if (isValidUniqueIdentifier(userDetailsCO.email)) {
-            userService.updateDetails(userDetailsCO, session?.loggedUser)
-        } else {
+            //TODO Field error in photo object. Fix.
+            println "Aseem before hasErrors ${userDetailsCO.errors}"
+
+        } else if (! userService.updateDetails(userDetailsCO, session?.loggedUser)) {
             flash['editProfileMessage'] = "Email is already used"
         }
+
         redirect action: "profile"
     }
 
     def updatePassword(PasswordCO passwordCO) {
 
         if (passwordCO.hasErrors()) {
-//            flash.message = "Passwords do not match"
             render "Passwords do not match"
         } else {
             userService.updatePassword(session?.loggedUser, passwordCO.password)
@@ -52,13 +46,5 @@ class UserController {
 
     def resetPassword(String uniqueIdentifier) {
         render userService.resetPasswordAndSendMail(uniqueIdentifier) ? "false" : "true"
-    }
-
-    private Boolean isValidUniqueIdentifier(String uniqueIdentifier) {
-        if (session?.loggedUser) {
-            return userService.isUniqueIdentifierValid(uniqueIdentifier, session?.loggedUser)
-        } else {
-            return userService.isUniqueIdentifierValid(uniqueIdentifier)
-        }
     }
 }
