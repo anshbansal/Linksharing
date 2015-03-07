@@ -6,7 +6,7 @@ import com.ttd.linksharing.co.user.UserDetailsCO
 import com.ttd.linksharing.domain.User
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
-
+import net.sf.ehcache.search.expression.Not
 import org.apache.commons.lang.RandomStringUtils
 
 @Transactional
@@ -34,20 +34,13 @@ class UserService {
         User.withCredentials(credentials).get()
     }
 
-    @NotTransactional
-    User forUsername(String username) {
-        User.findByUsername(username)
-    }
-
     Boolean updatePassword(User user, String newPassword) {
         user.setPassword(newPassword)
         save(user)
         user.hasErrors()
     }
 
-    Boolean isUniqueIdentifierValid(String newIdentifier, String loggedUserName) {
-
-        User user = forUsername(loggedUserName)
+    Boolean isUniqueIdentifierValid(String newIdentifier, User user) {
 
         User.byIdentifier(newIdentifier).count {
             not {
@@ -60,8 +53,7 @@ class UserService {
         User.byIdentifier(newIdentifier).count() == 0
     }
 
-    User updateDetails(UserDetailsCO userDetailsCO, String username) {
-        User user = User.findByUsername(username)
+    User updateDetails(UserDetailsCO userDetailsCO, User user) {
         user.firstName = userDetailsCO.firstName
         user.lastName = userDetailsCO.lastName
         user.email = userDetailsCO.email
@@ -70,16 +62,15 @@ class UserService {
     }
 
     def resetPasswordAndSendMail(String uniqueIdentifier) {
-        String newPassword = resetPassword(uniqueIdentifier)
         User user = User.byIdentifier(uniqueIdentifier).get()
+        String newPassword = resetPassword(user)
 
         sendMailService.sendResetMail(user, newPassword)
     }
 
-    String resetPassword(String uniqueIdentifier) {
+    String resetPassword(User user) {
         String newPassword = RandomStringUtils.random(20, true, true)
 
-        User user = User.byIdentifier(uniqueIdentifier).get()
         user.password = newPassword
         save(user)
 

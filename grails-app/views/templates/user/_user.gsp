@@ -11,7 +11,8 @@
                 Subscriptions
             </div>
             <div>
-                ${listing.subscriptions.size()}
+                %{--TODO Fix--}%
+                1%{--${listing.subscriptions.size()}--}%
             </div>
         </div>
 
@@ -20,7 +21,8 @@
                 Topics
             </div>
             <div>
-                ${listing.topics.size()}
+                %{--TODO Fix--}%
+                1%{--${listing.topics.size()}--}%
             </div>
         </div>
     </div>

@@ -1,13 +1,14 @@
 package com.ttd.linksharing.controller.login
 
-import com.ttd.linksharing.domain.User
+//import com.ttd.linksharing.domain.User
 
 class HomeController {
 
-    def userService
+//    def userService
 
     def index() {
-        if (session?.username) {
+//        if (session?.username) {
+        if (session?.loggedUser) {
             forward action: 'dashboard'
         } else {
             redirect controller: 'login', action: 'index'
@@ -15,8 +16,8 @@ class HomeController {
     }
 
     def dashboard() {
-        User loggedUser = userService.forUsername(session.username)
+//        User loggedUser = userService.forUsername(session.username)
 
-        render view: "dashboard", model: [loggedUser: loggedUser]
+        render view: "dashboard", model: [loggedUser: session?.loggedUser]
     }
 }

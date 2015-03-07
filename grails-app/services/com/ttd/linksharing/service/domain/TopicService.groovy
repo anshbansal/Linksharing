@@ -1,5 +1,6 @@
 package com.ttd.linksharing.service.domain
 
+import com.ttd.linksharing.co.topic.TopicInfo
 import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
@@ -10,6 +11,11 @@ class TopicService {
 
     def subscriptionService
     def userService
+
+    def create(TopicInfo info, User user) {
+        //TODO Implement
+        save(info.topic)
+    }
 
     def save(Topic topic, Boolean isFlushEnabled = false) {
 
@@ -25,12 +31,13 @@ class TopicService {
         Subscription.subscribedTopics(user).list(max: 5).topic
     }
 
-    Boolean isTopicPresentForUser(String username, String topicName) {
-        if (username == null) {
-            return false
-        }
-        User user = userService.forUsername(username)
+    Boolean isTopicPresentForUser(User user, String topicName) {
+//        if (username == null) {
+//            return false
+//        }
+//        User user = userService.forUsername(username)
 
+        //TODO Change to criteria for user and topic name
         Topic.findByCreatedBy(user).name == topicName
     }
 }

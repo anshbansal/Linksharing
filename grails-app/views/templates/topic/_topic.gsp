@@ -21,7 +21,8 @@
                 </div>
                 <div>Subscriptions</div>
                 <div>
-                    ${topic.subscriptions.size()}
+                    %{--TODO Fix--}%
+                    1%{--${topic.subscriptions.size()}--}%
                 </div>
             </div>
 
@@ -31,7 +32,8 @@
                 </div>
                 <div>Post</div>
                 <div>
-                    ${topic.resources.size()}
+                    %{--TODO Fix--}%
+                    1%%{--${topic.resources.size()}--}%
                 </div>
             </div>
         </div>

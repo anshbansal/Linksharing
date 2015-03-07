@@ -9,13 +9,12 @@ class UserController {
     def userService
 
     def loginHandler() {
-        session.username = params.username
+        session.loggedUser = User.findByUsername(params?.username)
         redirect controller: 'home', action: 'dashboard'
     }
 
     def profile() {
-        User loggedUser = userService.forUsername(session?.username)
-        render view: "profile", model: [loggedUser: loggedUser]
+        render view: "profile", model: [loggedUser: session?.loggedUser]
     }
 
     def isUniqueIdentifierValid() {
@@ -33,7 +32,7 @@ class UserController {
             return
         }
         if (isValidUniqueIdentifier(userDetailsCO.email)) {
-            userService.updateDetails(userDetailsCO, session?.username)
+            userService.updateDetails(userDetailsCO, session?.loggedUser)
         } else {
             flash['editProfileMessage'] = "Email is already used"
         }
@@ -41,13 +40,12 @@ class UserController {
     }
 
     def updatePassword(PasswordCO passwordCO) {
-        User loggedUser = userService.forUsername(session.username)
 
         if (passwordCO.hasErrors()) {
-            flash.message = "Passwords do not match"
+//            flash.message = "Passwords do not match"
             render "Passwords do not match"
         } else {
-            userService.updatePassword(loggedUser, passwordCO.password)
+            userService.updatePassword(session?.loggedUser, passwordCO.password)
             render "Password has been updated"
         }
     }
@@ -57,8 +55,8 @@ class UserController {
     }
 
     private Boolean isValidUniqueIdentifier(String uniqueIdentifier) {
-        if (session?.username) {
-            return userService.isUniqueIdentifierValid(uniqueIdentifier, session?.username)
+        if (session?.loggedUser) {
+            return userService.isUniqueIdentifierValid(uniqueIdentifier, session?.loggedUser)
         } else {
             return userService.isUniqueIdentifierValid(uniqueIdentifier)
         }
