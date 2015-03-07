@@ -60,7 +60,7 @@ class ApplicationTagLib {
     }
 
     /**
-     * Creates a Post's container as per predefined post types
+     * Creates a Post's container as per predefined topic types
      *
      * @attr title The title of the Posts' container
      * @attr topicsType REQUIRED The type of topics to be shown
