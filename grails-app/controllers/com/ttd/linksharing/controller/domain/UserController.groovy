@@ -8,6 +8,17 @@ class UserController {
 
     def userService
 
+    def beforeInterceptor = [action: this.&adminAuth, only: 'users']
+
+    def adminAuth() {
+        if (! session?.loggedUser?.admin) {
+            redirect controller: "home"
+            return false
+        }
+    }
+
+    def users() {}
+
     def loginHandler() {
         session.loggedUser = User.findByUsername(params?.username)
         redirect controller: 'home', action: 'dashboard'

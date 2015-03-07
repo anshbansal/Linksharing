@@ -13,7 +13,7 @@
                     <a href="${createLink(controller: "user", action: "profile")}">Profile</a>
                 </li>
                 <g:if test="${loggedUser.admin}">
-                    <li>Users</li>
+                    <li><a href="${createLink(controller: "user", action: "users")}">Users</a></li>
                     <li>Topics</li>
                     <li>Posts</li>
                 </g:if>
