@@ -13,7 +13,7 @@ class LoginController {
 
     def login(LoginCredentials credentials) {
         if (! credentials.hasErrors()) {
-            User user = userService.isValidUser(credentials)
+            User user = userService.getActiveUser(credentials)
 
             if (user) {
                 forward controller: "user", action: "loginHandler", params: [username: user.username]

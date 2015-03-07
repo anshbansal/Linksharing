@@ -29,8 +29,9 @@ class UserService {
     }
 
     @NotTransactional
-    User isValidUser(LoginCredentials credentials) {
-        User.withCredentials(credentials).get()
+    User getActiveUser(LoginCredentials credentials) {
+        User user = User.withCredentials(credentials).get()
+        user.active ? user : null
     }
 
     Boolean updatePassword(User user, String newPassword) {
