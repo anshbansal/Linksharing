@@ -38,10 +38,10 @@ class ApplicationTagLib {
                 new ListingDetails<>(renderTemplate: "/templates/post/post", attrs: attrs)
 
         switch (attrs.type) {
-            case "recentShares":
-                listingDetails.title = "Recent Shares"
-                listingDetails.listings = resourceService.recentPublicResources()
-                break
+//            case "recentShares":
+//                listingDetails.title = "Recent Shares"
+//                listingDetails.listings = resourceService.recentPublicResources()
+//                break
 //            case "topPosts":
 //                title = "Top Posts"
 //                //TODO Add logic for Top Posts
@@ -49,7 +49,12 @@ class ApplicationTagLib {
 //                break
             case "inbox":
                 listingDetails.title = "Inbox"
-                listingDetails.listings = readingItemService.getReadingItemsForUser(session?.loggedUser)
+
+                listingDetails.listings = readingItemService
+                        .getReadingItemsForUser(session?.loggedUser, listingDetails.max, listingDetails.offset)
+
+                listingDetails.paginationController = "readingItem"
+                listingDetails.paginationAction = "inbox"
                 break
         }
 

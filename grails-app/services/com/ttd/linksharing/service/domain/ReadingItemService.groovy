@@ -1,8 +1,10 @@
 package com.ttd.linksharing.service.domain
 
+import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.PostDetails
 import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.User
+import grails.gorm.PagedResultList
 import grails.transaction.Transactional
 
 @Transactional
@@ -20,12 +22,17 @@ class ReadingItemService {
         ReadingItem.findAllWhere(user: user)
     }
 
-    List<PostDetails> getReadingItemsForUser(User user) {
+    PagedResult<PostDetails> getReadingItemsForUser(User user, Integer max, Integer offset) {
 
-        ReadingItem.unreadForUser(user).list(max: 5)
-                .collect([]) { ReadingItem readingItem ->
+        List<PagedResultList> pagedResultList = ReadingItem.unreadForUser(user).list(max: max, offset: offset)
 
-            new PostDetails(resource: readingItem.resource, isRead: readingItem.isRead)
-        }
+        new PagedResult<PostDetails>().setPaginationList(
+                pagedResultList,
+                {
+                    it.collect([]) { ReadingItem readingItem ->
+                        new PostDetails(resource: readingItem.resource, isRead: readingItem.isRead)
+                    }
+                }
+        )
     }
 }

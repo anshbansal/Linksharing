@@ -6,8 +6,17 @@
         <g:render template="${listingDetails?.renderTemplate}" var="listing" collection="${listings}"/>
     </g:applyLayout>
 
-    <util:remotePaginate pageSizes="[5, 10, 20]" update="${remoteAttrs['update']}" maxsteps="5"
-        total="100" action="as"/>
+    <util:remotePaginate
+            pageSizes="[5, 10, 20]"
+            update="${remoteAttrs['update']}"
+            maxsteps="5"
+            max="${listingDetails.max}"
+            offset="${listingDetails.offset}"
+            total="${listingDetails.totalListings}"
+            controller="${listingDetails.paginationController}"
+            action="${listingDetails.paginationAction}"
+            params="[]"/>
 
-    %{--TODO Listings size/ControllerName/ActionName--}%
+    %{--TODO Add the remotePagination into the container layout--}%
+    %{--TODO Later For search pagination remember to generify actionName to searchResults--}%
 </g:if>
