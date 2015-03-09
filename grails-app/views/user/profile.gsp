@@ -6,16 +6,16 @@
 
 <body>
     <section class="minor-part left-part">
-        <ls:user user="${loggedUser}"/>
+        <ls:user user="${session?.loggedUser}"/>
     </section>
 
     <section class="major-part right-part">
         <tmpl:edit_profile />
     </section>
 
-    <section class="minor-part left-part">
-        <ls:topics type="subscriptions" title="Topics" loggedUser="${loggedUser}"/>
-    </section>
+    %{--<section class="minor-part left-part">--}%
+        %{--<ls:topics type="subscriptions" title="Topics"/>--}%
+    %{--</section>--}%
 
     <section class="major-part right-part">
         <tmpl:update_password />

@@ -7,9 +7,9 @@
     <section class="major-part right-part" id="inbox">
         <ls:posts type="inbox"/>
     </section>
-    %{--<section class="minor-part left-part">--}%
-        %{--<ls:user user="${loggedUser}"/>--}%
-    %{--</section>--}%
+    <section class="minor-part left-part">
+        <ls:user user="${session?.loggedUser}"/>
+    </section>
     %{--<section class="minor-part left-part">--}%
         %{--<ls:topics type="subscriptions"/>--}%
     %{--</section>--}%
