@@ -7,6 +7,10 @@ class UrlMappings {
             }
         }
 
+        //Mapping for rendering Posts
+        "/resource/recentShares"(controller: 'util', action: 'renderPost')
+        "/readingItem/inbox"(controller: 'util', action: 'renderPost')
+
         "/"(controller: "home")
         "500"(view:'/error')
 	}

@@ -1,5 +1,6 @@
 <g:set var="listings" value="${listingDetails?.listings}"/>
 <g:set var="remoteAttrs" value="${listingDetails.remoteAttrs}"/>
+<g:set var="paginationAction" value="${listingDetails.paginationAction}"/>
 
 <g:if test="${listings.size()}">
     <g:applyLayout name="container" params="[title: listingDetails?.title]">
@@ -14,8 +15,8 @@
                         offset="${listingDetails.offset}"
                         total="${listingDetails.totalListings}"
                         controller="${listingDetails.paginationController}"
-                        action="${listingDetails.paginationAction}"
-                        params="[]"/>
+                        action="${paginationAction}"
+                        params="[actionTo: paginationAction]"/>
             </section>
         </content>
     </g:applyLayout>
