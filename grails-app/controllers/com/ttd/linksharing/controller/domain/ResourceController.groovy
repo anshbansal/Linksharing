@@ -2,5 +2,8 @@ package com.ttd.linksharing.controller.domain
 
 class ResourceController {
 
-    def index() {}
+    def recentShares() {
+        def attrs = params + [type: "${actionName}"]
+        render ls.posts(attrs)
+    }
 }

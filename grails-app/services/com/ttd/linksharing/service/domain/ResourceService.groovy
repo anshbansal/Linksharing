@@ -1,10 +1,12 @@
 package com.ttd.linksharing.service.domain
 
+import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.PostDetails
 import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.User
+import grails.gorm.PagedResultList
 import grails.transaction.Transactional
 
 @Transactional
@@ -27,11 +29,18 @@ class ResourceService {
         resource
     }
 
-    List<PostDetails> recentPublicResources() {
-        Resource.recentPublicResources.list(max: 5)
-                .collect([]) { Resource resource ->
+    PagedResult<PostDetails> recentPublicResources(Integer max, Integer offset) {
 
-            new PostDetails(resource: resource)
-        }
+        List<PagedResultList> pagedResultList =
+                Resource.recentPublicResources.list(max: max, offset: offset)
+
+        new PagedResult<PostDetails>().setPaginationList(
+                pagedResultList,
+                {
+                    it.collect([]) { Resource resource ->
+                        new PostDetails(resource: resource)
+                    }
+                }
+        )
     }
 }

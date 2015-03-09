@@ -26,10 +26,12 @@ class ApplicationTagLib {
                 new ListingDetails<>(renderTemplate: "/templates/post/post", attrs: attrs)
 
         switch (attrs.type) {
-//            case "recentShares":
-//                listingDetails.title = "Recent Shares"
-//                listingDetails.listings = resourceService.recentPublicResources()
-//                break
+            case "recentShares":
+                listingDetails.title = "Recent Shares"
+                listingDetails.paginationController = "resource"
+                listingDetails.listings = resourceService
+                        .recentPublicResources(listingDetails.max, listingDetails.offset)
+                break
 //            case "topPosts":
 //                title = "Top Posts"
 //                //TODO Add logic for Top Posts

@@ -10,8 +10,12 @@ class ApplicationFilters {
         }
 
         beforeLogin(controller: "*", controllerExclude: 'assets|console',
-                    action: "*", actionExclude: 'home|login*|register|isUniqueIdentifierValid') {
+                action: "*", actionExclude: 'home|login*|register') {
             before = {
+                if ((controllerName == 'user' && actionName == 'isUniqueIdentifierValid') ||
+                        (controllerName == 'resource' && actionName == 'recentShares')) {
+                    return true
+                }
                 if (!session?.loggedUser) {
                     println "Request to ${controllerName}:${actionName} filtered as user not logged in"
                     flash['loginMessage'] = 'Login to the System'
