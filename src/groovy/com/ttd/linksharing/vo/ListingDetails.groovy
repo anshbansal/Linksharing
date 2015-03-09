@@ -23,7 +23,7 @@ class ListingDetails<E> {
         max = attrs.int('max') ?: 5
         offset = attrs.int('offset') ?: 0
         paginationController = attrs.paginationController
-        paginationAction = attrs.paginationAction
+        paginationAction = attrs.paginationAction ?: attrs.type
 
         remoteAttrs['update'] = attrs.type
     }

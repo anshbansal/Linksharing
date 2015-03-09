@@ -42,7 +42,6 @@ class ApplicationTagLib {
                         .getReadingItemsForUser(session?.loggedUser, listingDetails.max, listingDetails.offset)
 
                 listingDetails.paginationController = "readingItem"
-                listingDetails.paginationAction = "inbox"
                 break
         }
 
