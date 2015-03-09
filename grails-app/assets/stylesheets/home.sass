@@ -1,0 +1,42 @@
+$MajorPartSize : 61/100
+
+body
+  margin: 0 70px
+
+#main-contents
+  margin: 0 30px
+  > *
+    display: inline-block
+
+.major-part
+  width: percentage($MajorPartSize)
+
+.minor-part
+  width: percentage(1 - $MajorPartSize)
+
+.small-part
+  font-size: 12px
+
+.right-part
+  float: right
+
+.left-part
+  float: left
+
+/*Style for forms*/
+.lines-container > *
+  margin-bottom: 10px
+  width: 48%
+  display: inline-block
+
+/*Clearfix for containing floats*/
+.group
+  &:before, &:after
+    content: ""
+    display: table
+
+  &:after
+    clear: both
+
+  clear: both
+  *zoom: 1
