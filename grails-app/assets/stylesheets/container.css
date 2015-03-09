@@ -5,12 +5,20 @@
     overflow: hidden;
 }
 
-.heading {
+.heading, .footer {
     background-color: darkseagreen;
-    margin-bottom: 5px;
     padding: 5px 0 5px 13px;
+}
+
+.heading {
+    margin-bottom: 5px;
 }
 
 .container-contents > * {
     margin: 10px;
 }
+
+.paginationList > a, span {
+    padding-right: 5px;
+}
+
