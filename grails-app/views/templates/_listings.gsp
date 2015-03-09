@@ -19,5 +19,6 @@
             </section>
         </content>
     </g:applyLayout>
-    %{--TODO Later For search pagination remember to generify actionName to searchResults--}%
+    %{--TODO For search pagination params will be used for search true. Search results will contain --}%
+    %{--TODO Pages should be of fixed size for some cases--}%
 </g:if>

@@ -7,10 +7,10 @@
         <g:layoutBody />
     </section>
 
-    <footer class="footer">
-        <g:if test="${pageProperty(name: 'page.footer')}">
+    <g:if test="${pageProperty(name: 'page.footer')}">
+        <footer class="footer">
             <g:pageProperty name="page.footer"/>
-        </g:if>
-    </footer>
+        </footer>
+    </g:if>
 
 </section>
