@@ -34,12 +34,6 @@ class ListingDetails<E> {
         }
     }
 
-    void setPaginationAction(String paginationAction) {
-        if (!this.paginationAction) {
-            this.paginationAction = paginationAction
-        }
-    }
-
     void setTitle(String title) {
         this.title = this.title ?: title
     }

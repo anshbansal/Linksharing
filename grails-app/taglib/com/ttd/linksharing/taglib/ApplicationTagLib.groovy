@@ -39,11 +39,9 @@ class ApplicationTagLib {
 //                break
             case "inbox":
                 listingDetails.title = "Inbox"
-
+                listingDetails.paginationController = "readingItem"
                 listingDetails.listings = readingItemService
                         .getReadingItemsForUser(session?.loggedUser, listingDetails.max, listingDetails.offset)
-
-                listingDetails.paginationController = "readingItem"
                 break
         }
 
