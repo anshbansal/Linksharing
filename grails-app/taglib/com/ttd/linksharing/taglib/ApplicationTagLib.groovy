@@ -17,18 +17,6 @@ class ApplicationTagLib {
     def userService
     def readingItemService
 
-//    private static Map listingMap(Map attrs, ListingDetails listingDetails) {
-//        [template: "/templates/listings",
-//         model   : [
-//                 renderTemplate: listingDetails.templatePath,
-//                 title         : listingDetails.title,
-//                 listings      : listingDetails.listings,
-//                 update        : attrs.type,
-//                 attrs         : attrs
-//         ]
-//        ]
-//    }
-
     /**
      * @attr title The title of the Posts' container
      * @attr type REQUIRED The type of posts to be shown. Same as ID of the div being paginated
