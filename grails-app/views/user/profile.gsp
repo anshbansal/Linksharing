@@ -13,9 +13,9 @@
         <tmpl:edit_profile />
     </section>
 
-    %{--<section class="minor-part left-part">--}%
-        %{--<ls:topics type="subscriptions" title="Topics"/>--}%
-    %{--</section>--}%
+    <section class="minor-part left-part">
+        <ls:topics type="subscriptions" title="Topics"/>
+    </section>
 
     <section class="major-part right-part">
         <tmpl:update_password />
