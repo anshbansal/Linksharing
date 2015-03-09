@@ -2,6 +2,11 @@ package linksharing
 
 class ApplicationFilters {
 
+    static Map<String, String> BEFORE_LOGIN = [
+            'user': 'isUniqueIdentifierValid',
+            'util': 'renderPost'
+    ]
+
     def filters = {
         all(controllerExclude: 'assets', action: '*') {
             before = {
@@ -12,8 +17,7 @@ class ApplicationFilters {
         beforeLogin(controller: "*", controllerExclude: 'assets|console',
                 action: "*", actionExclude: 'home|login*|register') {
             before = {
-                if ((controllerName == 'user' && actionName == 'isUniqueIdentifierValid') ||
-                        (controllerName == 'resource' && actionName == 'recentShares')) {
+                if (BEFORE_LOGIN[controllerName] == actionName) {
                     return true
                 }
                 if (!session?.loggedUser) {
