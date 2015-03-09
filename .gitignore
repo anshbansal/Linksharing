@@ -5,3 +5,6 @@ classes
 .project
 *.class
 *.iml
+*Spec.groovy
+TestMailController*
+.sass-cache
