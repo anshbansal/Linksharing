@@ -10,7 +10,7 @@
     <section class="minor-part left-part">
         <ls:user user="${session?.loggedUser}"/>
     </section>
-    %{--<section class="minor-part left-part">--}%
-        %{--<ls:topics type="subscriptions"/>--}%
-    %{--</section>--}%
+    <section class="minor-part left-part" id="subscriptions">
+        <ls:topics type="subscriptions"/>
+    </section>
 </body>

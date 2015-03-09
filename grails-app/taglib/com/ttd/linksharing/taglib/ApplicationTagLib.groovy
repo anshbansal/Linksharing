@@ -4,6 +4,7 @@ import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.User
 import com.ttd.linksharing.vo.ListingDetails
 import com.ttd.linksharing.vo.PostDetails
+import com.ttd.linksharing.vo.TopicDetails
 
 class ApplicationTagLib {
     static defaultEncodeAs = [taglib: 'raw']
@@ -52,19 +53,21 @@ class ApplicationTagLib {
      * @attr title The title of the Posts' container
      * @attr type REQUIRED The type of topics to be shown
      */
-//    def topics = { attrs ->
-//        def title = ""
-//        def topics = []
-//
-//        switch (attrs.type) {
-//            case "subscriptions":
-//                title = "Subscriptions"
-//                topics = topicService.getSubscriptionsForUser(session?.loggedUser)
-//                break
-//        }
-//
-//        out << render(listingMap(attrs, "/templates/topic/topic", title, topics))
-//    }
+    def topics = { attrs ->
+        ListingDetails<TopicDetails> listingDetails =
+                new ListingDetails<>(renderTemplate: "/templates/topic/topic", attrs: attrs)
+
+        switch (attrs.type) {
+            case "subscriptions":
+                listingDetails.title = "Subscriptions"
+                listingDetails.paginationController = "subscription"
+                listingDetails.listings = topicService.
+                        getSubscriptionsForUser(session?.loggedUser, listingDetails.max, listingDetails.offset)
+                break
+        }
+
+        out << render(listingDetails.renderMap)
+    }
 
     /**
      * @attr post REQUIRED The post

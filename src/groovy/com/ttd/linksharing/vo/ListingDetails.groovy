@@ -10,7 +10,7 @@ class ListingDetails<E> {
     List<E> listings
     Integer totalListings = 0
 
-    Map remoteAttrs = [:]
+    String idToUpdate
     String paginationController
     String paginationAction
 
@@ -25,7 +25,7 @@ class ListingDetails<E> {
         paginationController = attrs.paginationController
         paginationAction = attrs.paginationAction ?: attrs.type
 
-        remoteAttrs['update'] = attrs.type
+        idToUpdate = attrs.type
     }
 
     void setPaginationController(String paginationController) {

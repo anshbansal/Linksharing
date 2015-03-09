@@ -6,4 +6,9 @@ class UtilController {
         def attrs = params + [type: "${params.actionTo}"]
         render ls.posts(attrs)
     }
+
+    def renderTopic() {
+        def attrs = params + [type: "${params.actionTo}"]
+        render ls.topics(attrs)
+    }
 }

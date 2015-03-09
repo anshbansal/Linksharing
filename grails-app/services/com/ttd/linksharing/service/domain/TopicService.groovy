@@ -4,6 +4,9 @@ import com.ttd.linksharing.co.topic.TopicInfo
 import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
+import com.ttd.linksharing.vo.PagedResult
+import com.ttd.linksharing.vo.TopicDetails
+import grails.gorm.PagedResultList
 import grails.transaction.Transactional
 
 @Transactional
@@ -30,8 +33,17 @@ class TopicService {
         topic
     }
 
-    List<Topic> getSubscriptionsForUser(User user) {
-        Subscription.subscribedTopics(user).list(max: 5).topic
+    PagedResult<TopicDetails> getSubscriptionsForUser(User user, Integer max, Integer offset) {
+        List<PagedResultList> pagedResultList = Subscription.subscribedTopics(user).list(max: max, offset: offset)
+
+        new PagedResult<TopicDetails>().setPaginationList(
+                pagedResultList,
+                {
+                    it.collect([]) { Subscription subscription ->
+                        new TopicDetails(topic: subscription.topic, creator: subscription.topic.createdBy)
+                    }
+                }
+        )
     }
 
     Boolean isTopicPresentForUser(User user, String topicName) {

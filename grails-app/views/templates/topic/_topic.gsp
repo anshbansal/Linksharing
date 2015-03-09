@@ -1,7 +1,7 @@
 <%@ page import="com.ttd.linksharing.enums.Visibility; com.ttd.linksharing.enums.Seriousness" %>
 
-<g:set var="topic" value="${listing}"/>
-<g:set var="creator" value="${topic.createdBy}"/>
+<g:set var="topic" value="${listing.topic}"/>
+<g:set var="creator" value="${listing.creator}"/>
 
 <section class="group">
     <div>
@@ -33,7 +33,7 @@
                 <div>Post</div>
                 <div>
                     %{--TODO Fix--}%
-                    1%%{--${topic.resources.size()}--}%
+                    1%{--${topic.resources.size()}--}%
                 </div>
             </div>
         </div>

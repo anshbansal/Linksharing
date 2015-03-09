@@ -11,6 +11,9 @@ class UrlMappings {
         "/resource/recentShares"(controller: 'util', action: 'renderPost')
         "/readingItem/inbox"(controller: 'util', action: 'renderPost')
 
+        //Mapping for rendering Topics
+        "/subscription/subscriptions"(controller: 'util', action: 'renderTopic')
+
         "/"(controller: "home")
         "500"(view:'/error')
 	}
