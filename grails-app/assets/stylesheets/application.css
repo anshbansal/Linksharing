@@ -9,11 +9,12 @@
 *
 *= require normalize
 *= require_tree lib
-*= require main
+*= require home
 *= require container
 *= require header
-*= require post
-*= require topic
-*= require user
-*= require_self
+*= require listing
 */
+
+/*TODO Refactor CSS*/
+/*TODO   Global variable Maybe*/
+/*TODO   Extend for styles*/
