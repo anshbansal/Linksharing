@@ -36,7 +36,7 @@ class TopicService {
     PagedResult<TopicDetails> getSubscriptionsForUser(User user, Integer max, Integer offset) {
         List<PagedResultList> pagedResultList = Subscription.subscribedTopics(user).list(max: max, offset: offset)
 
-        new PagedResult<TopicDetails>().setPaginationList(
+        PagedResult<TopicDetails> topicsDetail = new PagedResult<TopicDetails>().setPaginationList(
                 pagedResultList,
                 {
                     it.collect([]) { Subscription subscription ->
@@ -44,6 +44,7 @@ class TopicService {
                     }
                 }
         )
+        addNumberSubscriptionsAndResources(topicsDetail)
     }
 
     Boolean isTopicPresentForUser(User user, String topicName) {
@@ -51,5 +52,47 @@ class TopicService {
             eq 'createdBy', user
             eq 'name', topicName
         } > 0
+    }
+
+    PagedResult<TopicDetails> addNumberSubscriptionsAndResources(PagedResult<TopicDetails> topicsDetail) {
+
+        List<TopicDetails> topicDetailsList = topicsDetail.paginationList
+
+        List<Long> topicIds = []
+        topicDetailsList.each {
+            topicIds << it.topic.id.toLong()
+        }
+
+        Map temp = getNumberSubscriptionsAndResources(topicIds)
+
+        topicDetailsList.each { TopicDetails topicDetails ->
+            int topicId = topicDetails.topic.id.intValue()
+
+            topicDetails.numResources = temp[topicId]['numRes']
+            topicDetails.numSubscriptions = temp[topicId]['numSubs']
+        }
+        return topicsDetail
+    }
+
+    Map getNumberSubscriptionsAndResources(List<Long> topicIds) {
+        Map result = [:]
+
+        Topic.createCriteria().list() {
+            'in'('id', topicIds)
+            projections {
+                property("id")
+                resources {
+                    countDistinct('id')
+                }
+                subscriptions {
+                    countDistinct('id')
+                }
+                groupProperty('id')
+            }
+        }.each {
+            result[it[0].intValue()] = [numRes: it[1].intValue(), numSubs: it[2].intValue()]
+        }
+
+        return result
     }
 }

@@ -20,10 +20,7 @@
                     <g:submitButton name="save"/>
                 </div>
                 <div>Subscriptions</div>
-                <div>
-                    %{--TODO Fix--}%
-                    1%{--${topic.subscriptions.size()}--}%
-                </div>
+                <div>${listing.numSubscriptions}</div>
             </div>
 
             <div class="grid-3">
@@ -31,17 +28,14 @@
                     <g:submitButton name="cancel"/>
                 </div>
                 <div>Post</div>
-                <div>
-                    %{--TODO Fix--}%
-                    1%{--${topic.resources.size()}--}%
-                </div>
+                <div>${listing.numResources}</div>
             </div>
         </div>
     </div>
 
     <div>
         <g:select name="seriousness" from="${Seriousness.values()}"/>
-        <g:if test="${topic.createdBy == loggedUser || topic.createdBy.admin}">
+        <g:if test="${topic.createdBy == session?.loggedUser || topic.createdBy.admin}">
             <g:select name="visibility" from="${Visibility.values()}" value="${topic.scope}"/>
             Invite
             Edit
