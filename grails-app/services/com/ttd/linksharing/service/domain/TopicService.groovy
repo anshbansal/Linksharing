@@ -44,7 +44,10 @@ class TopicService {
                     }
                 }
         )
-        addNumberSubscriptionsAndResources(topicsDetail)
+        if (pagedResultList.size() > 0) {
+            addNumberSubscriptionsAndResources(topicsDetail)
+        }
+        topicsDetail
     }
 
     Boolean isTopicPresentForUser(User user, String topicName) {

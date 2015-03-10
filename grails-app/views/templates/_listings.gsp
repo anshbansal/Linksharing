@@ -1,9 +1,9 @@
-<g:set var="listings" value="${listingDetails?.listings}"/>
+<g:set var="listings" value="${listingDetails.listings}"/>
 <g:set var="paginationAction" value="${listingDetails.paginationAction}"/>
 
-<g:if test="${listings.size()}">
-    <g:applyLayout name="container" params="[title: listingDetails?.title]">
-        <g:render template="${listingDetails?.renderTemplate}" var="listing" collection="${listings}"/>
+<g:if test="${listings?.size()}">
+    <g:applyLayout name="container" params="[title: listingDetails.title]">
+        <g:render template="${listingDetails.renderTemplate}" var="listing" collection="${listings}"/>
 
         <g:if test="${!listingDetails.paginationDisable && listingDetails.totalListings > listings.size()}">
             <content tag="footer">
