@@ -77,21 +77,16 @@ class TopicService {
     Map getNumberSubscriptionsAndResources(List<Long> topicIds) {
         Map result = [:]
 
-        Topic.createCriteria().list() {
-            'in'('id', topicIds)
-            projections {
-                property("id")
-                resources {
-                    countDistinct('id')
+        Topic.executeQuery("""
+            select t.id,
+                (select count(*) from Subscription where topic.id = t.id) as numSubs,
+                (select count(*) from Resource where topic.id = t.id) as numRes
+            from Topic as t
+            where t.id in (:ids)
+            """, ['ids': topicIds ])
+                .each {
+                    result[it[0].intValue()] = [numSubs: it[1].intValue() ?: 0, numRes: it[2].intValue() ?: 0]
                 }
-                subscriptions {
-                    countDistinct('id')
-                }
-                groupProperty('id')
-            }
-        }.each {
-            result[it[0].intValue()] = [numRes: it[1].intValue(), numSubs: it[2].intValue()]
-        }
 
         return result
     }
