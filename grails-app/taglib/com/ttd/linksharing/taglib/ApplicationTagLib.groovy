@@ -103,8 +103,10 @@ class ApplicationTagLib {
 
         Integer userId = details.user.id
 
+        Boolean includePrivates = includePrivates(session?.loggedUser, attrs.user)
+
         Map nums = userService
-                .getNumberSubscriptionsAndTopics([userId.toLong()])
+                .getNumberSubscriptionsAndTopics([userId.toLong()], includePrivates)
 
         details.numSubscriptions = nums[userId]['numSubs']
         details.numTopics = nums[userId]['numTopics']
@@ -117,5 +119,9 @@ class ApplicationTagLib {
 
     def flash = { attrs ->
         out << render(template: "/templates/commons/flash_message", model: [type: attrs.type])
+    }
+
+    private static Boolean includePrivates(User loggedUser, User user) {
+        loggedUser.id == user.id || loggedUser?.admin
     }
 }

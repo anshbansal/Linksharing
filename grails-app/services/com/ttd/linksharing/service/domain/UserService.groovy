@@ -4,6 +4,7 @@ import com.ttd.linksharing.co.user.LoginCredentials
 import com.ttd.linksharing.co.user.RegistrationCO
 import com.ttd.linksharing.co.user.UserDetailsCO
 import com.ttd.linksharing.domain.User
+import com.ttd.linksharing.enums.Visibility
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
 import org.apache.commons.lang.RandomStringUtils
@@ -79,19 +80,27 @@ class UserService {
         return newPassword
     }
 
-    Map getNumberSubscriptionsAndTopics(List<Long> userIds) {
+    Map getNumberSubscriptionsAndTopics(List<Long> userIds, Boolean includePrivate = Boolean.FALSE) {
         Map result = [:]
+
+        List scopes = includePrivate ? Visibility.values() : [Visibility.PUBLIC]
 
         User.executeQuery("""
             select u.id,
-                (select count(*) from Subscription where user.id = u.id) as numSubs,
-                (select count(*) from Topic where createdBy.id = u.id) as numTopics
+                (select count(*) from Subscription
+                    where user.id = u.id
+                      and topic.scope in (:scopes)
+                    ) as numSubs,
+                (select count(*) from Topic
+                    where createdBy.id = u.id
+                      and scope in (:scopes)
+                    ) as numTopics
             from User as u
             where u.id in (:ids)
-            """, ['ids': userIds ])
+            """, ['ids': userIds,'scopes':  scopes])
                 .each {
-            result[it[0].intValue()] = [numSubs: it[1].intValue() ?: 0, numTopics: it[2].intValue() ?: 0]
-        }
+                    result[it[0].intValue()] = [numSubs: it[1].intValue() ?: 0, numTopics: it[2].intValue() ?: 0]
+                }
 
         return result
     }
