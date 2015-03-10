@@ -5,6 +5,7 @@ import com.ttd.linksharing.domain.User
 import com.ttd.linksharing.vo.ListingDetails
 import com.ttd.linksharing.vo.PostDetails
 import com.ttd.linksharing.vo.TopicDetails
+import com.ttd.linksharing.vo.UserDetails
 
 class ApplicationTagLib {
     static defaultEncodeAs = [taglib: 'raw']
@@ -92,11 +93,20 @@ class ApplicationTagLib {
     }
 
     def user = { attrs ->
-        User user = attrs.user
+
+        UserDetails details = new UserDetails(user: attrs.user)
+
+        Integer userId = details.user.id
+
+        Map nums = userService
+                .getNumberSubscriptionsAndTopics([userId.toLong()])
+
+        details.numSubscriptions = nums[userId]['numSubs']
+        details.numTopics = nums[userId]['numTopics']
 
         out << render(
                 template: "/templates/user/user",
-                model: [listing: user]
+                model: [listing: details]
         )
     }
 

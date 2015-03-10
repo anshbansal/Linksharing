@@ -1,18 +1,19 @@
+<g:set var="user" value="${listing.user}"/>
+
 <section class="group user">
     <div class="left-part">
-        <ls:photo user="${listing}"/>
+        <ls:photo user="${user}"/>
     </div>
     <div class="left-part">
-        <div>${listing.firstName}</div>
-        <div>@${listing.username}</div>
+        <div>${user.firstName}</div>
+        <div>@${user.username}</div>
 
         <div class="grid-2">
             <div>
                 Subscriptions
             </div>
             <div>
-                %{--TODO Fix--}%
-                1%{--${listing.subscriptions.size()}--}%
+                ${listing.numSubscriptions}
             </div>
         </div>
 
@@ -21,8 +22,7 @@
                 Topics
             </div>
             <div>
-                %{--TODO Fix--}%
-                1%{--${listing.topics.size()}--}%
+                ${listing.numTopics}
             </div>
         </div>
     </div>

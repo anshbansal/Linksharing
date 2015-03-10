@@ -78,4 +78,21 @@ class UserService {
 
         return newPassword
     }
+
+    Map getNumberSubscriptionsAndTopics(List<Long> userIds) {
+        Map result = [:]
+
+        User.executeQuery("""
+            select u.id,
+                (select count(*) from Subscription where user.id = u.id) as numSubs,
+                (select count(*) from Topic where createdBy.id = u.id) as numTopics
+            from User as u
+            where u.id in (:ids)
+            """, ['ids': userIds ])
+                .each {
+            result[it[0].intValue()] = [numSubs: it[1].intValue() ?: 0, numTopics: it[2].intValue() ?: 0]
+        }
+
+        return result
+    }
 }
