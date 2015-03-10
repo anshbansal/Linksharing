@@ -5,11 +5,12 @@
     <g:applyLayout name="container" params="[title: listingDetails.title]">
         <g:render template="${listingDetails.renderTemplate}" var="listing" collection="${listings}"/>
 
-        <g:if test="${!listingDetails.paginationDisable && listingDetails.totalListings > listings.size()}">
+        <g:if test="${!listingDetails.paginationDisable && listingDetails.totalListings >= listings.size()}">
             <content tag="footer">
                 <section class="paginationList">
                     <util:remotePaginate
                             pageSizes="[5, 10, 20]"
+                            alwaysShowPageSizes="true"
                             update="${listingDetails.idToUpdate}"
                             max="${listingDetails.max}"
                             offset="${listingDetails.offset}"
