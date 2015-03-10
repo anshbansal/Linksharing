@@ -1,3 +1,5 @@
-<g:if test="${user.photo == null}">
-    <asset:image src="anonymous.jpg" width="50" height="50" alt="Anonymous"/>
-</g:if>
+<g:link uri="/user/show/${user.id}">
+    <g:if test="${user.photo == null}">
+        <asset:image src="anonymous.jpg" width="50" height="50" alt="Anonymous"/>
+    </g:if>
+</g:link>
