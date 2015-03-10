@@ -28,6 +28,10 @@ class UserController {
         render view: "profile", model: [loggedUser: session?.loggedUser]
     }
 
+    def show(User user) {
+        render view: "public_profile", model: [user: user]
+    }
+
     def isUniqueIdentifierValid() {
         String uniqueIdentifier = params.username ?: params.email
         render userService.isUniqueIdentifierValid(uniqueIdentifier, session?.loggedUser) ? "true" : "false"
