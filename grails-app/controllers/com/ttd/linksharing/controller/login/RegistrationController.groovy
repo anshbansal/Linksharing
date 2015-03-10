@@ -16,7 +16,7 @@ class RegistrationController {
             forward controller: "user", action: "loginHandler", params: [username: user.username]
         } else {
             flash['registrationMessage'] = "Invalid Registration Credentials"
-            redirect controller: "home"
+            redirect controller: "home", action: "home"
         }
     }
 }

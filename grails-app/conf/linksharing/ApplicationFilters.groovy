@@ -2,11 +2,6 @@ package linksharing
 
 class ApplicationFilters {
 
-    static Map<String, String> BEFORE_LOGIN = [
-            'user': 'isUniqueIdentifierValid',
-            'util': 'renderPost'
-    ]
-
     def filters = {
         all(controllerExclude: 'assets', action: '*') {
             before = {
@@ -14,16 +9,21 @@ class ApplicationFilters {
             }
         }
 
-        beforeLogin(controller: "*", controllerExclude: 'assets|console',
-                action: "*", actionExclude: 'home|login*|register') {
+        beforeLogin(controller: '*', controllerExclude: "login|registration|assets|console|util") {
             before = {
-                if (BEFORE_LOGIN[controllerName] == actionName) {
-                    return true
-                }
+
                 if (!session?.loggedUser) {
+
+                    switch (controllerName) {
+                        case 'home':
+                            return actionName in ['home']
+                        case 'user':
+                            return actionName in ['loginHandler', 'show', 'isUniqueIdentifierValid']
+                    }
+
                     println "Request to ${controllerName}:${actionName} filtered as user not logged in"
                     flash['loginMessage'] = 'Login to the System'
-                    redirect controller: "home"
+                    redirect controller: "home", action: "home"
                     return false
                 }
             }

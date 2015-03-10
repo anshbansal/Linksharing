@@ -17,7 +17,7 @@ class UrlMappings {
             action = 'renderTopic'
         }
 
-        "/"(controller: "home")
+        "/"(controller: "home", action: "home")
         "500"(view:'/error')
 	}
 }

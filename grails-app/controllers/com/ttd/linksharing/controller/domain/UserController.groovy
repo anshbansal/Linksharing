@@ -12,7 +12,7 @@ class UserController {
 
     def adminAuth() {
         if (! session?.loggedUser?.admin) {
-            redirect controller: "home"
+            redirect controller: "home", action: "home"
             return false
         }
     }

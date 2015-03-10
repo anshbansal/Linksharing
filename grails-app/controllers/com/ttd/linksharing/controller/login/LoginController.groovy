@@ -20,11 +20,11 @@ class LoginController {
                 flash['loginMessage'] = "Invalid Login Credentials"
             }
         }
-        redirect controller: "home"
+        redirect controller: "home", action: "home"
     }
 
     def logout() {
         session.invalidate()
-        redirect controller: "home"
+        redirect controller: "home", action: "home"
     }
 }
