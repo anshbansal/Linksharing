@@ -1,6 +1,7 @@
 package com.ttd.linksharing.service.domain
 
 import com.ttd.linksharing.co.topic.TopicInfo
+import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
@@ -8,6 +9,7 @@ import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.TopicDetails
 import grails.gorm.PagedResultList
 import grails.transaction.Transactional
+import org.hibernate.FetchMode
 
 @Transactional
 class TopicService {
@@ -33,8 +35,11 @@ class TopicService {
         topic
     }
 
+    //TODO Subscription logic check
     PagedResult<TopicDetails> getSubscriptionsForUser(User user, Integer max, Integer offset) {
         List<PagedResultList> pagedResultList = Subscription.subscribedTopics(user).list(max: max, offset: offset)
+
+
 
         PagedResult<TopicDetails> topicsDetail = new PagedResult<TopicDetails>().setPaginationList(
                 pagedResultList,
@@ -47,6 +52,40 @@ class TopicService {
         if (pagedResultList.size() > 0) {
             updateSubscriptionAndResourceCountInTopicsDetail(topicsDetail)
         }
+        topicsDetail
+    }
+
+    PagedResult<TopicDetails> getTrendingTopics(Integer max, Integer offset) {
+        List<PagedResultList> pagedResultList = Resource.createCriteria().list(max: max, offset: offset) {
+
+            createAlias('topic', 't')
+
+            projections {
+                groupProperty('topic')
+                count('id', 'resourceCount')
+            }
+
+            fetchMode('topic', FetchMode.JOIN)
+            fetchMode('t.createdBy', FetchMode.JOIN)
+
+            order('resourceCount', 'desc')
+        }
+
+        PagedResult<TopicDetails> topicsDetail = new PagedResult<TopicDetails>()
+
+        topicsDetail.paginationList = pagedResultList.collect([]){
+            new TopicDetails(topic: it[0], creator: it[0].createdBy)
+        }
+
+        //Pattern not followed here bcause totalCount was giving count of resources instead of count of group property.
+        topicsDetail.totalCount = Topic.where {
+            resources.size() > 0
+        }.count()
+
+        if (pagedResultList.size() > 0) {
+            updateSubscriptionAndResourceCountInTopicsDetail(topicsDetail)
+        }
+
         topicsDetail
     }
 

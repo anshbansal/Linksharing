@@ -22,7 +22,7 @@ class ApplicationTagLib {
     /**
      * @attr title The title of the Posts' container
      * @attr type REQUIRED The type of posts to be shown. Same as ID of the div being paginated
-     * @attr paginationDisable Set to (true) if pagination is to be disabled
+     * @attr paginationDisable Defaults(false). Set(true) if pagination is to be disabled
      */
     def posts = { attrs ->
         ListingDetails<PostDetails> listingDetails =
@@ -64,6 +64,11 @@ class ApplicationTagLib {
                 listingDetails.title = "Subscriptions"
                 listingDetails.listings = topicService.
                         getSubscriptionsForUser(session?.loggedUser, listingDetails.max, listingDetails.offset)
+                break
+            case "trendingTopics":
+                listingDetails.title = "Trending Topics"
+                listingDetails.listings = topicService.
+                        getTrendingTopics(listingDetails.max, listingDetails.offset)
                 break
         }
 
