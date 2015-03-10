@@ -21,6 +21,7 @@ class ApplicationTagLib {
     /**
      * @attr title The title of the Posts' container
      * @attr type REQUIRED The type of posts to be shown. Same as ID of the div being paginated
+     * @attr paginationDisable Set to (true) if pagination is to be disabled
      */
     def posts = { attrs ->
         ListingDetails<PostDetails> listingDetails =

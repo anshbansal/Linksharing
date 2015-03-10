@@ -11,6 +11,7 @@ class ListingDetails<E> {
     Integer totalListings = 0
 
     String idToUpdate
+    Boolean paginationDisable
     String paginationController
     String paginationAction
 
@@ -22,10 +23,11 @@ class ListingDetails<E> {
 
         max = attrs.int('max') ?: 5
         offset = attrs.int('offset') ?: 0
-        paginationController = attrs.paginationController
-        paginationAction = attrs.paginationAction ?: attrs.type
 
         idToUpdate = attrs.type
+        paginationController = attrs.paginationController
+        paginationAction = attrs.paginationAction ?: attrs.type
+        paginationDisable =  Boolean.parseBoolean(attrs.paginationDisable)
     }
 
     void setPaginationController(String paginationController) {
