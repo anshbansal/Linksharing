@@ -97,13 +97,14 @@ class ApplicationTagLib {
         )
     }
 
+    //TODO Refactoring needed
     def user = { attrs ->
 
         UserDetails details = new UserDetails(user: attrs.user)
 
         Integer userId = details.user.id
 
-        Boolean includePrivates = includePrivates(session?.loggedUser, attrs.user)
+        Boolean includePrivates = includePrivates(attrs.user)
 
         Map nums = userService
                 .getNumberSubscriptionsAndTopics([userId.toLong()], includePrivates)
@@ -121,7 +122,7 @@ class ApplicationTagLib {
         out << render(template: "/templates/commons/flash_message", model: [type: attrs.type])
     }
 
-    private static Boolean includePrivates(User loggedUser, User user) {
-        loggedUser.id == user.id || loggedUser?.admin
+    private Boolean includePrivates(User user) {
+        session?.loggedUser.id == user.id || session?.loggedUser?.admin
     }
 }
