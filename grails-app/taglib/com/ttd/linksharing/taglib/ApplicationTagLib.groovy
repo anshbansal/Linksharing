@@ -24,12 +24,12 @@ class ApplicationTagLib {
      */
     def posts = { attrs ->
         ListingDetails<PostDetails> listingDetails =
-                new ListingDetails<>(renderTemplate: "/templates/post/post", attrs: attrs)
+                new ListingDetails<>(renderTemplate: "/templates/post/post", attrs: attrs,
+                        paginationController: "listingsPost")
 
         switch (attrs.type) {
             case "recentShares":
                 listingDetails.title = "Recent Shares"
-                listingDetails.paginationController = "resource"
                 listingDetails.listings = resourceService
                         .recentPublicResources(listingDetails.max, listingDetails.offset)
                 break
@@ -40,7 +40,6 @@ class ApplicationTagLib {
 //                break
             case "inbox":
                 listingDetails.title = "Inbox"
-                listingDetails.paginationController = "readingItem"
                 listingDetails.listings = readingItemService
                         .getReadingItemsForUser(session?.loggedUser, listingDetails.max, listingDetails.offset)
                 break
@@ -55,12 +54,12 @@ class ApplicationTagLib {
      */
     def topics = { attrs ->
         ListingDetails<TopicDetails> listingDetails =
-                new ListingDetails<>(renderTemplate: "/templates/topic/topic", attrs: attrs)
+                new ListingDetails<>(renderTemplate: "/templates/topic/topic", attrs: attrs,
+                        paginationController: 'listingsTopic')
 
         switch (attrs.type) {
             case "subscriptions":
                 listingDetails.title = "Subscriptions"
-                listingDetails.paginationController = "subscription"
                 listingDetails.listings = topicService.
                         getSubscriptionsForUser(session?.loggedUser, listingDetails.max, listingDetails.offset)
                 break
