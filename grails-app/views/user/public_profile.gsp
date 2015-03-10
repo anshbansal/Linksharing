@@ -5,6 +5,8 @@
 </head>
 
 <body>
-    ${user.firstName + " " + user.lastName}
+    <section class="minor-part left-part">
+        <ls:user user="${user}"/>
+    </section>
 </body>
 </html>
