@@ -5,6 +5,8 @@ import com.ttd.linksharing.domain.User
 
 class RegistrationController {
 
+    static defaultAction = "register"
+
     def userService
 
     def register(RegistrationCO registrationCO) {
@@ -14,7 +16,7 @@ class RegistrationController {
             forward controller: "user", action: "loginHandler", params: [username: user.username]
         } else {
             flash['registrationMessage'] = "Invalid Registration Credentials"
-            redirect controller: "login", action: "index"
+            redirect controller: "home"
         }
     }
 }

@@ -5,11 +5,9 @@ import com.ttd.linksharing.domain.User
 
 class LoginController {
 
-    static defaultAction = "home"
+    static defaultAction = "login"
 
     def userService
-
-    def home() {}
 
     def login(LoginCredentials credentials) {
         if (! credentials.hasErrors()) {
@@ -22,11 +20,11 @@ class LoginController {
                 flash['loginMessage'] = "Invalid Login Credentials"
             }
         }
-        redirect action: defaultAction
+        redirect controller: "home"
     }
 
     def logout() {
         session.invalidate()
-        redirect action: defaultAction
+        redirect controller: "home"
     }
 }

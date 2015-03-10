@@ -23,7 +23,7 @@ class ApplicationFilters {
                 if (!session?.loggedUser) {
                     println "Request to ${controllerName}:${actionName} filtered as user not logged in"
                     flash['loginMessage'] = 'Login to the System'
-                    redirect controller: "login"
+                    redirect controller: "home"
                     return false
                 }
             }

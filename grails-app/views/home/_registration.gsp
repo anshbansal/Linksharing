@@ -1,6 +1,6 @@
 <g:applyLayout name="container" params="[title: 'Register']">
     <ls:flash type="registrationMessage"/>
-    <g:form controller="registration" action="register" enctype="multipart/form-data" class="lines-container tooltipster-form" name="registration_form">
+    <g:form controller="registration" enctype="multipart/form-data" class="lines-container tooltipster-form" name="registration_form">
         <label for="firstName">First Name</label>
         <g:textField name="firstName" required="true"/>
 

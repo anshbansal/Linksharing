@@ -8,7 +8,7 @@ class HomeController {
         if (session?.loggedUser) {
             forward action: 'dashboard'
         } else {
-            redirect controller: 'login'
+            render view: "home"
         }
     }
 

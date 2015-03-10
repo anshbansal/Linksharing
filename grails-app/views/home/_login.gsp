@@ -1,6 +1,6 @@
 <g:applyLayout name="container" params="[title: 'Login']">
     <ls:flash type="loginMessage"/>
-    <g:form action="login" class="lines-container tooltipster-form" name="login_form">
+    <g:form controller="login" class="lines-container tooltipster-form" name="login_form">
         <label for="uniqueIdentifier">Email/Username</label>
         <g:textField name="uniqueIdentifier" required="true"/>
 
