@@ -45,7 +45,7 @@ class TopicService {
                 }
         )
         if (pagedResultList.size() > 0) {
-            addNumberSubscriptionsAndResources(topicsDetail)
+            updateSubscriptionAndResourceCountInTopicsDetail(topicsDetail)
         }
         topicsDetail
     }
@@ -57,7 +57,8 @@ class TopicService {
         } > 0
     }
 
-    PagedResult<TopicDetails> addNumberSubscriptionsAndResources(PagedResult<TopicDetails> topicsDetail) {
+    //TODO Make immutable
+    PagedResult<TopicDetails> updateSubscriptionAndResourceCountInTopicsDetail(PagedResult<TopicDetails> topicsDetail) {
 
         List<TopicDetails> topicDetailsList = topicsDetail.paginationList
 
