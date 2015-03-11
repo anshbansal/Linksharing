@@ -13,12 +13,13 @@
                 <span id="${searchBoxId}">
                     <ls:searchBox/>
                     <g:javascript>
-                        $("#${searchBoxId} .searchEnd").on('click', function() {
-                            var searchText = $("#${searchBoxId} .searchText").val();
 
+                        $("#${searchBoxId} .searchText").val("${listingDetails.searchTerm}");
+
+                        $("#${searchBoxId} .searchEnd").on('click', function() {
                             $.ajax({
                                 url: "${createLink(controller: paginationController, action: paginationAction)}",
-                                data: $.extend(JSON.parse("${listingDetails.searchParameters}"), {searchTerm: searchText})
+                                data: $.extend(JSON.parse("${listingDetails.searchParameters}"), {searchTerm: $("#${searchBoxId} .searchText").val()})
                             }).success(function(data, textStatus) {
                                 $("#${listingDetails.idToUpdate}").html(data);
                             });

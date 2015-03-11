@@ -23,6 +23,7 @@ class ListingDetails<E> {
     Integer offset
 
     Boolean searchEnable
+    String searchTerm
 
     Long userId
 
@@ -38,7 +39,7 @@ class ListingDetails<E> {
         paginationDisable =  Boolean.parseBoolean(attrs.paginationDisable)
 
         searchEnable = Boolean.parseBoolean(attrs.searchEnable)
-
+        searchTerm = attrs.searchTerm ?: ""
 
         userId = Mappings.parseStringOrLong(attrs?.userId)
     }
