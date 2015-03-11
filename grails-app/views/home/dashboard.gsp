@@ -7,10 +7,13 @@
     <section class="major-part right-part" id="inbox">
         <ls:posts type="inbox" searchEnable="true"/>
     </section>
-    <section class="minor-part left-part">
+    <section class="minor-part">
         <ls:user user="${session?.loggedUser}"/>
     </section>
-    <section class="minor-part left-part" id="subscriptions">
+    <section class="minor-part" id="subscriptions">
         <ls:topics type="subscriptions" searchEnable="true"/>
+    </section>
+    <section class="minor-part left-part" id="trendingTopics">
+        <ls:topics type="trendingTopics" paginationDisable="true"/>
     </section>
 </body>

@@ -86,6 +86,7 @@ class TopicService {
         topicsDetail
     }
 
+    //TODO Needs review
     PagedResult<TopicDetails> getTrendingTopics(Integer max, Integer offset) {
         List<PagedResultList> pagedResultList = Resource.createCriteria().list(max: max, offset: offset) {
 
@@ -109,9 +110,9 @@ class TopicService {
         }
 
         //Pattern not followed here bcause totalCount was giving count of resources instead of count of group property.
-        topicsDetail.totalCount = Topic.where {
-            resources.size() > 0
-        }.count()
+//        topicsDetail.totalCount = Topic.where {
+//            resources.size() > 0
+//        }.count()
 
         if (pagedResultList.size() > 0) {
             updateSubscriptionAndResourceCountInTopicsDetail(topicsDetail)

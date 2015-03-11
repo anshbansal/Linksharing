@@ -35,7 +35,7 @@ class ListingDetails<E> {
         max = attrs.int('max') ?: 5
         offset = attrs.int('offset') ?: 0
 
-        idToUpdate = attrs.type
+        idToUpdate = attrs.idToUpdate ?: attrs.type
         paginationController = attrs.paginationController
         paginationAction = attrs.paginationAction ?: attrs.type
         paginationDisable =  Boolean.parseBoolean(attrs.paginationDisable)

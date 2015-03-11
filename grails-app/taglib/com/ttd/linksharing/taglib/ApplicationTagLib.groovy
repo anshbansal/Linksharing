@@ -22,10 +22,11 @@ class ApplicationTagLib {
 
     /**
      * @attr title The title for the container
-     * @attr type REQUIRED The type of posts to be shown. Same as ID of the div being paginated
      * @attr paginationDisable Defaults(false). Set(true) if required
      * @attr searchEnable Defaults(false). Set(true) if required
-     * @attr userId Default (not used). Considered if (type = topicsFor)
+     * @attr idToUpdate id for pagination/search results. Defaults to type
+     * @attr type REQUIRED The type of posts to be shown.
+     * @attr userId Default (not used). Considered if (type = postsFor)
      */
     def posts = { attrs ->
         ListingDetails<PostDetails> listingDetails = new ListingDetails<>(
@@ -61,9 +62,10 @@ class ApplicationTagLib {
 
     /**
      * @attr title The title for the container
-     * @attr type REQUIRED The type of posts to be shown. Same as ID of the div being paginated
      * @attr paginationDisable Defaults(false). Set(true) if required
      * @attr searchEnable Defaults(false). Set(true) if required
+     * @attr idToUpdate id for pagination/search results. Defaults to type
+     * @attr type REQUIRED The type of topics to be shown.
      * @attr userId Default (not used). Considered if (type = topicsFor)
      */
     def topics = { attrs ->
@@ -78,7 +80,9 @@ class ApplicationTagLib {
                         getSubscriptionsForUser(session?.loggedUser, listingDetails.queryParams)
                 break
             case "trendingTopics":
-                //TODO Add search
+                //Search and pagination is not available for this
+                listingDetails.searchEnable = Boolean.FALSE
+                listingDetails.paginationDisable = Boolean.TRUE
                 listingDetails.title = "Trending Topics"
                 listingDetails.listings = topicService.
                         getTrendingTopics(listingDetails.max, listingDetails.offset)
