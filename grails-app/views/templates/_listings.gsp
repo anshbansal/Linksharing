@@ -24,4 +24,5 @@
     </g:applyLayout>
     %{--TODO For search pagination params will be used for search true. Search results will contain --}%
     %{--TODO Pages should be of fixed size for some cases--}%
+    %{--TODO pagesSizes need not to be shown if no more and is least--}%
 </g:if>
