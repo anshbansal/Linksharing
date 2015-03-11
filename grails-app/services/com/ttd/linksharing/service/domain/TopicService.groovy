@@ -42,7 +42,7 @@ class TopicService {
 
 
 
-        PagedResult<TopicDetails> topicsDetail = new PagedResult<TopicDetails>().setPaginationList(
+        PagedResult<TopicDetails> topicsDetail = new PagedResult<>().setPaginationList(
                 pagedResultList,
                 {
                     it.collect([]) { Subscription subscription ->
@@ -66,7 +66,7 @@ class TopicService {
         }
 
 
-        PagedResult<TopicDetails> topicsDetail = new PagedResult<TopicDetails>().setPaginationList(
+        PagedResult<TopicDetails> topicsDetail = new PagedResult<>().setPaginationList(
                 pagedResultList,
                 {
                     it.collect([]) { Topic topic ->
@@ -96,7 +96,7 @@ class TopicService {
             order('resourceCount', 'desc')
         }
 
-        PagedResult<TopicDetails> topicsDetail = new PagedResult<TopicDetails>()
+        PagedResult<TopicDetails> topicsDetail = new PagedResult<>()
 
         topicsDetail.paginationList = pagedResultList.collect([]){
             new TopicDetails(topic: it[0], creator: it[0].createdBy)
