@@ -74,9 +74,6 @@ class ApplicationTagLib {
                 break
             case "topicsFor":
                 listingDetails.title = "Topics"
-
-                println "Type is ${attrs.userId?.class}"
-
                 listingDetails.listings = topicService.getTopicsForUser(
                                             User.get(listingDetails.userId), includePrivates(listingDetails.userId) ,
                                             listingDetails.max, listingDetails.offset)
