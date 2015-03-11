@@ -26,4 +26,10 @@ class Topic {
     String toString() {
         "$name"
     }
+
+    static namedQueries = {
+        nameLike {String term ->
+            ilike 'name', '%' + term + '%'
+        }
+    }
 }

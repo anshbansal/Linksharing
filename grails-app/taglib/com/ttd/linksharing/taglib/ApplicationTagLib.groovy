@@ -50,6 +50,7 @@ class ApplicationTagLib {
                         .getReadingItemsForUser(session?.loggedUser, listingDetails.queryParams)
                 break
             case "postsFor":
+                //TODO Add search
                 listingDetails.title = "Posts"
                 listingDetails.listings = resourceService.getPostsForUser(
                                             User.get(listingDetails.userId), includePrivates(listingDetails.userId),
@@ -68,22 +69,24 @@ class ApplicationTagLib {
      * @attr userId Default (not used). Considered if (type = topicsFor)
      */
     def topics = { attrs ->
-        ListingDetails<TopicDetails> listingDetails =
-                new ListingDetails<>(renderTemplate: "/templates/topic/topic", attrs: attrs,
-                        paginationController: 'listingsTopic')
+        ListingDetails<TopicDetails> listingDetails = new ListingDetails<>(
+                renderTemplate: "/templates/topic/topic", attrs: attrs, paginationController: 'listingsTopic')
+        listingDetails.includePrivates = includePrivates(listingDetails.userId)
 
         switch (attrs.type) {
             case "subscriptions":
                 listingDetails.title = "Subscriptions"
                 listingDetails.listings = topicService.
-                        getSubscriptionsForUser(session?.loggedUser, listingDetails.max, listingDetails.offset)
+                        getSubscriptionsForUser(session?.loggedUser, listingDetails.queryParams)
                 break
             case "trendingTopics":
+                //TODO Add search
                 listingDetails.title = "Trending Topics"
                 listingDetails.listings = topicService.
                         getTrendingTopics(listingDetails.max, listingDetails.offset)
                 break
             case "topicsFor":
+                //TODO Add search
                 listingDetails.title = "Topics"
                 listingDetails.listings = topicService.getTopicsForUser(
                                             User.get(listingDetails.userId), includePrivates(listingDetails.userId) ,

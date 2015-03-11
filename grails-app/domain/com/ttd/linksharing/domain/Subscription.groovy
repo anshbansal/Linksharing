@@ -22,5 +22,11 @@ class Subscription {
             fetchMode('topic', FetchMode.JOIN)
             fetchMode('topic.createdBy', FetchMode.JOIN)
         }
+
+        topicNameLike { String term ->
+            'topic' {
+                nameLike(term)
+            }
+        }
     }
 }

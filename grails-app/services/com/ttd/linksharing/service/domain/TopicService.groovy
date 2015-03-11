@@ -7,6 +7,7 @@ import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
 import com.ttd.linksharing.util.Mappings
 import com.ttd.linksharing.vo.PagedResult
+import com.ttd.linksharing.vo.QueryParameters
 import com.ttd.linksharing.vo.TopicDetails
 import grails.gorm.PagedResultList
 import grails.transaction.Transactional
@@ -37,10 +38,13 @@ class TopicService {
     }
 
     //TODO Subscription logic check
-    PagedResult<TopicDetails> getSubscriptionsForUser(User user, Integer max, Integer offset) {
-        List<PagedResultList> pagedResultList = Subscription.subscribedTopics(user).list(max: max, offset: offset)
+    PagedResult<TopicDetails> getSubscriptionsForUser(User user, QueryParameters params) {
 
-
+        def criteria = Subscription.subscribedTopics(user)
+        if (params.searchTerm) {
+            criteria = criteria.topicNameLike(params.searchTerm)
+        }
+        List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
 
         PagedResult<TopicDetails> topicsDetail = new PagedResult<>().setPaginationList(
                 pagedResultList,
