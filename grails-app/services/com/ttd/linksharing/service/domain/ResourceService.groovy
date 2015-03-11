@@ -33,7 +33,7 @@ class ResourceService {
 
     PagedResult<PostDetails> recentPublicResources(QueryParameters params) {
 
-        def criteria = Resource.recentPublicResources
+        def criteria = Resource.recentResources.publicResources
         if (params.searchTerm) {
             criteria = criteria.descriptionLike(params.searchTerm)
         }

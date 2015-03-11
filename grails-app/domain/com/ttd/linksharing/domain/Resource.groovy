@@ -22,8 +22,7 @@ abstract class Resource {
     }
 
     static namedQueries = {
-        recentPublicResources {
-            publicResources()
+        recentResources {
             order("dateCreated", "desc")
 
             fetchMode('createdBy', FetchMode.JOIN)
