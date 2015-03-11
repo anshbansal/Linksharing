@@ -2,6 +2,7 @@ package com.ttd.linksharing.domain
 
 import com.ttd.linksharing.co.topic.TopicInfo
 import com.ttd.linksharing.enums.Visibility
+import org.hibernate.FetchMode
 
 class Topic {
     String name
@@ -30,6 +31,15 @@ class Topic {
     static namedQueries = {
         nameLike {String term ->
             ilike 'name', '%' + term + '%'
+        }
+
+        forUser { User user ->
+            eq 'createdBy', user
+            fetchMode('createdBy', FetchMode.JOIN)
+        }
+
+        publicTopics {
+            eq 'scope', Visibility.PUBLIC
         }
     }
 }

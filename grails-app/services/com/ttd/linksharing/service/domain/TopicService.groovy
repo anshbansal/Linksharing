@@ -60,15 +60,17 @@ class TopicService {
         topicsDetail
     }
 
-    PagedResult<TopicDetails> getTopicsForUser(User user, Boolean includePrivates, Integer max, Integer offset) {
-        List<PagedResultList> pagedResultList = Topic.createCriteria().list(max: max, offset: offset) {
+    PagedResult<TopicDetails> getTopicsForUser(User user, QueryParameters params) {
 
-            eq 'createdBy', user
-            inList 'scope', Mappings.getScopes(includePrivates)
-
-            fetchMode('createdBy', FetchMode.JOIN)
+        def criteria = Topic.forUser(user)
+        if (! params.includePrivates) {
+            criteria = criteria.publicTopics()
+        }
+        if (params.searchTerm) {
+            criteria = criteria.nameLike(params.searchTerm)
         }
 
+        List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
 
         PagedResult<TopicDetails> topicsDetail = new PagedResult<>().setPaginationList(
                 pagedResultList,

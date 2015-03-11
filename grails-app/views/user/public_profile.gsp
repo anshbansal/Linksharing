@@ -14,7 +14,7 @@
     </section>
 
     <section class="minor-part left-part" id="topicsFor">
-        <ls:topics type="topicsFor" userId="${user.id}"/>
+        <ls:topics type="topicsFor" userId="${user.id}" searchEnable="true"/>
     </section>
 </body>
 </html>

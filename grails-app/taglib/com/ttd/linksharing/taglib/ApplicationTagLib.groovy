@@ -88,9 +88,8 @@ class ApplicationTagLib {
             case "topicsFor":
                 //TODO Add search
                 listingDetails.title = "Topics"
-                listingDetails.listings = topicService.getTopicsForUser(
-                                            User.get(listingDetails.userId), includePrivates(listingDetails.userId) ,
-                                            listingDetails.max, listingDetails.offset)
+                listingDetails.listings = topicService.
+                        getTopicsForUser(User.get(listingDetails.userId), listingDetails.queryParams)
                 break
         }
 
