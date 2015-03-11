@@ -13,8 +13,8 @@
         <tmpl:edit_profile />
     </section>
 
-    <section class="minor-part left-part">
-        <ls:topics type="subscriptions" title="Topics"/>
+    <section class="minor-part left-part" id="subscriptions">
+        <ls:topics type="subscriptions" title="Topics" searchEnable="true"/>
     </section>
 
     <section class="major-part right-part">
