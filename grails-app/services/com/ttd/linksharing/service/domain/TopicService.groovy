@@ -5,6 +5,7 @@ import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
+import com.ttd.linksharing.util.Mappings
 import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.TopicDetails
 import grails.gorm.PagedResultList
@@ -46,6 +47,30 @@ class TopicService {
                 {
                     it.collect([]) { Subscription subscription ->
                         new TopicDetails(topic: subscription.topic, creator: subscription.topic.createdBy)
+                    }
+                }
+        )
+        if (pagedResultList.size() > 0) {
+            updateSubscriptionAndResourceCountInTopicsDetail(topicsDetail)
+        }
+        topicsDetail
+    }
+
+    PagedResult<TopicDetails> getTopicsForUser(User user, Boolean includePrivates, Integer max, Integer offset) {
+        List<PagedResultList> pagedResultList = Topic.createCriteria().list(max: max, offset: offset) {
+
+            eq 'createdBy', user
+            inList 'scope', Mappings.getScopes(includePrivates)
+
+            fetchMode('createdBy', FetchMode.JOIN)
+        }
+
+
+        PagedResult<TopicDetails> topicsDetail = new PagedResult<TopicDetails>().setPaginationList(
+                pagedResultList,
+                {
+                    it.collect([]) { Topic topic ->
+                        new TopicDetails(topic: topic, creator: topic.createdBy)
                     }
                 }
         )

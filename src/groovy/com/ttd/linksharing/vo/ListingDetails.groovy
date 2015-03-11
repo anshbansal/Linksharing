@@ -1,5 +1,7 @@
 package com.ttd.linksharing.vo
 
+import com.ttd.linksharing.util.Mappings
+
 class ListingDetails<E> {
 
     private final String LISTING_TEMPLATE = "/templates/listings"
@@ -18,6 +20,8 @@ class ListingDetails<E> {
     Integer max
     Integer offset
 
+    Long userId
+
     void setAttrs(Map attrs) {
         title = attrs.title
 
@@ -28,6 +32,8 @@ class ListingDetails<E> {
         paginationController = attrs.paginationController
         paginationAction = attrs.paginationAction ?: attrs.type
         paginationDisable =  Boolean.parseBoolean(attrs.paginationDisable)
+
+        userId = Mappings.parseStringOrLong(attrs?.userId)
     }
 
     void setPaginationController(String paginationController) {
@@ -48,5 +54,9 @@ class ListingDetails<E> {
     Map getRenderMap() {
         [template: LISTING_TEMPLATE,
          model   : [listingDetails: this]]
+    }
+
+    Map getPaginationParams() {
+        return [userId: userId]
     }
 }

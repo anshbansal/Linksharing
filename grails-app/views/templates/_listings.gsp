@@ -17,7 +17,7 @@
                             total="${listingDetails.totalListings}"
                             controller="${listingDetails.paginationController}"
                             action="${paginationAction}"
-                            params="[]"/>
+                            params="${listingDetails.paginationParams}"/>
                 </section>
             </content>
         </g:if>

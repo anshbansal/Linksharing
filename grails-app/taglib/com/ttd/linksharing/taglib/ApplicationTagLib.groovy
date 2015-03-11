@@ -20,7 +20,7 @@ class ApplicationTagLib {
     def readingItemService
 
     /**
-     * @attr title The title of the Posts' container
+     * @attr title The title for the container
      * @attr type REQUIRED The type of posts to be shown. Same as ID of the div being paginated
      * @attr paginationDisable Defaults(false). Set(true) if pagination is to be disabled
      */
@@ -51,8 +51,10 @@ class ApplicationTagLib {
     }
 
     /**
-     * @attr title The title of the Posts' container
-     * @attr type REQUIRED The type of topics to be shown
+     * @attr title The title for the container
+     * @attr type REQUIRED The type of posts to be shown. Same as ID of the div being paginated
+     * @attr paginationDisable Defaults(false). Set(true) if pagination is to be disabled
+     * @attr userId Default (not used). Considered if (type = topicsFor)
      */
     def topics = { attrs ->
         ListingDetails<TopicDetails> listingDetails =
@@ -69,6 +71,15 @@ class ApplicationTagLib {
                 listingDetails.title = "Trending Topics"
                 listingDetails.listings = topicService.
                         getTrendingTopics(listingDetails.max, listingDetails.offset)
+                break
+            case "topicsFor":
+                listingDetails.title = "Topics"
+
+                println "Type is ${attrs.userId?.class}"
+
+                listingDetails.listings = topicService.getTopicsForUser(
+                                            User.get(listingDetails.userId), includePrivates(listingDetails.userId) ,
+                                            listingDetails.max, listingDetails.offset)
                 break
         }
 
@@ -123,6 +134,10 @@ class ApplicationTagLib {
     }
 
     private Boolean includePrivates(User user) {
-        session?.loggedUser.id == user.id || session?.loggedUser?.admin
+        includePrivates(user.id)
+    }
+
+    private Boolean includePrivates(Long id) {
+        session?.loggedUser?.id == id || session?.loggedUser?.admin
     }
 }
