@@ -1,6 +1,7 @@
 package com.ttd.linksharing.vo
 
 import com.ttd.linksharing.util.Mappings
+import grails.converters.JSON
 
 class ListingDetails<E> {
 
@@ -36,6 +37,9 @@ class ListingDetails<E> {
         paginationAction = attrs.paginationAction ?: attrs.type
         paginationDisable =  Boolean.parseBoolean(attrs.paginationDisable)
 
+        searchEnable = Boolean.parseBoolean(attrs.searchEnable)
+
+
         userId = Mappings.parseStringOrLong(attrs?.userId)
     }
 
@@ -60,10 +64,14 @@ class ListingDetails<E> {
     }
 
     Map getPaginationParams() {
-        return [userId: userId]
+        [title: title, userId: userId, searchEnable: searchEnable]
     }
 
     Boolean getHasFooter() {
         !paginationDisable && totalListings >= listings.size()
+    }
+
+    JSON getSearchParameters() {
+        paginationParams as JSON
     }
 }

@@ -6,6 +6,7 @@ import com.ttd.linksharing.vo.ListingDetails
 import com.ttd.linksharing.vo.PostDetails
 import com.ttd.linksharing.vo.TopicDetails
 import com.ttd.linksharing.vo.UserDetails
+import grails.converters.JSON
 
 class ApplicationTagLib {
     static defaultEncodeAs = [taglib: 'raw']
@@ -22,7 +23,8 @@ class ApplicationTagLib {
     /**
      * @attr title The title for the container
      * @attr type REQUIRED The type of posts to be shown. Same as ID of the div being paginated
-     * @attr paginationDisable Defaults(false). Set(true) if pagination is to be disabled
+     * @attr paginationDisable Defaults(false). Set(true) if required
+     * @attr searchEnable Defaults(false). Set(true) if required
      * @attr userId Default (not used). Considered if (type = topicsFor)
      */
     def posts = { attrs ->
@@ -61,7 +63,8 @@ class ApplicationTagLib {
     /**
      * @attr title The title for the container
      * @attr type REQUIRED The type of posts to be shown. Same as ID of the div being paginated
-     * @attr paginationDisable Defaults(false). Set(true) if pagination is to be disabled
+     * @attr paginationDisable Defaults(false). Set(true) if required
+     * @attr searchEnable Defaults(false). Set(true) if required
      * @attr userId Default (not used). Considered if (type = topicsFor)
      */
     def topics = { attrs ->
@@ -136,6 +139,10 @@ class ApplicationTagLib {
 
     def flash = { attrs ->
         out << render(template: "/templates/commons/flash_message", model: [type: attrs.type])
+    }
+
+    def searchBox = { attrs ->
+        out << render(template: "/templates/commons/search")
     }
 
     private Boolean includePrivates(User user) {

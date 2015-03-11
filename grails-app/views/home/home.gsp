@@ -16,8 +16,8 @@
         <tmpl:registration/>
     </section>
 
-    %{--<section class="major-part left-part">--}%
-        %{--<ls:posts type="topPosts"/>--}%
-    %{--</section>--}%
+    <section class="major-part left-part">
+        <ls:posts type="topPosts"/>
+    </section>
 </body>
 </html>

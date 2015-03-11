@@ -25,5 +25,7 @@
             </ul>
         </nav>
     </g:if>
-    <g:render template="/templates/commons/search"/>
+    <span class="searchBox">
+        <ls:searchBox/>
+    </span>
 </header>

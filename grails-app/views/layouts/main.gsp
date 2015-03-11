@@ -12,6 +12,7 @@
         <title><g:layoutTitle default="Linksharing"/></title>
 
   		<asset:stylesheet src="application.css"/>
+        <asset:javascript src="jq.js"/>
 		<g:layoutHead/>
 	</head>
 	<body>
