@@ -14,11 +14,19 @@ class ApplicationFilters {
 
                 if (!session?.loggedUser) {
 
+                    Boolean allow = Boolean.FALSE
+
                     switch (controllerName) {
                         case 'home':
-                            return actionName in ['home']
+                            allow = actionName in ['home']
+                            break
                         case 'user':
-                            return actionName in ['loginHandler', 'show', 'isUniqueIdentifierValid']
+                            allow =  actionName in ['loginHandler', 'show', 'isUniqueIdentifierValid']
+                            break
+                    }
+
+                    if (allow) {
+                        return true
                     }
 
                     println "Request to ${controllerName}:${actionName} filtered as user not logged in"
