@@ -9,8 +9,8 @@
         <ls:user user="${user}"/>
     </section>
 
-    <section class="major-part right-part">
-        Aseem<br/><br/><br/><br/><br/><br/>
+    <section class="major-part right-part" id="postsFor">
+        <ls:posts type="postsFor" userId="${user.id}"/>
     </section>
 
     <section class="minor-part left-part" id="topicsFor">

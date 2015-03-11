@@ -23,12 +23,14 @@ class ApplicationTagLib {
      * @attr title The title for the container
      * @attr type REQUIRED The type of posts to be shown. Same as ID of the div being paginated
      * @attr paginationDisable Defaults(false). Set(true) if pagination is to be disabled
+     * @attr userId Default (not used). Considered if (type = topicsFor)
      */
     def posts = { attrs ->
         ListingDetails<PostDetails> listingDetails =
                 new ListingDetails<>(renderTemplate: "/templates/post/post", attrs: attrs,
                         paginationController: "listingsPost")
 
+        //TODO Check logic of each for (isRead) after mark as read is implemented
         switch (attrs.type) {
             case "recentShares":
                 listingDetails.title = "Recent Shares"
@@ -44,6 +46,12 @@ class ApplicationTagLib {
                 listingDetails.title = "Inbox"
                 listingDetails.listings = readingItemService
                         .getReadingItemsForUser(session?.loggedUser, listingDetails.max, listingDetails.offset)
+                break
+            case "postsFor":
+                listingDetails.title = "Posts"
+                listingDetails.listings = resourceService.getPostsForUser(
+                                            User.get(listingDetails.userId), includePrivates(listingDetails.userId),
+                                            listingDetails.max, listingDetails.offset)
                 break
         }
 
