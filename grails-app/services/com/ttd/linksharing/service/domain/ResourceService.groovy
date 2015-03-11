@@ -7,6 +7,7 @@ import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.User
+import com.ttd.linksharing.vo.QueryParameters
 import grails.gorm.PagedResultList
 import grails.transaction.Transactional
 import org.hibernate.FetchMode
@@ -31,10 +32,14 @@ class ResourceService {
         resource
     }
 
-    PagedResult<PostDetails> recentPublicResources(Integer max, Integer offset) {
+    PagedResult<PostDetails> recentPublicResources(QueryParameters params) {
 
-        List<PagedResultList> pagedResultList =
-                Resource.recentPublicResources.list(max: max, offset: offset)
+        def criteria = Resource.recentPublicResources
+        if (params.searchTerm) {
+            criteria = criteria.descriptionLike(params.searchTerm)
+        }
+
+        List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
 
         new PagedResult<PostDetails>().setPaginationList(
                 pagedResultList,

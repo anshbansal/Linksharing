@@ -4,6 +4,7 @@ import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.PostDetails
 import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.User
+import com.ttd.linksharing.vo.QueryParameters
 import grails.gorm.PagedResultList
 import grails.transaction.Transactional
 
@@ -22,15 +23,14 @@ class ReadingItemService {
         ReadingItem.findAllWhere(user: user)
     }
 
-    PagedResult<PostDetails> getReadingItemsForUser(User user, Integer max, Integer offset, String searchTerm = "") {
-
+    PagedResult<PostDetails> getReadingItemsForUser(User user, QueryParameters params) {
 
         def criteria = ReadingItem.unreadForUser(user)
-        if (searchTerm != "") {
-            criteria = criteria.resourceDescriptionLike(searchTerm)
+        if (params.searchTerm != "") {
+            criteria = criteria.resourceDescriptionLike(params.searchTerm)
         }
 
-        List<PagedResultList> pagedResultList = criteria.list(max: max, offset: offset)
+        List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
 
         new PagedResult<PostDetails>().setPaginationList(
                 pagedResultList,

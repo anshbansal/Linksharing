@@ -28,16 +28,16 @@ class ApplicationTagLib {
      * @attr userId Default (not used). Considered if (type = topicsFor)
      */
     def posts = { attrs ->
-        ListingDetails<PostDetails> listingDetails =
-                new ListingDetails<>(renderTemplate: "/templates/post/post", attrs: attrs,
-                        paginationController: "listingsPost")
+        ListingDetails<PostDetails> listingDetails = new ListingDetails<>(
+                renderTemplate: "/templates/post/post", attrs: attrs, paginationController: "listingsPost")
+        listingDetails.includePrivates = includePrivates(listingDetails.userId)
 
         //TODO Check logic of each for (isRead) after mark as read is implemented
         switch (attrs.type) {
             case "recentShares":
                 listingDetails.title = "Recent Shares"
                 listingDetails.listings = resourceService
-                        .recentPublicResources(listingDetails.max, listingDetails.offset)
+                        .recentPublicResources(listingDetails.queryParams)
                 break
 //            case "topPosts":
 //                title = "Top Posts"
@@ -47,7 +47,7 @@ class ApplicationTagLib {
             case "inbox":
                 listingDetails.title = "Inbox"
                 listingDetails.listings = readingItemService
-                        .getReadingItemsForUser(session?.loggedUser, listingDetails.max, listingDetails.offset, listingDetails.searchTerm)
+                        .getReadingItemsForUser(session?.loggedUser, listingDetails.queryParams)
                 break
             case "postsFor":
                 listingDetails.title = "Posts"

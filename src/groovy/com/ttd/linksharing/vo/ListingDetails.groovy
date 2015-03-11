@@ -25,6 +25,8 @@ class ListingDetails<E> {
     Boolean searchEnable
     String searchTerm
 
+    Boolean includePrivates
+
     Long userId
 
     void setAttrs(Map attrs) {
@@ -74,5 +76,9 @@ class ListingDetails<E> {
 
     JSON getSearchParameters() {
         paginationParams as JSON
+    }
+
+    QueryParameters getQueryParams() {
+        new QueryParameters(max: max, offset: offset, searchTerm: searchTerm, includePrivates: includePrivates)
     }
 }
