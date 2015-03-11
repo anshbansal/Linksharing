@@ -13,12 +13,15 @@ class ListingDetails<E> {
     Integer totalListings = 0
 
     String idToUpdate
+
     Boolean paginationDisable
     String paginationController
     String paginationAction
 
     Integer max
     Integer offset
+
+    Boolean searchEnable
 
     Long userId
 
@@ -58,5 +61,9 @@ class ListingDetails<E> {
 
     Map getPaginationParams() {
         return [userId: userId]
+    }
+
+    Boolean getHasFooter() {
+        !paginationDisable && totalListings >= listings.size()
     }
 }

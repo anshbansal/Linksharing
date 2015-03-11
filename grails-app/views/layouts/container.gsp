@@ -1,6 +1,7 @@
 <section class="generic-container">
     <header class="heading">
         <g:pageProperty name="title"/>
+        <g:pageProperty name="page.header"/>
     </header>
 
     <section class="container-contents">

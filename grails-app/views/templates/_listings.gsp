@@ -3,9 +3,14 @@
 
 <g:if test="${listings?.size()}">
     <g:applyLayout name="container" params="[title: listingDetails.title]">
+
+        <content tag="header">
+            Aseem
+        </content>
+
         <g:render template="${listingDetails.renderTemplate}" var="listing" collection="${listings}"/>
 
-        <g:if test="${!listingDetails.paginationDisable && listingDetails.totalListings >= listings.size()}">
+        <g:if test="${listingDetails.hasFooter}">
             <content tag="footer">
                 <section class="paginationList">
                     <util:remotePaginate
@@ -21,6 +26,7 @@
                 </section>
             </content>
         </g:if>
+
     </g:applyLayout>
     %{--TODO For search pagination params will be used for search true. Search results will contain --}%
     %{--TODO Pages should be of fixed size for some cases--}%
