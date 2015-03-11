@@ -50,11 +50,9 @@ class ApplicationTagLib {
                         .getReadingItemsForUser(session?.loggedUser, listingDetails.queryParams)
                 break
             case "postsFor":
-                //TODO Add search
                 listingDetails.title = "Posts"
-                listingDetails.listings = resourceService.getPostsForUser(
-                                            User.get(listingDetails.userId), includePrivates(listingDetails.userId),
-                                            listingDetails.max, listingDetails.offset)
+                listingDetails.listings = resourceService
+                        .getPostsForUser(User.get(listingDetails.userId), listingDetails.queryParams)
                 break
         }
 
@@ -86,7 +84,6 @@ class ApplicationTagLib {
                         getTrendingTopics(listingDetails.max, listingDetails.offset)
                 break
             case "topicsFor":
-                //TODO Add search
                 listingDetails.title = "Topics"
                 listingDetails.listings = topicService.
                         getTopicsForUser(User.get(listingDetails.userId), listingDetails.queryParams)

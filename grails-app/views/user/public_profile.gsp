@@ -10,7 +10,7 @@
     </section>
 
     <section class="major-part right-part" id="postsFor">
-        <ls:posts type="postsFor" userId="${user.id}"/>
+        <ls:posts type="postsFor" userId="${user.id}" searchEnable="true"/>
     </section>
 
     <section class="minor-part left-part" id="topicsFor">

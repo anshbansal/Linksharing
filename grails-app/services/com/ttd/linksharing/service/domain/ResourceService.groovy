@@ -10,7 +10,6 @@ import com.ttd.linksharing.domain.User
 import com.ttd.linksharing.vo.QueryParameters
 import grails.gorm.PagedResultList
 import grails.transaction.Transactional
-import org.hibernate.FetchMode
 
 @Transactional
 class ResourceService {
@@ -51,18 +50,17 @@ class ResourceService {
         )
     }
 
-    PagedResult<PostDetails> getPostsForUser(User user, Boolean includePrivates, Integer max, Integer offset) {
-        List<PagedResultList> pagedResultList = Resource.createCriteria().list(max: max, offset: offset) {
+    PagedResult<PostDetails> getPostsForUser(User user, QueryParameters params) {
 
-            createAlias('topic', 't')
-
-            eq 'createdBy', user
-            inList 't.scope', Mappings.getScopes(includePrivates)
-
-            fetchMode('topic', FetchMode.JOIN)
-            fetchMode('createdBy', FetchMode.JOIN)
+        def criteria = Resource.forUser(user)
+        if (! params.includePrivates) {
+            criteria = criteria.publicResources()
+        }
+        if (params.searchTerm) {
+            criteria = criteria.descriptionLike(params.searchTerm)
         }
 
+        List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
 
         new PagedResult<PostDetails>().setPaginationList(
                 pagedResultList,

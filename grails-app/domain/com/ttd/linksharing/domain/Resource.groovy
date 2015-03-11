@@ -23,11 +23,21 @@ abstract class Resource {
 
     static namedQueries = {
         recentPublicResources {
-            'topic' {
-                eq('scope', Visibility.PUBLIC)
-            }
+            publicResources()
             order("dateCreated", "desc")
 
+            fetchMode('createdBy', FetchMode.JOIN)
+        }
+
+        publicResources {
+            'topic' {
+                publicTopics()
+            }
+            fetchMode('topic', FetchMode.JOIN)
+        }
+
+        forUser { User user ->
+            eq 'createdBy', user
             fetchMode('createdBy', FetchMode.JOIN)
         }
 
