@@ -47,7 +47,7 @@ class ApplicationTagLib {
             case "inbox":
                 listingDetails.title = "Inbox"
                 listingDetails.listings = readingItemService
-                        .getReadingItemsForUser(session?.loggedUser, listingDetails.max, listingDetails.offset)
+                        .getReadingItemsForUser(session?.loggedUser, listingDetails.max, listingDetails.offset, listingDetails.searchTerm)
                 break
             case "postsFor":
                 listingDetails.title = "Posts"

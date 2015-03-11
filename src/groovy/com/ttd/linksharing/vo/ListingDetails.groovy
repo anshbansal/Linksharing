@@ -69,7 +69,7 @@ class ListingDetails<E> {
     }
 
     Boolean getHasFooter() {
-        !paginationDisable && totalListings >= listings.size()
+        !paginationDisable && totalListings >= listings?.size()
     }
 
     JSON getSearchParameters() {

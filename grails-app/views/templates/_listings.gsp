@@ -2,7 +2,7 @@
 <g:set var="paginationController" value="${listingDetails.paginationController}"/>
 <g:set var="paginationAction" value="${listingDetails.paginationAction}"/>
 
-<g:if test="${listings?.size()}">
+<g:if test="${listingDetails.searchTerm || listings?.size()}">
     <g:applyLayout name="container" params="[title: listingDetails.title]">
 
         <content tag="header">
@@ -44,7 +44,7 @@
                             total="${listingDetails.totalListings}"
                             controller="${listingDetails.paginationController}"
                             action="${paginationAction}"
-                            params="${listingDetails.paginationParams}"/>
+                            params="${listingDetails.paginationParams + [searchTerm: listingDetails.searchTerm]}"/>
                 </section>
             </content>
         </g:if>

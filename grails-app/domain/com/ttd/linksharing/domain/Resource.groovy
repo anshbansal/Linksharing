@@ -30,5 +30,9 @@ abstract class Resource {
 
             fetchMode('createdBy', FetchMode.JOIN)
         }
+
+        descriptionLike { String term ->
+            ilike 'description', '%' + term + '%'
+        }
     }
 }

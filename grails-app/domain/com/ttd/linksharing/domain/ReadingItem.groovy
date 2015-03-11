@@ -15,5 +15,10 @@ class ReadingItem {
             fetchMode('resource', FetchMode.JOIN)
             fetchMode('resource.createdBy', FetchMode.JOIN)
         }
+        resourceDescriptionLike { String term ->
+            'resource' {
+                descriptionLike(term)
+            }
+        }
     }
 }

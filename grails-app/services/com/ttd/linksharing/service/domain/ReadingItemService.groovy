@@ -22,9 +22,15 @@ class ReadingItemService {
         ReadingItem.findAllWhere(user: user)
     }
 
-    PagedResult<PostDetails> getReadingItemsForUser(User user, Integer max, Integer offset) {
+    PagedResult<PostDetails> getReadingItemsForUser(User user, Integer max, Integer offset, String searchTerm = "") {
 
-        List<PagedResultList> pagedResultList = ReadingItem.unreadForUser(user).list(max: max, offset: offset)
+
+        def criteria = ReadingItem.unreadForUser(user)
+        if (searchTerm != "") {
+            criteria = criteria.resourceDescriptionLike(searchTerm)
+        }
+
+        List<PagedResultList> pagedResultList = criteria.list(max: max, offset: offset)
 
         new PagedResult<PostDetails>().setPaginationList(
                 pagedResultList,
