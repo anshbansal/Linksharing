@@ -16,7 +16,7 @@ function createPopup(url) {
         url: url
     }).done(function(data) {
         popup.html(data);
-        popup.dialog();
+        popup.dialog({width: 500});
     });
 }
 

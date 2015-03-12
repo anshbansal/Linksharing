@@ -1,6 +1,8 @@
 package com.ttd.linksharing.taglib
 
 import com.ttd.linksharing.domain.Resource
+import com.ttd.linksharing.domain.Subscription
+import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
 import com.ttd.linksharing.vo.ListingDetails
 import com.ttd.linksharing.vo.PostDetails
@@ -146,6 +148,11 @@ class ApplicationTagLib {
 
     def searchBox = { attrs ->
         out << render(template: "/templates/commons/search")
+    }
+
+    def getTopicsForUser = { attrs ->
+        out << g.select(name: attrs.name, from: Subscription.subscribedTopics(session?.loggedUser).list().topic)
+
     }
 
     private Boolean includePrivates(User user) {
