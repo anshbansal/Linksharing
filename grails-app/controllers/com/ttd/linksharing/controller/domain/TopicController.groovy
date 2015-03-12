@@ -1,6 +1,7 @@
 package com.ttd.linksharing.controller.domain
 
 import com.ttd.linksharing.co.topic.TopicInfo
+import com.ttd.linksharing.domain.Topic
 
 class TopicController {
 
@@ -8,6 +9,10 @@ class TopicController {
 
     def index() {
         render view: "create"
+    }
+
+    def show(Topic topic) {
+        render view: "show", model: [topic: topic]
     }
 
     def isTopicPresent() {

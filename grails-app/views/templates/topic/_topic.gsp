@@ -10,7 +10,10 @@
         </div>
         <div class="right-part">
             <div class="grid-3">
-                <div>${topic.name}</div>
+                <div>
+                    %{--TODO Needs to be parametrized for topic listing page later--}%
+                    <g:link uri="/topic/show/${topic.id}">${topic.name}</g:link>
+                </div>
                 <div>${creator}</div>
                 <div>Subscribe</div>
             </div>
