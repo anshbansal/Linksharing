@@ -44,20 +44,12 @@ class TopicService {
         if (params.searchTerm) {
             criteria = criteria.topicNameLike(params.searchTerm)
         }
-        List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
 
-        PagedResult<TopicDetails> topicsDetail = new PagedResult<>().setPaginationList(
-                pagedResultList,
-                {
-                    it.collect([]) { Subscription subscription ->
-                        new TopicDetails(topic: subscription.topic, creator: subscription.topic.createdBy)
-                    }
-                }
-        )
-        if (pagedResultList.size() > 0) {
-            updateSubscriptionAndResourceCountInTopicsDetail(topicsDetail)
+        getTopicDetailsFromCriteria(criteria, params) {
+            it.collect([]) { Subscription subscription ->
+                new TopicDetails(topic: subscription.topic, creator: subscription.topic.createdBy)
+            }
         }
-        topicsDetail
     }
 
     PagedResult<TopicDetails> getTopicsForUser(User user, QueryParameters params) {
@@ -70,16 +62,20 @@ class TopicService {
             criteria = criteria.nameLike(params.searchTerm)
         }
 
+        getTopicDetailsFromCriteria(criteria, params) {
+            it.collect([]) { Topic topic ->
+                new TopicDetails(topic: topic, creator: topic.createdBy)
+            }
+        }
+    }
+
+    private PagedResult<TopicDetails> getTopicDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
+
         List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
 
-        PagedResult<TopicDetails> topicsDetail = new PagedResult<>().setPaginationList(
-                pagedResultList,
-                {
-                    it.collect([]) { Topic topic ->
-                        new TopicDetails(topic: topic, creator: topic.createdBy)
-                    }
-                }
-        )
+        PagedResult<TopicDetails> topicsDetail = new PagedResult<>()
+                .setPaginationList(criteria.list(max: params.max, offset: params.offset), collector)
+
         if (pagedResultList.size() > 0) {
             updateSubscriptionAndResourceCountInTopicsDetail(topicsDetail)
         }
