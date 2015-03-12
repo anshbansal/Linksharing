@@ -38,16 +38,7 @@ class ResourceService {
             criteria = criteria.descriptionLike(params.searchTerm)
         }
 
-        List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
-
-        new PagedResult<PostDetails>().setPaginationList(
-                pagedResultList,
-                {
-                    it.collect([]) { Resource resource ->
-                        new PostDetails(resource: resource)
-                    }
-                }
-        )
+        getPostDetailsFromCriteria(criteria, params, PostDetails.mapFromResource)
     }
 
     PagedResult<PostDetails> getPostsForUser(User user, QueryParameters params) {
@@ -60,15 +51,12 @@ class ResourceService {
             criteria = criteria.descriptionLike(params.searchTerm)
         }
 
+        getPostDetailsFromCriteria(criteria, params, PostDetails.mapFromResource)
+    }
+
+    private PagedResult<PostDetails> getPostDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
         List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
 
-        new PagedResult<PostDetails>().setPaginationList(
-                pagedResultList,
-                {
-                    it.collect([]) { Resource resource ->
-                        new PostDetails(resource: resource)
-                    }
-                }
-        )
+        new PagedResult<PostDetails>().setPaginationList(pagedResultList, collector)
     }
 }
