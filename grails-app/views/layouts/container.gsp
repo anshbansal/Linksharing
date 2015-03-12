@@ -1,6 +1,12 @@
 <section class="generic-container">
     <header class="heading">
-        <g:pageProperty name="title"/>
+        <g:if test="${pageProperty(name: 'title')}">
+            <g:pageProperty name="title"/>
+        </g:if>
+        <g:else>
+            <g:pageProperty name="page.title"/>
+        </g:else>
+
         <g:pageProperty name="page.header"/>
     </header>
 

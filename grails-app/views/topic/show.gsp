@@ -6,7 +6,12 @@
 
 <body>
     <section class="major-part left-part">
-        <ls:topic topic="${topic}"/>
+        <g:applyLayout name="container">
+                <content tag="title">
+                    Topic: "${topic.name}"
+                </content>
+                <ls:topic topic="${topic}"/>
+        </g:applyLayout>
     </section>
 </body>
 </html>
