@@ -6,7 +6,7 @@
 
 <body>
     <section class="major-part left-part">
-
+        <ls:topic topic="${topic}"/>
     </section>
 </body>
 </html>

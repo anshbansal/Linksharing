@@ -10,6 +10,7 @@ import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.QueryParameters
 import com.ttd.linksharing.vo.TopicDetails
 import grails.gorm.PagedResultList
+import grails.transaction.NotTransactional
 import grails.transaction.Transactional
 import org.hibernate.FetchMode
 
@@ -61,6 +62,12 @@ class TopicService {
         getTopicDetailsFromCriteria(criteria, params, TopicDetails.mapFromTopics)
     }
 
+    @NotTransactional
+    TopicDetails getTopicDetailsForTopic(Topic topic) {
+        new TopicDetails(topic: topic, creator: topic.createdBy,
+               numSubscriptions: Subscription.countByTopic(topic), numResources: Resource.countByTopic(topic))
+    }
+
     private PagedResult<TopicDetails> getTopicDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
 
         List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
@@ -69,7 +76,7 @@ class TopicService {
                 .setPaginationList(criteria.list(max: params.max, offset: params.offset), collector)
 
         if (pagedResultList.size() > 0) {
-            updateSubscriptionAndResourceCountInTopicsDetail(topicsDetail)
+            topicsDetail.paginationList = updateSubscriptionAndResourceCountInTopicsDetail(topicsDetail.paginationList)
         }
         topicsDetail
     }
@@ -103,7 +110,7 @@ class TopicService {
 //        }.count()
 
         if (pagedResultList.size() > 0) {
-            updateSubscriptionAndResourceCountInTopicsDetail(topicsDetail)
+            topicsDetail.paginationList = updateSubscriptionAndResourceCountInTopicsDetail(topicsDetail.paginationList)
         }
 
         topicsDetail
@@ -117,27 +124,22 @@ class TopicService {
     }
 
     //TODO Make immutable
-    PagedResult<TopicDetails> updateSubscriptionAndResourceCountInTopicsDetail(PagedResult<TopicDetails> topicsDetail) {
+    List<TopicDetails> updateSubscriptionAndResourceCountInTopicsDetail(List<TopicDetails> topicDetailsList) {
 
-        List<TopicDetails> topicDetailsList = topicsDetail.paginationList
-
-        List<Long> topicIds = []
-        topicDetailsList.each {
-            topicIds << it.topic.id.toLong()
-        }
+        List<Long> topicIds = topicIdsFrom(topicDetailsList)
 
         Map temp = getNumberSubscriptionsAndResources(topicIds)
 
         topicDetailsList.each { TopicDetails topicDetails ->
-            int topicId = topicDetails.topic.id.intValue()
+            int topicId = topicIdFrom(topicDetails)
 
             topicDetails.numResources = temp[topicId]['numRes']
             topicDetails.numSubscriptions = temp[topicId]['numSubs']
         }
-        return topicsDetail
+        return topicDetailsList
     }
 
-    Map getNumberSubscriptionsAndResources(List<Long> topicIds) {
+    Map getNumberSubscriptionsAndResources(List<Integer> topicIds) {
         Map result = [:]
 
         Topic.executeQuery("""
@@ -146,11 +148,23 @@ class TopicService {
                 (select count(*) from Resource where topic.id = t.id) as numRes
             from Topic as t
             where t.id in (:ids)
-            """, ['ids': topicIds ])
+            """, ['ids': topicIds*.toLong() ])
                 .each {
-                    result[it[0].intValue()] = [numSubs: it[1].intValue() ?: 0, numRes: it[2].intValue() ?: 0]
+                    result[it[0].intValue()] = [numSubs: it[1].intValue(), numRes: it[2].intValue()]
                 }
 
         return result
+    }
+
+    @NotTransactional
+    private static List<Integer> topicIdsFrom(List<TopicDetails> topicDetailsList) {
+        topicDetailsList.collect([]) { TopicDetails topicDetails ->
+            topicIdFrom(topicDetails)
+        }
+    }
+
+    @NotTransactional
+    private static Integer topicIdFrom(TopicDetails topicDetails) {
+        topicDetails.topic.id
     }
 }

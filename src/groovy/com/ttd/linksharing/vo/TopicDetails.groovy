@@ -22,4 +22,14 @@ class TopicDetails {
             new TopicDetails(topic: topic, creator: topic.createdBy)
         }
     }
+
+    @Override
+    public String toString() {
+        "TopicDetails{" +
+            "topic=" + topic +
+            ", creator=" + creator +
+            ", numSubscriptions=" + numSubscriptions +
+            ", numResources=" + numResources +
+            '}';
+    }
 }

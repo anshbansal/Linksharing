@@ -99,6 +99,11 @@ class ApplicationTagLib {
         out << render(listingDetails.renderMap)
     }
 
+    def topic = { attrs ->
+        out << render(template: "/templates/topic/topic",
+                        model: [listing: topicService.getTopicDetailsForTopic(attrs.topic)])
+    }
+
     /**
      * @attr post REQUIRED The post
      */

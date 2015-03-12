@@ -28,6 +28,7 @@ class ListingDetails<E> {
     Boolean includePrivates
 
     Long userId
+    Long topicId
 
     void setAttrs(Map attrs) {
         title = attrs.title
@@ -44,6 +45,7 @@ class ListingDetails<E> {
         searchTerm = attrs.searchTerm ?: ""
 
         userId = Mappings.parseStringOrLong(attrs?.userId)
+        topicId = Mappings.parseStringOrLong(attrs?.topicId)
     }
 
     void setPaginationController(String paginationController) {
