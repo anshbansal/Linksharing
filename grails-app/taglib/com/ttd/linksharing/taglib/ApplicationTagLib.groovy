@@ -133,6 +133,14 @@ class ApplicationTagLib {
         out << render(listingDetails.renderMap)
     }
 
+    def user = { attrs ->
+        User user = attrs.user
+        UserDetails details = userService
+                .updateSubscriptionAndTopicsCountInUsersDetail([new UserDetails(user: user)], includePrivates(user))[0]
+
+        out << render(template: "/templates/user/user", model: [listing: details])
+    }
+
     /**
      * @attr post REQUIRED The post
      */
@@ -152,27 +160,6 @@ class ApplicationTagLib {
         out << render(
                 template: "/templates/commons/photo",
                 model: [user: user]
-        )
-    }
-
-    //TODO Refactoring needed
-    def user = { attrs ->
-
-        UserDetails details = new UserDetails(user: attrs.user)
-
-        Integer userId = details.user.id
-
-        Boolean includePrivates = includePrivates(attrs.user)
-
-        Map nums = userService
-                .getNumberSubscriptionsAndTopics([userId.toLong()], includePrivates)
-
-        details.numSubscriptions = nums[userId]['numSubs']
-        details.numTopics = nums[userId]['numTopics']
-
-        out << render(
-                template: "/templates/user/user",
-                model: [listing: details]
         )
     }
 

@@ -89,8 +89,7 @@ class UserService {
     PagedResult<UserDetails> getUsersSubscribedToTopic(Topic topic, QueryParameters params) {
         List<PagedResultList> pagedResultList = Subscription.forTopic(topic).list(max: params.max, offset: params.offset)
 
-        PagedResult<UserDetails> userDetailsPagedResult =
-                new PagedResult<UserDetails>()
+        PagedResult<UserDetails> userDetailsPagedResult = new PagedResult<UserDetails>()
                 .setPaginationList(pagedResultList, UserDetails.mapFromSubscriptions)
 
         userDetailsPagedResult.paginationList = updateSubscriptionAndTopicsCountInUsersDetail(
