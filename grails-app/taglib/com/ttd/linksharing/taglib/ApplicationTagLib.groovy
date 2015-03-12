@@ -59,9 +59,10 @@ class ApplicationTagLib {
                         .getPostsForUser(User.get(listingDetails.userId), listingDetails.queryParams)
                 break
             case "forTopic":
-                listingDetails.title = "Posts"
+                Topic curTopic = Topic.get(listingDetails.topicId)
+                listingDetails.title = 'Posts: "' + curTopic.name + '"'
                 listingDetails.listings = resourceService
-                        .getPostsForTopic(Topic.get(listingDetails.topicId), listingDetails.queryParams)
+                        .getPostsForTopic(curTopic, listingDetails.queryParams)
                 break
         }
 
