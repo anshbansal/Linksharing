@@ -8,7 +8,10 @@ class User {
     String password
     String firstName
     String lastName
-    Byte[] photo
+
+    byte[] photo
+    String avatarType
+
     Boolean admin  = Boolean.FALSE
     Boolean active = Boolean.TRUE
     Date dateCreated
@@ -25,7 +28,8 @@ class User {
     static constraints = {
         email unique: true, email: true
         username unique: true
-        photo size: 0..576, nullable: true
+        photo maxSize: 2 * 1024 * 1024, nullable: true
+        avatarType nullable: true
     }
 
     @Override

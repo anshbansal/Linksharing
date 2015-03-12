@@ -23,6 +23,7 @@ class UserService {
     User save(User user, Boolean isFlushEnabled = false) {
 
         if (!user.save(flush: isFlushEnabled)) {
+            log.debug("Error occurred during saving user ${user.errors}")
             return null
         }
         user

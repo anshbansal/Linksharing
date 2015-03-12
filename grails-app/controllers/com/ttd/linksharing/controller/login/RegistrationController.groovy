@@ -10,6 +10,17 @@ class RegistrationController {
     def userService
 
     def register(RegistrationCO registrationCO) {
+
+        def f = request.getFile('photo')
+        registrationCO.photo = f.bytes
+        registrationCO.avatarType = f.contentType
+        registrationCO.validate()
+        if (registrationCO.hasErrors()) {
+            println "Errors in registrationCO ${registrationCO.errors}"
+            flash['registrationMessage'] = "Invalid Registration Credentials"
+            redirect controller: "home", action: "home"
+        }
+
         User user = userService.registerUser(registrationCO)
 
         if (user) {

@@ -28,6 +28,14 @@ class UserController {
         render view: "profile", model: [loggedUser: session?.loggedUser]
     }
 
+    def photo(User user) {
+        response.contentType = user.avatarType
+        response.contentLength = user.photo.size()
+        OutputStream out = response.outputStream
+        out.write(user.photo)
+        out.close()
+    }
+
     def show(User user) {
         render view: "public_profile", model: [user: user]
     }

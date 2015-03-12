@@ -1,14 +1,22 @@
 package com.ttd.linksharing.co.user
 
 import com.ttd.linksharing.domain.User
+import grails.validation.Validateable
 
+@Validateable
 class RegistrationCO {
-    String email
+
     String username
-    String password
+
     String firstName
     String lastName
-    Byte[] photo
+    String email
+
+    String password
+    String rePassword
+
+    byte[] photo
+    String avatarType
 
     User getUser() {
         new User(
@@ -17,7 +25,15 @@ class RegistrationCO {
             password: password,
             firstName: firstName,
             lastName: lastName,
-            photo: photo
+            photo: photo,
+            avatarType: avatarType
         )
+    }
+
+    static constraints = {
+        importFrom UserDetailsCO
+        importFrom PasswordCO
+
+        username blank: false
     }
 }
