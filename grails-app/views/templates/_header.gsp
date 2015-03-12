@@ -13,15 +13,17 @@
             <div id="currentUserName">${loggedUser?.username}</div>
             <ul id="nav-menu">
                 <li>
-                    <a href="${createLink(controller: "user", action: "profile")}">Profile</a>
+                    <g:link controller="user" action="profile">Profile</g:link>
                 </li>
                 <g:if test="${loggedUser.admin}">
-                    <li><a href="${createLink(controller: "user", action: "users")}">Users</a></li>
+                    <li>
+                        <g:link controller="user" action="users">Users</g:link>
+                    </li>
                     <li>Topics</li>
                     <li>Posts</li>
                 </g:if>
                 <li>
-                    <a href="${createLink(controller: "login", action: "logout")}">Logout</a>
+                    <g:link controller="login" action="logout">Logout</g:link>
                 </li>
             </ul>
         </nav>
