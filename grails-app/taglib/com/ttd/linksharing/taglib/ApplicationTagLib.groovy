@@ -75,7 +75,7 @@ class ApplicationTagLib {
      * @attr searchEnable Defaults(false). Set(true) if required
      * @attr idToUpdate id for pagination/search results. Defaults to type
      * @attr type REQUIRED The type of topics to be shown.
-     * @attr userId Default (not used). Considered if (type = topicsFor)
+     * @attr userId Default (not used). Considered if (type = forUser)
      */
     def topics = { attrs ->
         ListingDetails<TopicDetails> listingDetails = new ListingDetails<>(
@@ -96,7 +96,7 @@ class ApplicationTagLib {
                 listingDetails.listings = topicService.
                         getTrendingTopics(listingDetails.max, listingDetails.offset)
                 break
-            case "topicsFor":
+            case "forUser":
                 listingDetails.title = "Topics"
                 listingDetails.listings = topicService.
                         getTopicsForUser(User.get(listingDetails.userId), listingDetails.queryParams)

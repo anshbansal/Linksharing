@@ -11,12 +11,12 @@
         </section>
     </section>
 
-    <section class="major-part right-part" id="forUser">
-        <ls:posts type="forUser" userId="${user.id}" searchEnable="true"/>
+    <section class="major-part right-part" id="postsForUser">
+        <ls:posts type="forUser" userId="${user.id}" searchEnable="true" idToUpdate="postsForUser"/>
     </section>
 
-    <section class="minor-part left-part" id="topicsFor">
-        <ls:topics type="topicsFor" userId="${user.id}" searchEnable="true"/>
+    <section class="minor-part left-part" id="topicsForUser">
+        <ls:topics type="forUser" userId="${user.id}" searchEnable="true" idToUpdate="topicsForUser"/>
     </section>
 </body>
 </html>
