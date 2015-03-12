@@ -28,7 +28,8 @@ class ApplicationTagLib {
      * @attr searchEnable Defaults(false). Set(true) if required
      * @attr idToUpdate id for pagination/search results. Defaults to type
      * @attr type REQUIRED The type of posts to be shown.
-     * @attr userId Default (not used). Considered if (type = postsFor)
+     * @attr userId Default (not used). Considered if (type = forUser)
+     * @attr topicId Default (not used). Considered if (type = forTopic)
      */
     def posts = { attrs ->
         ListingDetails<PostDetails> listingDetails = new ListingDetails<>(
@@ -52,10 +53,15 @@ class ApplicationTagLib {
                 listingDetails.listings = readingItemService
                         .getReadingItemsForUser(session?.loggedUser, listingDetails.queryParams)
                 break
-            case "postsFor":
+            case "forUser":
                 listingDetails.title = "Posts"
                 listingDetails.listings = resourceService
                         .getPostsForUser(User.get(listingDetails.userId), listingDetails.queryParams)
+                break
+            case "forTopic":
+                listingDetails.title = "Posts"
+                listingDetails.listings = resourceService
+                        .getPostsForTopic(Topic.get(listingDetails.topicId), listingDetails.queryParams)
                 break
         }
 

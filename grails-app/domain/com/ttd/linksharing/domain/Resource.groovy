@@ -40,6 +40,10 @@ abstract class Resource {
             fetchMode('createdBy', FetchMode.JOIN)
         }
 
+        forTopic { Topic topic ->
+            eq 'topic', topic
+        }
+
         descriptionLike { String term ->
             ilike 'description', '%' + term + '%'
         }

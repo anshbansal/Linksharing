@@ -1,6 +1,6 @@
 package com.ttd.linksharing.service.domain
 
-import com.ttd.linksharing.util.Mappings
+import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.PostDetails
 import com.ttd.linksharing.domain.ReadingItem
@@ -32,18 +32,19 @@ class ResourceService {
     }
 
     PagedResult<PostDetails> recentPublicResources(QueryParameters params) {
-
-        def criteria = Resource.recentResources.publicResources
-        if (params.searchTerm) {
-            criteria = criteria.descriptionLike(params.searchTerm)
-        }
-
-        getPostDetailsFromCriteria(criteria, params, PostDetails.mapFromResource)
+        getPostDetailsFromBaseCriteria(Resource.recentResources, params)
     }
 
     PagedResult<PostDetails> getPostsForUser(User user, QueryParameters params) {
+        getPostDetailsFromBaseCriteria(Resource.forUser(user), params)
+    }
 
-        def criteria = Resource.forUser(user)
+    PagedResult<PostDetails> getPostsForTopic(Topic topic, QueryParameters params) {
+        getPostDetailsFromBaseCriteria(Resource.forTopic(topic), params)
+    }
+
+    private static PagedResult<PostDetails> getPostDetailsFromBaseCriteria(def baseCriteria, QueryParameters params) {
+        def criteria = baseCriteria
         if (! params.includePrivates) {
             criteria = criteria.publicResources()
         }
@@ -54,7 +55,7 @@ class ResourceService {
         getPostDetailsFromCriteria(criteria, params, PostDetails.mapFromResource)
     }
 
-    private PagedResult<PostDetails> getPostDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
+    private static PagedResult<PostDetails> getPostDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
         List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
 
         new PagedResult<PostDetails>().setPaginationList(pagedResultList, collector)

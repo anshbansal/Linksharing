@@ -11,8 +11,8 @@
         </section>
     </section>
 
-    <section class="major-part right-part" id="postsFor">
-        <ls:posts type="postsFor" userId="${user.id}" searchEnable="true"/>
+    <section class="major-part right-part" id="forUser">
+        <ls:posts type="forUser" userId="${user.id}" searchEnable="true"/>
     </section>
 
     <section class="minor-part left-part" id="topicsFor">
