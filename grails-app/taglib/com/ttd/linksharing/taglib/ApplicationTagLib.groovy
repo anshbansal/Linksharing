@@ -61,8 +61,7 @@ class ApplicationTagLib {
             case "forTopic":
                 Topic curTopic = Topic.get(listingDetails.topicId)
                 listingDetails.title = 'Posts: "' + curTopic.name + '"'
-                listingDetails.listings = resourceService
-                        .getPostsForTopic(curTopic, listingDetails.queryParams)
+                listingDetails.listings = resourceService.getPostsForTopic(curTopic, listingDetails.queryParams)
                 break
         }
 
@@ -109,6 +108,29 @@ class ApplicationTagLib {
     def topic = { attrs ->
         out << render(template: "/templates/topic/topic",
                         model: [listing: topicService.getTopicDetailsForTopic(attrs.topic)])
+    }
+
+    /**
+     * @attr title The title for the container
+     * @attr paginationDisable Defaults(false). Set(true) if required
+     * @attr idToUpdate id for pagination/search results. Defaults to type
+     * @attr type REQUIRED The type of topics to be shown.
+     * @attr topicId Default (not used). Considered if (type = forTopic)
+     */
+    def users = { attrs ->
+        ListingDetails<UserDetails> listingDetails = new ListingDetails<>(
+                renderTemplate: "/templates/user/user", attrs: attrs, paginationController: 'listingsUser')
+        listingDetails.searchEnable = Boolean.FALSE
+        listingDetails.includePrivates = includePrivates(listingDetails.userId)
+
+        switch (attrs.type) {
+            case "forTopic":
+                Topic curTopic = Topic.get(listingDetails.topicId)
+                listingDetails.title = 'Users: "' + curTopic.name + '"'
+                listingDetails.listings = userService.getUsersSubscribedToTopic(curTopic, listingDetails.queryParams)
+                break
+        }
+        out << render(listingDetails.renderMap)
     }
 
     /**

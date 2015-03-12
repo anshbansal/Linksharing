@@ -11,4 +11,9 @@ class UtilController {
         def attrs = params + [type: "${params.topicType}"]
         render ls.topics(attrs)
     }
+
+    def renderUser() {
+        def attrs = params + [type: "${params.userType}"]
+        render ls.topics(attrs)
+    }
 }

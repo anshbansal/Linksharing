@@ -28,5 +28,10 @@ class Subscription {
                 nameLike(term)
             }
         }
+
+        forTopic { Topic topic ->
+            eq 'topic', topic
+            fetchMode('topic', FetchMode.JOIN)
+        }
     }
 }

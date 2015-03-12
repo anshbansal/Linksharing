@@ -17,6 +17,11 @@ class UrlMappings {
             action = 'renderTopic'
         }
 
+        "/listingsUser/$topicType" {
+            controller = 'util'
+            action = 'renderUser'
+        }
+
         "/"(controller: "home", action: "home")
         "500"(view:'/error')
 	}

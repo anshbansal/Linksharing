@@ -3,8 +3,14 @@ package com.ttd.linksharing.service.domain
 import com.ttd.linksharing.co.user.LoginCredentials
 import com.ttd.linksharing.co.user.RegistrationCO
 import com.ttd.linksharing.co.user.UserDetailsCO
+import com.ttd.linksharing.domain.Subscription
+import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
 import com.ttd.linksharing.util.Mappings
+import com.ttd.linksharing.vo.PagedResult
+import com.ttd.linksharing.vo.QueryParameters
+import com.ttd.linksharing.vo.UserDetails
+import grails.gorm.PagedResultList
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
 import org.apache.commons.lang.RandomStringUtils
@@ -80,6 +86,32 @@ class UserService {
         return newPassword
     }
 
+    PagedResult<UserDetails> getUsersSubscribedToTopic(Topic topic, QueryParameters params) {
+        List<PagedResultList> pagedResultList = Subscription.forTopic(topic).list(max: params.max, offset: params.offset)
+
+        PagedResult<UserDetails> userDetailsPagedResult =
+                new PagedResult<UserDetails>()
+                .setPaginationList(pagedResultList, UserDetails.mapFromSubscriptions)
+
+        userDetailsPagedResult.paginationList = updateSubscriptionAndTopicsCountInUsersDetail(
+                userDetailsPagedResult.paginationList, params.includePrivates)
+
+        userDetailsPagedResult
+    }
+
+    List<UserDetails> updateSubscriptionAndTopicsCountInUsersDetail(List<UserDetails> userDetailsList,
+                                                                    Boolean includePrivates) {
+        Map temp = getNumberSubscriptionsAndTopics(userIdsFrom(userDetailsList)*.toLong())
+
+        userDetailsList.collect([]) { UserDetails userDetails ->
+            int userId = userIdFrom(userDetails)
+            int numSubscriptions = temp[userId]['numSubs']
+            int numTopics = temp[userId]['numTopics']
+
+            new UserDetails(user: userDetails.user, numSubscriptions: numSubscriptions, numTopics: numTopics)
+        }
+    }
+
     Map getNumberSubscriptionsAndTopics(List<Long> userIds, Boolean includePrivates = Boolean.FALSE) {
         Map result = [:]
 
@@ -101,5 +133,17 @@ class UserService {
                 }
 
         return result
+    }
+
+    @NotTransactional
+    private static List<Integer> userIdsFrom(List<UserDetails> userDetailsList) {
+        userDetailsList.collect([]) { UserDetails userDetails ->
+            userIdFrom(userDetails)
+        }
+    }
+
+    @NotTransactional
+    private static Integer userIdFrom(UserDetails userDetails) {
+        userDetails.user.id
     }
 }

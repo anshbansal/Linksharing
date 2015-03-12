@@ -123,7 +123,6 @@ class TopicService {
         } > 0
     }
 
-    //TODO Make immutable
     List<TopicDetails> updateSubscriptionAndResourceCountInTopicsDetail(List<TopicDetails> topicDetailsList) {
 
         List<Long> topicIds = topicIdsFrom(topicDetailsList)
@@ -133,10 +132,12 @@ class TopicService {
         topicDetailsList.each { TopicDetails topicDetails ->
             int topicId = topicIdFrom(topicDetails)
 
-            topicDetails.numResources = temp[topicId]['numRes']
-            topicDetails.numSubscriptions = temp[topicId]['numSubs']
+            Integer numSubscriptions = temp[topicId]['numRes']
+            Integer numResources = temp[topicId]['numSubs']
+
+            new TopicDetails(topic: topicDetails.topic, creator: topicDetails.creator,
+                    numSubscriptions: numSubscriptions, numResources: numResources)
         }
-        return topicDetailsList
     }
 
     Map getNumberSubscriptionsAndResources(List<Integer> topicIds) {
