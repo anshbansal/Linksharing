@@ -133,6 +133,9 @@ class ApplicationTagLib {
         out << render(listingDetails.renderMap)
     }
 
+    /**
+     * @attr user REQUIRED The user
+     */
     def user = { attrs ->
         User user = attrs.user
         UserDetails details = userService
@@ -145,22 +148,12 @@ class ApplicationTagLib {
      * @attr post REQUIRED The post
      */
     def resourceType = { attrs ->
-        Resource resource = attrs.post
-
-        out << render(
-                template: "/templates/post/resourceType",
-                model: [post: resource]
-        )
+        out << render(template: "/templates/post/resourceType", model: [post: attrs.post])
     }
 
     //TODO Test User image present
     def photo = { attrs ->
-        User user = attrs.user
-
-        out << render(
-                template: "/templates/commons/photo",
-                model: [user: user]
-        )
+        out << render(template: "/templates/commons/photo",model: [user: attrs.user])
     }
 
     def flash = { attrs ->
