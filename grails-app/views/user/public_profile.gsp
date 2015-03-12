@@ -6,7 +6,9 @@
 
 <body>
     <section class="minor-part left-part">
-        <ls:user user="${user}"/>
+        <section class="single-container">
+            <ls:user user="${user}"/>
+        </section>
     </section>
 
     <section class="major-part right-part" id="postsFor">

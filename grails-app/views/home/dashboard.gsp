@@ -8,7 +8,9 @@
         <ls:posts type="inbox" searchEnable="true"/>
     </section>
     <section class="minor-part">
-        <ls:user user="${session?.loggedUser}"/>
+        <section class="single-container">
+            <ls:user user="${session?.loggedUser}"/>
+        </section>
     </section>
     <section class="minor-part" id="subscriptions">
         <ls:topics type="subscriptions" searchEnable="true"/>

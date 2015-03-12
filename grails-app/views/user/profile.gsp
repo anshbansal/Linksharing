@@ -6,7 +6,9 @@
 
 <body>
     <section class="minor-part left-part">
-        <ls:user user="${session?.loggedUser}"/>
+        <section class="single-container">
+            <ls:user user="${session?.loggedUser}"/>
+        </section>
     </section>
 
     <section class="major-part right-part">
