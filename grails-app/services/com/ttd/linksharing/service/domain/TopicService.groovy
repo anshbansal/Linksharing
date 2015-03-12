@@ -45,11 +45,7 @@ class TopicService {
             criteria = criteria.topicNameLike(params.searchTerm)
         }
 
-        getTopicDetailsFromCriteria(criteria, params) {
-            it.collect([]) { Subscription subscription ->
-                new TopicDetails(topic: subscription.topic, creator: subscription.topic.createdBy)
-            }
-        }
+        getTopicDetailsFromCriteria(criteria, params, TopicDetails.mapFromSubscriptions)
     }
 
     PagedResult<TopicDetails> getTopicsForUser(User user, QueryParameters params) {
@@ -62,11 +58,7 @@ class TopicService {
             criteria = criteria.nameLike(params.searchTerm)
         }
 
-        getTopicDetailsFromCriteria(criteria, params) {
-            it.collect([]) { Topic topic ->
-                new TopicDetails(topic: topic, creator: topic.createdBy)
-            }
-        }
+        getTopicDetailsFromCriteria(criteria, params, TopicDetails.mapFromTopics)
     }
 
     private PagedResult<TopicDetails> getTopicDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
