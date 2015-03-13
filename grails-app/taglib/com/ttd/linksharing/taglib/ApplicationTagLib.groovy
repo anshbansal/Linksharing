@@ -92,8 +92,6 @@ class ApplicationTagLib {
                     curUser = User.get(listingDetails.userId)
                 } else {
                     curUser = session?.loggedUser
-                    listingDetails.sortOrder = "desc"
-                    listingDetails.sortTerm = "dateCreated"
                 }
                 listingDetails.listings = topicService.
                         getSubscriptionsForUser(curUser, listingDetails.queryParams)

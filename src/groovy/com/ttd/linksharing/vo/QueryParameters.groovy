@@ -8,14 +8,7 @@ class QueryParameters {
 
     Boolean includePrivates
 
-    String sortTerm
-    String sortOrder
-
     Map getQueryMapParams() {
-        Map result = [max: max, offset: offset]
-        if (sortTerm) {
-            result += [sortTerm: sortTerm, sortOrder: sortOrder]
-        }
-        result
+        [max: max, offset: offset]
     }
 }

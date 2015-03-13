@@ -53,13 +53,6 @@ class ListingDetails<E> {
     void setIncludePrivates(Boolean includePrivates) {
         queryParams.includePrivates = includePrivates
     }
-    void setSortTerm(String sortTerm) {
-        queryParams.sortTerm = sortTerm
-    }
-    void setSortOrder(String sortOrder) {
-        queryParams.sortOrder = sortOrder
-    }
-
 
     void setPaginationController(String paginationController) {
         if (!this.paginationController) {
