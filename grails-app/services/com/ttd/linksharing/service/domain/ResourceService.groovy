@@ -56,7 +56,7 @@ class ResourceService {
     }
 
     private static PagedResult<PostDetails> getPostDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
-        List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
+        List<PagedResultList> pagedResultList = criteria.list(params.queryMapParams)
 
         new PagedResult<PostDetails>().setPaginationList(pagedResultList, collector)
     }

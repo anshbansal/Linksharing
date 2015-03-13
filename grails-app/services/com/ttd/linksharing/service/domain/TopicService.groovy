@@ -5,7 +5,6 @@ import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
-import com.ttd.linksharing.util.Mappings
 import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.QueryParameters
 import com.ttd.linksharing.vo.TopicDetails
@@ -39,9 +38,10 @@ class TopicService {
     }
 
     //TODO Subscription logic check
+    //TODO Add subscription public/private check
     PagedResult<TopicDetails> getSubscriptionsForUser(User user, QueryParameters params) {
 
-        def criteria = Subscription.subscribedTopics(user)
+        def criteria = Subscription.forUser(user)
         if (params.searchTerm) {
             criteria = criteria.topicNameLike(params.searchTerm)
         }
@@ -70,10 +70,9 @@ class TopicService {
 
     private PagedResult<TopicDetails> getTopicDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
 
-        List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
+        List<PagedResultList> pagedResultList = criteria.list(params.queryMapParams)
 
-        PagedResult<TopicDetails> topicsDetail = new PagedResult<>()
-                .setPaginationList(criteria.list(max: params.max, offset: params.offset), collector)
+        PagedResult<TopicDetails> topicsDetail = new PagedResult<>().setPaginationList(pagedResultList, collector)
 
         if (pagedResultList.size() > 0) {
             topicsDetail.paginationList = updateSubscriptionAndResourceCountInTopicsDetail(topicsDetail.paginationList)
@@ -83,8 +82,7 @@ class TopicService {
 
     //TODO Needs review
     PagedResult<TopicDetails> getTrendingTopics(QueryParameters params) {
-        List<PagedResultList> pagedResultList = Resource.createCriteria()
-                .list(max: params.max, offset: params.offset) {
+        List<PagedResultList> pagedResultList = Resource.createCriteria().list(params.queryMapParams) {
 
             createAlias('topic', 't')
 
@@ -141,6 +139,7 @@ class TopicService {
         }
     }
 
+    //TODO Refactor for individual maps
     Map getNumberSubscriptionsAndResources(List<Integer> topicIds) {
         Map result = [:]
 

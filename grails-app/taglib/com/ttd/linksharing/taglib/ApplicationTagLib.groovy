@@ -92,6 +92,8 @@ class ApplicationTagLib {
                     curUser = User.get(listingDetails.userId)
                 } else {
                     curUser = session?.loggedUser
+                    listingDetails.sortOrder = "desc"
+                    listingDetails.sortTerm = "dateCreated"
                 }
                 listingDetails.listings = topicService.
                         getSubscriptionsForUser(curUser, listingDetails.queryParams)
@@ -176,7 +178,7 @@ class ApplicationTagLib {
 
     def getTopicsForUser = { attrs ->
         out << g.select(name: attrs.name,
-                from: Subscription.subscribedTopics(session?.loggedUser).list().topic,
+                from: Subscription.forUser(session?.loggedUser).list().topic,
                 optionKey: 'id')
 
     }

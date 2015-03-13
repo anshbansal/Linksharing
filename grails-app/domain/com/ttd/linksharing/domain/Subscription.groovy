@@ -15,9 +15,9 @@ class Subscription {
     }
 
     static namedQueries = {
-        subscribedTopics { User user ->
+        //Makes sense to fetch Topic because topic is subscribed for user
+        forUser { User user ->
             eq 'user', user
-            order("dateCreated", "desc")
 
             fetchMode('topic', FetchMode.JOIN)
             fetchMode('topic.createdBy', FetchMode.JOIN)
