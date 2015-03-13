@@ -33,6 +33,6 @@ class TopicController {
     }
 
     def topics(String topicListType, Integer userId) {
-        render(view: "/templates/topics", model: [topicListType: topicListType, userId: userId])
+        render(view: "/templates/_topics", model: [topicListType: topicListType, userId: userId])
     }
 }

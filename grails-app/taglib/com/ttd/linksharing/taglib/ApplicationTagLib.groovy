@@ -101,8 +101,7 @@ class ApplicationTagLib {
                 listingDetails.searchEnable = Boolean.FALSE
                 listingDetails.paginationDisable = Boolean.TRUE
                 listingDetails.title = "Trending Topics"
-                listingDetails.listings = topicService.
-                        getTrendingTopics(listingDetails.max, listingDetails.offset)
+                listingDetails.listings = topicService.getTrendingTopics(listingDetails.queryParams)
                 break
             case "forUser":
                 listingDetails.title = "Topics"

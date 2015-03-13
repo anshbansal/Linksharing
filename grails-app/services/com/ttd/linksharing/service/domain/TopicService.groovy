@@ -82,8 +82,9 @@ class TopicService {
     }
 
     //TODO Needs review
-    PagedResult<TopicDetails> getTrendingTopics(Integer max, Integer offset) {
-        List<PagedResultList> pagedResultList = Resource.createCriteria().list(max: max, offset: offset) {
+    PagedResult<TopicDetails> getTrendingTopics(QueryParameters params) {
+        List<PagedResultList> pagedResultList = Resource.createCriteria()
+                .list(max: params.max, offset: params.offset) {
 
             createAlias('topic', 't')
 

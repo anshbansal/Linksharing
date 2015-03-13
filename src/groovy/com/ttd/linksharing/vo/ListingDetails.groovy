@@ -15,17 +15,13 @@ class ListingDetails<E> {
 
     String idToUpdate
 
+    Boolean searchEnable
     Boolean paginationDisable
+
     String paginationController
     String paginationAction
 
-    Integer max
-    Integer offset
-
-    Boolean searchEnable
-    String searchTerm
-
-    Boolean includePrivates
+    QueryParameters queryParams
 
     Long userId
     Long topicId
@@ -33,8 +29,10 @@ class ListingDetails<E> {
     void setAttrs(Map attrs) {
         title = attrs.title
 
-        max = attrs.int('max') ?: 5
-        offset = attrs.int('offset') ?: 0
+        queryParams = new QueryParameters()
+
+        queryParams.max = attrs.int('max') ?: 5
+        queryParams.offset = attrs.int('offset') ?: 0
 
         idToUpdate = attrs.idToUpdate ?: attrs.type
         paginationController = attrs.paginationController
@@ -42,11 +40,26 @@ class ListingDetails<E> {
         paginationDisable =  Boolean.parseBoolean(attrs.paginationDisable)
 
         searchEnable = Boolean.parseBoolean(attrs.searchEnable)
-        searchTerm = attrs.searchTerm ?: ""
+        queryParams.searchTerm = attrs.searchTerm ?: ""
 
         userId = Mappings.parseStringOrLong(attrs?.userId)
         topicId = Mappings.parseStringOrLong(attrs?.topicId)
     }
+
+    Integer getMax() { queryParams.max }
+    Integer getOffset() { queryParams.offset }
+    String getSearchTerm() { queryParams.searchTerm }
+
+    void setIncludePrivates(Boolean includePrivates) {
+        queryParams.includePrivates = includePrivates
+    }
+    void setSortTerm(String sortTerm) {
+        queryParams.sortTerm = sortTerm
+    }
+    void setSortOrder(String sortOrder) {
+        queryParams.sortOrder = sortOrder
+    }
+
 
     void setPaginationController(String paginationController) {
         if (!this.paginationController) {
@@ -79,9 +92,5 @@ class ListingDetails<E> {
 
     JSON getSearchParameters() {
         paginationParams as JSON
-    }
-
-    QueryParameters getQueryParams() {
-        new QueryParameters(max: max, offset: offset, searchTerm: searchTerm, includePrivates: includePrivates)
     }
 }
