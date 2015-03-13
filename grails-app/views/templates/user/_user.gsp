@@ -13,7 +13,10 @@
                 Subscriptions
             </div>
             <div>
-                ${listing.numSubscriptions}
+                <g:link controller="topic" action="topics"
+                        params="[topicListType: 'subscriptions', userId: user.id]">
+                    ${listing.numSubscriptions}
+                </g:link>
             </div>
         </div>
 

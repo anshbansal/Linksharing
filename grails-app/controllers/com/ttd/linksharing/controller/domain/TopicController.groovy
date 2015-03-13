@@ -31,4 +31,8 @@ class TopicController {
             render "Error occurred"
         }
     }
+
+    def topics(String topicListType, Integer userId) {
+        render(view: "/templates/topics", model: [topicListType: topicListType, userId: userId])
+    }
 }

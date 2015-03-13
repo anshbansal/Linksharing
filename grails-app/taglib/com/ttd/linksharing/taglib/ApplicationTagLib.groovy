@@ -60,7 +60,7 @@ class ApplicationTagLib {
                 break
             case "forTopic":
                 Topic curTopic = Topic.get(listingDetails.topicId)
-                listingDetails.title = 'Posts: "' + curTopic.name + '"'
+                listingDetails.title = 'Posts: "' + curTopic?.name + '"'
                 listingDetails.listings = resourceService.getPostsForTopic(curTopic, listingDetails.queryParams)
                 break
         }
@@ -74,7 +74,8 @@ class ApplicationTagLib {
      * @attr searchEnable Defaults(false). Set(true) if required
      * @attr idToUpdate id for pagination/search results. Defaults to type
      * @attr type REQUIRED The type of topics to be shown.
-     * @attr userId Default (not used). Considered if (type = forUser)
+     * @attr userId Default (not used). Used for (type forUser to show user topics)
+ *                                               (type subscriptions to show user's subscriptions)
      */
     def topics = { attrs ->
         ListingDetails<TopicDetails> listingDetails = new ListingDetails<>(
@@ -84,8 +85,16 @@ class ApplicationTagLib {
         switch (attrs.type) {
             case "subscriptions":
                 listingDetails.title = "Subscriptions"
+                User curUser
+
+                //TODO Need to be changed for sort order
+                if (listingDetails.userId != 0) {
+                    curUser = User.get(listingDetails.userId)
+                } else {
+                    curUser = session?.loggedUser
+                }
                 listingDetails.listings = topicService.
-                        getSubscriptionsForUser(session?.loggedUser, listingDetails.queryParams)
+                        getSubscriptionsForUser(curUser, listingDetails.queryParams)
                 break
             case "trendingTopics":
                 //Search and pagination is not available for this
