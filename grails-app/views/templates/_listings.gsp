@@ -12,10 +12,8 @@
             <g:set var="searchBoxUrl" value="${createLink(controller: paginationController, action: paginationAction)}"/>
 
                 <span id="${searchBoxId}">
-                    <ls:searchBox/>
+                    <ls:searchBox searchText="${listingDetails.searchTerm}"/>
                     <g:javascript>
-                        $("#${searchBoxId} .searchText").val("${listingDetails.searchTerm}");
-
                         searchAjaxCallToUpdateId("#${searchBoxId}", "${searchBoxUrl}",
                                 "${listingDetails.searchParameters}", "${listingDetails.idToUpdate}");
                     </g:javascript>

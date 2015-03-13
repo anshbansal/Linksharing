@@ -159,8 +159,11 @@ class ApplicationTagLib {
         out << render(template: "/templates/commons/flash_message", model: [type: attrs.type])
     }
 
+    /**
+     * @attr searchText
+     */
     def searchBox = { attrs ->
-        out << render(template: "/templates/commons/search")
+        out << render(template: "/templates/commons/search", model: [searchText: attrs.searchText])
     }
 
     def getTopicsForUser = { attrs ->
