@@ -3,6 +3,7 @@ package com.ttd.linksharing.controller.domain
 import com.ttd.linksharing.co.user.PasswordCO
 import com.ttd.linksharing.co.user.UserDetailsCO
 import com.ttd.linksharing.domain.User
+import com.ttd.linksharing.util.Mappings
 
 class UserController {
 
@@ -46,12 +47,16 @@ class UserController {
     }
 
     def updateDetails(UserDetailsCO userDetailsCO) {
+
+        Mappings.setScaledImage(request.getFile('photo'), userDetailsCO)
+
         if (userDetailsCO.hasErrors()) {
-            //TODO Field error in photo object. Fix.
             println "Aseem before hasErrors ${userDetailsCO.errors}"
 
-        } else if (! userService.updateDetails(userDetailsCO, session?.loggedUser)) {
+        } else if (! userService.updateDetails(userDetailsCO, session?.loggedUser?.id)) {
             flash['editProfileMessage'] = "Email is already used"
+        } else {
+            session?.loggedUser = User.get(session?.loggedUser?.id)
         }
 
         redirect action: "profile"

@@ -3,6 +3,7 @@
         <asset:image src="anonymous.jpg" width="40em" height="50em" alt="Anonymous"/>
     </g:if>
     <g:else>
-        <img src="${createLink(controller: 'user', action: 'photo', id: user.id)}" style="width: 4em; height: 5em"/>
+        %{--TODO Fix this image scaling--}%
+        <img src="${createLink(controller: 'user', action: 'photo', id: user.id)}" style="width: 2em; height: 2.5em"/>
     </g:else>
 </g:link>

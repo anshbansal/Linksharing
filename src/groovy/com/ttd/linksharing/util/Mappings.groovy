@@ -1,6 +1,11 @@
 package com.ttd.linksharing.util
 
 import com.ttd.linksharing.enums.Visibility
+import org.imgscalr.Scalr
+import org.springframework.web.multipart.MultipartFile
+
+import javax.imageio.ImageIO
+import java.awt.image.BufferedImage
 
 class Mappings {
 
@@ -18,5 +23,22 @@ class Mappings {
         } else {
             return attr
         }
+    }
+
+    static void setScaledImage(MultipartFile file, def co) {
+        if(! file?.size) {
+            return
+        }
+
+        co.avatarType = file.contentType
+
+        BufferedImage image = ImageIO.read(file.getInputStream())
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ImageIO.write( Scalr.resize(image, 150), "jpg", outputStream );
+        outputStream.flush();
+
+        co.photo = outputStream.toByteArray()
+        co.validate()
     }
 }

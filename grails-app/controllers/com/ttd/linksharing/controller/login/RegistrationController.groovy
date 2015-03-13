@@ -2,6 +2,7 @@ package com.ttd.linksharing.controller.login
 
 import com.ttd.linksharing.co.user.RegistrationCO
 import com.ttd.linksharing.domain.User
+import com.ttd.linksharing.util.Mappings
 
 class RegistrationController {
 
@@ -11,10 +12,8 @@ class RegistrationController {
 
     def register(RegistrationCO registrationCO) {
 
-        def f = request.getFile('photo')
-        registrationCO.photo = f.bytes
-        registrationCO.avatarType = f.contentType
-        registrationCO.validate()
+        Mappings.setScaledImage(request.getFile('photo'), registrationCO)
+
         if (registrationCO.hasErrors()) {
             println "Errors in registrationCO ${registrationCO.errors}"
             flash['registrationMessage'] = "Invalid Registration Credentials"

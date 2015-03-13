@@ -151,7 +151,6 @@ class ApplicationTagLib {
         out << render(template: "/templates/post/resourceType", model: [post: attrs.post])
     }
 
-    //TODO Test User image present
     def photo = { attrs ->
         out << render(template: "/templates/commons/photo",model: [user: attrs.user])
     }

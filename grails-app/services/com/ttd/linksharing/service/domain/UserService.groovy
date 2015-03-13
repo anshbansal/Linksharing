@@ -58,7 +58,9 @@ class UserService {
         User.byIdentifier(newIdentifier).count(criteria) == 0
     }
 
-    User updateDetails(UserDetailsCO userDetailsCO, User user) {
+    User updateDetails(UserDetailsCO userDetailsCO, Long userId) {
+
+        User user = User.get(userId)
 
         if (!isUniqueIdentifierValid(userDetailsCO.email, user)) {
             return null
@@ -68,6 +70,7 @@ class UserService {
         user.lastName = userDetailsCO.lastName
         user.email = userDetailsCO.email
         user.photo = userDetailsCO.photo
+        user.avatarType = userDetailsCO.avatarType
         save(user)
     }
 

@@ -19,15 +19,14 @@ class RegistrationCO {
     String avatarType
 
     User getUser() {
-        new User(
-            email: email,
-            username: username,
-            password: password,
-            firstName: firstName,
-            lastName: lastName,
-            photo: photo,
-            avatarType: avatarType
-        )
+        if (photo.size() > 0) {
+            new User(email: email, username: username, password: password,
+                    firstName: firstName, lastName: lastName, photo: photo,
+                    avatarType: avatarType)
+        } else {
+            new User(email: email, username: username, password: password,
+                    firstName: firstName, lastName: lastName)
+        }
     }
 
     static constraints = {
