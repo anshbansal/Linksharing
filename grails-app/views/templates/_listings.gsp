@@ -8,22 +8,16 @@
         <content tag="header">
             <g:if test="${listingDetails.searchEnable}">
 
-                <g:set var="searchBoxId" value="search_${listingDetails.idToUpdate}"/>
+            <g:set var="searchBoxId" value="search_${listingDetails.idToUpdate}"/>
+            <g:set var="searchBoxUrl" value="${createLink(controller: paginationController, action: paginationAction)}"/>
 
                 <span id="${searchBoxId}">
                     <ls:searchBox/>
                     <g:javascript>
-
                         $("#${searchBoxId} .searchText").val("${listingDetails.searchTerm}");
 
-                        $("#${searchBoxId} .searchEnd").on('click', function() {
-                            $.ajax({
-                                url: "${createLink(controller: paginationController, action: paginationAction)}",
-                                data: $.extend(JSON.parse("${listingDetails.searchParameters}"), {searchTerm: $("#${searchBoxId} .searchText").val()})
-                            }).success(function(data, textStatus) {
-                                $("#${listingDetails.idToUpdate}").html(data);
-                            });
-                        })
+                        searchAjaxCallToUpdateId("#${searchBoxId}", "${searchBoxUrl}",
+                                "${listingDetails.searchParameters}", "${listingDetails.idToUpdate}");
                     </g:javascript>
                 </span>
 
