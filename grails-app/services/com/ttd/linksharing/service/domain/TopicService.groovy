@@ -81,6 +81,7 @@ class TopicService {
     }
 
     //TODO Needs review
+    //TODO Eager fetching not working
     PagedResult<TopicDetails> getTrendingTopics(QueryParameters params) {
         List<PagedResultList> pagedResultList = Resource.createCriteria().list(params.queryMapParams) {
 
