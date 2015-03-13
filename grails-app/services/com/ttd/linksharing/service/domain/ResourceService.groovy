@@ -16,7 +16,7 @@ class ResourceService {
 
     def readingItemService
 
-    def save(Resource resource, Boolean isFlushEnabled = false) {
+    Resource save(Resource resource, Boolean isFlushEnabled = false) {
 
         if (! resource.save(flush: isFlushEnabled)) {
             return null

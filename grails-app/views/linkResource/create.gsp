@@ -11,7 +11,7 @@
 
         <span></span>
         <span>
-            <g:submitButton name="save"/>
+            <g:submitButton name="Share"/>
             <g:submitButton name="cancel" class="cancelButton"/>
         </span>
     </g:form>
