@@ -7,8 +7,9 @@ class PagedResult<E> {
     List<E> paginationList
     Integer totalCount
 
-    PagedResult() {}
-
+    int size() {
+        paginationList.size()
+    }
 
     PagedResult<E> setPaginationList(List<PagedResultList> pagedResultList, Closure transform) {
         this.paginationList = transform(pagedResultList)

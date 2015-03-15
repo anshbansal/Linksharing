@@ -67,18 +67,6 @@ class TopicService {
                numSubscriptions: Subscription.countByTopic(topic), numResources: Resource.countByTopic(topic))
     }
 
-    private PagedResult<TopicDetails> getTopicDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
-
-        List<PagedResultList> pagedResultList = criteria.list(params.queryMapParams)
-
-        PagedResult<TopicDetails> topicsDetail = new PagedResult<>().setPaginationList(pagedResultList, collector)
-
-        if (pagedResultList.size() > 0) {
-            topicsDetail.paginationList = updateSubscriptionAndResourceCountInTopicsDetail(topicsDetail.paginationList)
-        }
-        topicsDetail
-    }
-
     //TODO Needs review
     //TODO Eager fetching not working
     PagedResult<TopicDetails> getTrendingTopics(QueryParameters params) {
@@ -108,11 +96,7 @@ class TopicService {
 //            resources.size() > 0
 //        }.count()
 
-        if (pagedResultList.size() > 0) {
-            topicsDetail.paginationList = updateSubscriptionAndResourceCountInTopicsDetail(topicsDetail.paginationList)
-        }
-
-        topicsDetail
+        getUpdatedTopicsDetail(topicsDetail)
     }
 
     Boolean isTopicPresentForUser(User user, String topicName) {
@@ -122,7 +106,26 @@ class TopicService {
         } > 0
     }
 
-    List<TopicDetails> updateSubscriptionAndResourceCountInTopicsDetail(List<TopicDetails> topicDetailsList) {
+    private PagedResult<TopicDetails> getTopicDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
+
+        List<PagedResultList> pagedResultList = criteria.list(params.queryMapParams)
+
+        PagedResult<TopicDetails> topicsDetail = new PagedResult<>()
+        topicsDetail.setPaginationList(pagedResultList, collector)
+
+        getUpdatedTopicsDetail(topicsDetail)
+    }
+
+    private PagedResult<TopicDetails> getUpdatedTopicsDetail(PagedResult<TopicDetails> topicsDetail) {
+        topicsDetail?.with {
+            if (size() > 0) {
+                paginationList = getTopicsDetailWithSubscriptionAndResourceCount(paginationList)
+            }
+        }
+        topicsDetail
+    }
+
+    private List<TopicDetails> getTopicsDetailWithSubscriptionAndResourceCount(List<TopicDetails> topicDetailsList) {
 
         Map temp = getNumberSubscriptionsAndResources(topicDetailsList*.topicId)
 

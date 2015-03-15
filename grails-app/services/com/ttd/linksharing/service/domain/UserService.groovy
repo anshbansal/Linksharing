@@ -93,7 +93,7 @@ class UserService {
     UserDetails getUserDetailsForUser(User user, Boolean includePrivates) {
         UserDetails userDetails = new UserDetails(user: user)
 
-        updateSubscriptionAndTopicsCountInUsersDetail([userDetails], includePrivates)[0]
+        getUserDetailsWithSubscriptionAndTopicCount([userDetails], includePrivates)[0]
     }
 
     PagedResult<UserDetails> getUsersSubscribedToTopic(Topic topic, QueryParameters params) {
@@ -103,12 +103,12 @@ class UserService {
 
         userDetailsPagedResult.with {
             setPaginationList(pagedResultList, UserDetails.mapFromSubscriptions)
-            paginationList = updateSubscriptionAndTopicsCountInUsersDetail(paginationList, params.includePrivates)
+            paginationList = getUserDetailsWithSubscriptionAndTopicCount(paginationList, params.includePrivates)
         }
         userDetailsPagedResult
     }
 
-    private List<UserDetails> updateSubscriptionAndTopicsCountInUsersDetail(List<UserDetails> userDetailsList,
+    private List<UserDetails> getUserDetailsWithSubscriptionAndTopicCount(List<UserDetails> userDetailsList,
                                                                     Boolean includePrivates) {
 
         Map temp = getNumberSubscriptionsAndTopics(userDetailsList*.userId, includePrivates)
