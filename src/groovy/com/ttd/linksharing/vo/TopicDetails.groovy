@@ -7,8 +7,12 @@ import com.ttd.linksharing.domain.User
 class TopicDetails {
     Topic topic
     User creator
-    Integer numSubscriptions
-    Integer numResources
+    Long numSubscriptions
+    Long numResources
+
+    Long getTopicId() {
+        topic.id
+    }
 
     static Closure mapFromSubscriptions = { List<Subscription> subscriptions ->
         subscriptions.collect([]) { Subscription subscription ->
@@ -26,10 +30,10 @@ class TopicDetails {
     @Override
     public String toString() {
         "TopicDetails{" +
-            "topic=" + topic +
-            ", creator=" + creator +
-            ", numSubscriptions=" + numSubscriptions +
-            ", numResources=" + numResources +
-            '}';
+                "topic=" + topic +
+                ", creator=" + creator +
+                ", numSubscriptions=" + numSubscriptions +
+                ", numResources=" + numResources +
+                '}';
     }
 }

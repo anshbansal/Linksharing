@@ -124,23 +124,19 @@ class TopicService {
 
     List<TopicDetails> updateSubscriptionAndResourceCountInTopicsDetail(List<TopicDetails> topicDetailsList) {
 
-        List<Long> topicIds = topicIdsFrom(topicDetailsList)
-
-        Map temp = getNumberSubscriptionsAndResources(topicIds)
+        Map temp = getNumberSubscriptionsAndResources(topicDetailsList*.topicId)
 
         topicDetailsList.each { TopicDetails topicDetails ->
-            int topicId = topicIdFrom(topicDetails)
 
-            Integer numSubscriptions = temp[topicId]['numRes']
-            Integer numResources = temp[topicId]['numSubs']
+            Map topicDetailsMap = temp[topicDetails.topicId] as Map
 
             new TopicDetails(topic: topicDetails.topic, creator: topicDetails.creator,
-                    numSubscriptions: numSubscriptions, numResources: numResources)
+                    numSubscriptions: topicDetailsMap['numSubs'], numResources: topicDetailsMap['numRes'])
         }
     }
 
     //TODO Refactor for individual maps
-    Map getNumberSubscriptionsAndResources(List<Integer> topicIds) {
+    private Map getNumberSubscriptionsAndResources(List<Long> topicIds) {
         Map result = [:]
 
         Topic.executeQuery("""
@@ -149,23 +145,11 @@ class TopicService {
                 (select count(*) from Resource where topic.id = t.id) as numRes
             from Topic as t
             where t.id in (:ids)
-            """, ['ids': topicIds*.toLong() ])
+            """, ['ids': topicIds ])
                 .each {
-                    result[it[0].intValue()] = [numSubs: it[1].intValue(), numRes: it[2].intValue()]
+                    result[it[0]] = [numSubs: it[1], numRes: it[2]]
                 }
 
         return result
-    }
-
-    @NotTransactional
-    private static List<Integer> topicIdsFrom(List<TopicDetails> topicDetailsList) {
-        topicDetailsList.collect([]) { TopicDetails topicDetails ->
-            topicIdFrom(topicDetails)
-        }
-    }
-
-    @NotTransactional
-    private static Integer topicIdFrom(TopicDetails topicDetails) {
-        topicDetails.topic.id
     }
 }

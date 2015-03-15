@@ -104,6 +104,7 @@ class UserService {
 
     List<UserDetails> updateSubscriptionAndTopicsCountInUsersDetail(List<UserDetails> userDetailsList,
                                                                     Boolean includePrivates) {
+
         Map temp = getNumberSubscriptionsAndTopics(userDetailsList*.userId, includePrivates)
 
         userDetailsList.collect([]) { UserDetails userDetails ->
