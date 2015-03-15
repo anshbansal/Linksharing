@@ -104,18 +104,17 @@ class UserService {
 
     List<UserDetails> updateSubscriptionAndTopicsCountInUsersDetail(List<UserDetails> userDetailsList,
                                                                     Boolean includePrivates) {
-        Map temp = getNumberSubscriptionsAndTopics(userIdsFrom(userDetailsList)*.toLong())
+        Map temp = getNumberSubscriptionsAndTopics(userDetailsList*.userId, includePrivates)
 
         userDetailsList.collect([]) { UserDetails userDetails ->
-            int userId = userIdFrom(userDetails)
-            int numSubscriptions = temp[userId]['numSubs']
-            int numTopics = temp[userId]['numTopics']
+            Map userDetailsMap = temp[userDetails.userId] as Map
 
-            new UserDetails(user: userDetails.user, numSubscriptions: numSubscriptions, numTopics: numTopics)
+            new UserDetails(user: userDetails.user, numSubscriptions: userDetailsMap['numSubs'], numTopics: userDetailsMap['numTopics'])
         }
     }
 
-    Map getNumberSubscriptionsAndTopics(List<Long> userIds, Boolean includePrivates = Boolean.FALSE) {
+    //TODO Refactor
+    private Map getNumberSubscriptionsAndTopics(List<Long> userIds, Boolean includePrivates) {
         Map result = [:]
 
         User.executeQuery("""
@@ -132,21 +131,9 @@ class UserService {
             where u.id in (:ids)
             """, ['ids': userIds,'scopes':  Mappings.getScopes(includePrivates)])
                 .each {
-                    result[it[0].intValue()] = [numSubs: it[1].intValue() ?: 0, numTopics: it[2].intValue() ?: 0]
+                    result[it[0]] = [numSubs: it[1], numTopics: it[2]]
                 }
 
         return result
-    }
-
-    @NotTransactional
-    private static List<Integer> userIdsFrom(List<UserDetails> userDetailsList) {
-        userDetailsList.collect([]) { UserDetails userDetails ->
-            userIdFrom(userDetails)
-        }
-    }
-
-    @NotTransactional
-    private static Integer userIdFrom(UserDetails userDetails) {
-        userDetails.user.id
     }
 }

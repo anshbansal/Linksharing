@@ -37,7 +37,6 @@ class TopicService {
         topic
     }
 
-    //TODO Subscription logic check
     //TODO Add subscription public/private check
     PagedResult<TopicDetails> getSubscriptionsForUser(User user, QueryParameters params) {
 
