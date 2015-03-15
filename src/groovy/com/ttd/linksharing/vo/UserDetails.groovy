@@ -8,13 +8,13 @@ class UserDetails {
     Long numSubscriptions
     Long numTopics
 
+    Long getUserId() {
+        user.id
+    }
+
     static Closure mapFromSubscriptions = { List<Subscription> subscriptions ->
         subscriptions.collect([]) { Subscription subscription ->
             new UserDetails(user: subscription.user)
         }
-    }
-
-    Long getUserId() {
-        user.id
     }
 }
