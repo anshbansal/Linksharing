@@ -29,7 +29,7 @@ class Topic {
     }
 
     static namedQueries = {
-        nameLike {String term ->
+        topicNameLike {String term ->
             ilike 'name', '%' + term + '%'
         }
 

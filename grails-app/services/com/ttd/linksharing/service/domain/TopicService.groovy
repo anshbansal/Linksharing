@@ -37,39 +37,22 @@ class TopicService {
         topic
     }
 
-    //TODO Add subscription public/private check
     PagedResult<TopicDetails> getSubscriptionsForUser(User user, QueryParameters params) {
-
-        def criteria = Subscription.forUser(user)
-        if (params.searchTerm) {
-            criteria = criteria.topicNameLike(params.searchTerm)
-        }
-
-        getTopicDetailsFromCriteria(criteria, params, TopicDetails.mapFromSubscriptions)
+        getTopicDetailsFromCriteria(Subscription.forUser(user), params, TopicDetails.mapFromSubscriptions)
     }
 
     PagedResult<TopicDetails> getTopicsForUser(User user, QueryParameters params) {
-
-        def criteria = Topic.forUser(user)
-        if (! params.includePrivates) {
-            criteria = criteria.publicTopics()
-        }
-        if (params.searchTerm) {
-            criteria = criteria.nameLike(params.searchTerm)
-        }
-
-        getTopicDetailsFromCriteria(criteria, params, TopicDetails.mapFromTopics)
+        getTopicDetailsFromCriteria(Topic.forUser(user), params, TopicDetails.mapFromTopics)
     }
 
-    @NotTransactional
     TopicDetails getTopicDetailsForTopic(Topic topic) {
         new TopicDetails(topic: topic, creator: topic.createdBy,
                numSubscriptions: Subscription.countByTopic(topic), numResources: Resource.countByTopic(topic))
     }
 
-    //TODO Needs review
-    //TODO Eager fetching not working
     PagedResult<TopicDetails> getTrendingTopics(QueryParameters params) {
+        //TODO Needs review
+        //TODO Eager fetching not working
         List<PagedResultList> pagedResultList = Resource.createCriteria().list(params.queryMapParams) {
 
             createAlias('topic', 't')
@@ -107,6 +90,13 @@ class TopicService {
     }
 
     private PagedResult<TopicDetails> getTopicDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
+
+        if (! params.includePrivates) {
+            criteria = criteria.publicTopics()
+        }
+        if (params.searchTerm) {
+            criteria = criteria.topicNameLike(params.searchTerm)
+        }
 
         List<PagedResultList> pagedResultList = criteria.list(params.queryMapParams)
 
