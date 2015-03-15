@@ -39,7 +39,7 @@ class UserService {
     @NotTransactional
     User getActiveUser(LoginCredentials credentials) {
         User user = User.withCredentials(credentials).get()
-        user.active ? user : null
+        user?.active ? user : null
     }
 
     Boolean updatePassword(User user, String newPassword) {
@@ -99,16 +99,16 @@ class UserService {
     PagedResult<UserDetails> getUsersSubscribedToTopic(Topic topic, QueryParameters params) {
         List<PagedResultList> pagedResultList = Subscription.forTopic(topic).list(params.queryMapParams)
 
-        PagedResult<UserDetails> userDetailsPagedResult = new PagedResult<UserDetails>()
-                .setPaginationList(pagedResultList, UserDetails.mapFromSubscriptions)
+        PagedResult<UserDetails> userDetailsPagedResult = new PagedResult<>()
 
-        userDetailsPagedResult.paginationList = updateSubscriptionAndTopicsCountInUsersDetail(
-                userDetailsPagedResult.paginationList, params.includePrivates)
-
+        userDetailsPagedResult.with {
+            setPaginationList(pagedResultList, UserDetails.mapFromSubscriptions)
+            paginationList = updateSubscriptionAndTopicsCountInUsersDetail(paginationList, params.includePrivates)
+        }
         userDetailsPagedResult
     }
 
-    List<UserDetails> updateSubscriptionAndTopicsCountInUsersDetail(List<UserDetails> userDetailsList,
+    private List<UserDetails> updateSubscriptionAndTopicsCountInUsersDetail(List<UserDetails> userDetailsList,
                                                                     Boolean includePrivates) {
 
         Map temp = getNumberSubscriptionsAndTopics(userDetailsList*.userId, includePrivates)

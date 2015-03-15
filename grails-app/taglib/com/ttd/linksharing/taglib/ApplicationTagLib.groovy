@@ -146,7 +146,7 @@ class ApplicationTagLib {
      */
     def user = { attrs ->
         User user = attrs.user
-        UserDetails details = userService.getUserDetailsForUser(user, includePrivates(user?.id))
+        UserDetails details = userService.getUserDetailsForUser(user, includePrivates(user))
 
         out << render(template: "/templates/user/user", model: [listing: details])
     }
@@ -181,7 +181,7 @@ class ApplicationTagLib {
     }
 
     private Boolean includePrivates(User user) {
-        includePrivates(user.id)
+        includePrivates(user?.id)
     }
 
     private Boolean includePrivates(Long id) {
