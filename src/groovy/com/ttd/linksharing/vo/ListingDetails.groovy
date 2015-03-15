@@ -21,7 +21,7 @@ class ListingDetails<E> {
     String paginationController
     String paginationAction
 
-    QueryParameters queryParams
+    @Delegate QueryParameters queryParams
 
     Long userId
     Long topicId
@@ -44,14 +44,6 @@ class ListingDetails<E> {
 
         userId = Mappings.parseStringOrLong(attrs?.userId)
         topicId = Mappings.parseStringOrLong(attrs?.topicId)
-    }
-
-    Integer getMax() { queryParams.max }
-    Integer getOffset() { queryParams.offset }
-    String getSearchTerm() { queryParams.searchTerm }
-
-    void setIncludePrivates(Boolean includePrivates) {
-        queryParams.includePrivates = includePrivates
     }
 
     void setPaginationController(String paginationController) {
