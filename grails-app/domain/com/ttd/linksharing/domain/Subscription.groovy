@@ -15,8 +15,8 @@ class Subscription {
     }
 
     static namedQueries = {
-        //Makes sense to fetch Topic because topic is subscribed for user
         forUser { User user ->
+            createAlias 'topic', 't'
             eq 'user', user
 
             fetchMode('topic', FetchMode.JOIN)
@@ -38,6 +38,27 @@ class Subscription {
         forTopic { Topic topic ->
             eq 'topic', topic
             fetchMode('topic', FetchMode.JOIN)
+        }
+
+        orderByResourceAddDate {
+            createAlias 'topic', 't'
+            createAlias 't.resources', 'r'
+
+            projections {
+                groupProperty 'topic'
+                max 'r.dateCreated', 'resourceDate'
+            }
+            order 'resourceDate', 'desc'
+        }
+
+        orderByTopicName {
+            createAlias 'topic', 't'
+
+            projections {
+                property('topic')
+            }
+
+            order 't.name', 'asc'
         }
     }
 }

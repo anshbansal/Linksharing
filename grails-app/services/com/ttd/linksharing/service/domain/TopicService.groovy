@@ -38,7 +38,14 @@ class TopicService {
     }
 
     PagedResult<TopicDetails> getSubscriptionsForUser(User user, QueryParameters params) {
-        getTopicDetailsFromCriteria(Subscription.forUser(user), params, TopicDetails.mapFromSubscriptions)
+        def criteria = Subscription.forUser(user)
+        if (params.sortBy == 'resourceAddDate') {
+            criteria = criteria.orderByResourceAddDate()
+        } else if (params.sortBy == 'topicName') {
+            criteria = criteria.orderByTopicName()
+        }
+
+        getTopicDetailsFromCriteria(criteria, params, TopicDetails.mapFromSubscriptions)
     }
 
     PagedResult<TopicDetails> getTopicsForUser(User user, QueryParameters params) {

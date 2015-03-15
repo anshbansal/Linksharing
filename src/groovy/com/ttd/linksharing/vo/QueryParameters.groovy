@@ -5,8 +5,8 @@ class QueryParameters {
     Integer offset
 
     String searchTerm
-
     Boolean includePrivates
+    String sortBy
 
     Map getQueryMapParams() {
         [max: max, offset: offset]

@@ -90,11 +90,12 @@ class ApplicationTagLib {
                 //TODO Need to be changed for sort order
                 if (listingDetails.userId != 0) {
                     curUser = User.get(listingDetails.userId)
+                    listingDetails.sortBy = 'resourceAddDate'
                 } else {
+                    listingDetails.sortBy = 'topicName'
                     curUser = session?.loggedUser
                 }
-                listingDetails.listings = topicService.
-                        getSubscriptionsForUser(curUser, listingDetails.queryParams)
+                listingDetails.listings = topicService.getSubscriptionsForUser(curUser, listingDetails.queryParams)
                 break
             case "trendingTopics":
                 //Search and pagination is not available for this
