@@ -146,8 +146,7 @@ class ApplicationTagLib {
      */
     def user = { attrs ->
         User user = attrs.user
-        UserDetails details = userService
-                .updateSubscriptionAndTopicsCountInUsersDetail([new UserDetails(user: user)], includePrivates(user))[0]
+        UserDetails details = userService.getUserDetailsForUser(user, includePrivates(user?.id))
 
         out << render(template: "/templates/user/user", model: [listing: details])
     }

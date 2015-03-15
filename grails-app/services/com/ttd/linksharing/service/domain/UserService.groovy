@@ -90,6 +90,12 @@ class UserService {
         return newPassword
     }
 
+    UserDetails getUserDetailsForUser(User user, Boolean includePrivates) {
+        UserDetails userDetails = new UserDetails(user: user)
+
+        updateSubscriptionAndTopicsCountInUsersDetail([userDetails], includePrivates)[0]
+    }
+
     PagedResult<UserDetails> getUsersSubscribedToTopic(Topic topic, QueryParameters params) {
         List<PagedResultList> pagedResultList = Subscription.forTopic(topic).list(params.queryMapParams)
 
