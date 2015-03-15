@@ -1,6 +1,5 @@
 package com.ttd.linksharing.domain
 
-import com.ttd.linksharing.enums.Visibility
 import org.hibernate.FetchMode
 
 abstract class Resource {
