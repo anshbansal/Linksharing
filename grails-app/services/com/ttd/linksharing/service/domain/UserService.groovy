@@ -103,7 +103,8 @@ class UserService {
 
         userDetailsPagedResult.with {
             setPaginationList(pagedResultList, UserDetails.mapFromSubscriptions)
-            paginationList = getUserDetailsWithSubscriptionAndTopicCount(paginationList, params.includePrivates)
+            //TODO FIx this
+//            paginationList = getUserDetailsWithSubscriptionAndTopicCount(paginationList, params.includePrivates)
         }
         userDetailsPagedResult
     }

@@ -3,6 +3,8 @@ package com.ttd.linksharing.service.domain
 import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
+import com.ttd.linksharing.domain.User
+import com.ttd.linksharing.util.Mappings
 import com.ttd.linksharing.vo.QueryParameters
 import grails.transaction.Transactional
 
@@ -25,7 +27,7 @@ class SubscriptionService {
         subscription
     }
 
-    static def getFilteredCriteriaForSubscription(def criteria, QueryParameters params) {
+    static def getFilteredCriteria(def criteria, QueryParameters params) {
         if (params.loggedUser) {
             if (! params.loggedUser.admin) {
                 criteria = criteria.showSubscriptionToUser(params.loggedUser)

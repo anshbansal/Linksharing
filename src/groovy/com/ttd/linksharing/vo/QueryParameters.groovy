@@ -16,4 +16,17 @@ class QueryParameters {
     Map getQueryMapParams() {
         [max: max, offset: offset]
     }
+
+
+    @Override
+    public String toString() {
+        return "QueryParameters{" +
+                "max=" + max +
+                ", offset=" + offset +
+                ", searchTerm='" + searchTerm + '\'' +
+                ", userId=" + userId +
+                ", topicId=" + topicId +
+                ", loggedUser=" + loggedUser +
+                '}';
+    }
 }

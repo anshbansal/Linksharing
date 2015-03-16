@@ -9,7 +9,6 @@ import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.QueryParameters
 import com.ttd.linksharing.vo.TopicDetails
 import grails.gorm.PagedResultList
-import grails.transaction.NotTransactional
 import grails.transaction.Transactional
 import org.hibernate.FetchMode
 
@@ -27,7 +26,7 @@ class TopicService {
 
     def save(Topic topic, Boolean isFlushEnabled = false) {
 
-        if (! topic.save(flush: isFlushEnabled)) {
+        if (!topic.save(flush: isFlushEnabled)) {
             return null
         }
 
@@ -38,18 +37,18 @@ class TopicService {
     }
 
     PagedResult<TopicDetails> getSubscriptionsForUser(User user, QueryParameters params) {
-        def criteria = subscriptionService.getFilteredCriteriaForSubscription(Subscription.forUser(user), params)
+        def criteria = subscriptionService.getFilteredCriteria(Subscription.forUser(user), params)
         getTopicDetailsFromCriteria(criteria, params, TopicDetails.mapFromSubscriptions)
     }
 
     PagedResult<TopicDetails> getTopicsForUser(User user, QueryParameters params) {
-        def criteria = getFilteredCriteriaForTopic(Topic.forUser(user), params)
+        def criteria = getFilteredCriteria(Topic.forUser(user), params)
         getTopicDetailsFromCriteria(criteria, params, TopicDetails.mapFromTopics)
     }
 
     TopicDetails getTopicDetailsForTopic(Topic topic) {
         new TopicDetails(topic: topic, creator: topic.createdBy,
-               numSubscriptions: Subscription.countByTopic(topic), numResources: Resource.countByTopic(topic))
+                numSubscriptions: Subscription.countByTopic(topic), numResources: Resource.countByTopic(topic))
     }
 
     PagedResult<TopicDetails> getTrendingTopics(QueryParameters params) {
@@ -72,7 +71,7 @@ class TopicService {
 
         PagedResult<TopicDetails> topicsDetail = new PagedResult<>()
 
-        topicsDetail.paginationList = pagedResultList.collect([]){
+        topicsDetail.paginationList = pagedResultList.collect([]) {
             new TopicDetails(topic: it[0], creator: it[0].createdBy)
         }
 
@@ -91,7 +90,8 @@ class TopicService {
         } > 0
     }
 
-    private PagedResult<TopicDetails> getTopicDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
+    private PagedResult<TopicDetails> getTopicDetailsFromCriteria(
+            def criteria, QueryParameters params, Closure collector) {
         List<PagedResultList> pagedResultList = criteria.list(params.queryMapParams)
 
         PagedResult<TopicDetails> topicsDetail = new PagedResult<>()
@@ -132,15 +132,15 @@ class TopicService {
                 (select count(*) from Resource where topic.id = t.id) as numRes
             from Topic as t
             where t.id in (:ids)
-            """, ['ids': topicIds ])
+            """, ['ids': topicIds])
                 .each {
-                    result[it[0]] = [numSubs: it[1], numRes: it[2]]
-                }
+            result[it[0]] = [numSubs: it[1], numRes: it[2]]
+        }
 
         return result
     }
 
-    static def getFilteredCriteriaForTopic(def criteria, QueryParameters params) {
+    static def getFilteredCriteria(def criteria, QueryParameters params) {
         if (params.loggedUser) {
             if (! params.loggedUser.admin) {
                 criteria = criteria.showTopicToUser(params.loggedUser)

@@ -1,6 +1,7 @@
 package com.ttd.linksharing.service.domain
 
 import com.ttd.linksharing.domain.Topic
+import com.ttd.linksharing.util.Mappings
 import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.PostDetails
 import com.ttd.linksharing.domain.ReadingItem
@@ -40,11 +41,12 @@ class ResourceService {
     }
 
     PagedResult<PostDetails> getPostsForTopic(Topic topic, QueryParameters params) {
+        println "Params are ${params}"
         getPostDetailsFromBaseCriteria(Resource.forTopic(topic), params)
     }
 
     private static PagedResult<PostDetails> getPostDetailsFromBaseCriteria(def criteria, QueryParameters params) {
-        criteria = getFilteredCriteriaForResource(criteria, params)
+        criteria = getFilteredCriteria(criteria, params)
         getPostDetailsFromCriteria(criteria, params, PostDetails.mapFromResource)
     }
 
@@ -54,14 +56,18 @@ class ResourceService {
         new PagedResult<PostDetails>().setPaginationList(pagedResultList, collector)
     }
 
-    static def getFilteredCriteriaForResource(def criteria, QueryParameters params) {
+    static def getFilteredCriteria(def criteria, QueryParameters params) {
+
         if (params.loggedUser) {
             if (! params.loggedUser.admin) {
+                println "Paramas are ${params}"
                 criteria = criteria.showResourceToUser(params.loggedUser)
             }
         } else {
             criteria = criteria.publicResources()
         }
+
+
         if (params.searchTerm) {
             criteria = criteria.descriptionLike(params.searchTerm)
         }

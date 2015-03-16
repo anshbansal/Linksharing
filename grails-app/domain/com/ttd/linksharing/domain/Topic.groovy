@@ -3,6 +3,7 @@ package com.ttd.linksharing.domain
 import com.ttd.linksharing.co.topic.TopicInfo
 import com.ttd.linksharing.enums.Visibility
 import org.hibernate.FetchMode
+import org.hibernate.criterion.DetachedCriteria
 
 class Topic {
     String name
@@ -45,15 +46,21 @@ class Topic {
         showTopicToUser { User user ->
             or {
                 publicTopics()
-                isSubscribedToTopic(user)
+                //subscribedTopics(user)
             }
         }
 
-        isSubscribedToTopic { User user ->
-            'subscriptions' {
-                eq 'user', user
-                eq 'topic', this
-            }
-        }
+//        subscribedTopics { User user ->
+//            inList 'id', subscribedTopicIds(user)
+//        }
+//
+//        subscribedTopicIds { User user ->
+//            'subscriptions' {
+//                projections {
+//                    'id'
+//                }
+//                forUser(user)
+//            }
+//        }
     }
 }
