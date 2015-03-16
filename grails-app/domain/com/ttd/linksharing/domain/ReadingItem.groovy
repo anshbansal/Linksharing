@@ -8,7 +8,7 @@ class ReadingItem {
     static belongsTo = [resource: Resource, user: User]
 
     static namedQueries = {
-        forUser { User user ->
+        readingItemForUser { User user ->
             eq ('user', user)
         }
 

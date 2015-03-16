@@ -1,5 +1,6 @@
 package com.ttd.linksharing.domain
 
+import com.ttd.linksharing.enums.Visibility
 import org.hibernate.FetchMode
 
 abstract class Resource {
@@ -23,32 +24,27 @@ abstract class Resource {
     static namedQueries = {
         recentResources {
             order("dateCreated", "desc")
-
-            fetchMode('createdBy', FetchMode.JOIN)
         }
 
         publicResources {
             'topic' {
-                publicTopics()
+                eq 'scope', Visibility.PUBLIC
             }
-            fetchMode('topic', FetchMode.JOIN)
         }
 
         showResourceToUser { User user ->
             'topic' {
                 showTopicToUser(user)
             }
-            fetchMode('topic', FetchMode.JOIN)
         }
 
-        forUserId { Long userId ->
+        resourceForUserId { Long userId ->
              'createdBy' {
                  eq 'id', userId
              }
-            fetchMode('createdBy', FetchMode.JOIN)
         }
 
-        forTopic { Topic topic ->
+        resourceForTopic { Topic topic ->
             eq 'topic', topic
         }
 

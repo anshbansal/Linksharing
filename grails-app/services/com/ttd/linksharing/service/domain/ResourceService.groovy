@@ -37,12 +37,12 @@ class ResourceService {
     }
 
     PagedResult<PostDetails> getPostsForUserId(Long userId, QueryParameters params) {
-        getPostDetailsFromBaseCriteria(Resource.forUserId(userId), params)
+        getPostDetailsFromBaseCriteria(Resource.resourceForUserId(userId), params)
     }
 
     PagedResult<PostDetails> getPostsForTopic(Topic topic, QueryParameters params) {
         println "Params are ${params}"
-        getPostDetailsFromBaseCriteria(Resource.forTopic(topic), params)
+        getPostDetailsFromBaseCriteria(Resource.resourceForTopic(topic), params)
     }
 
     private static PagedResult<PostDetails> getPostDetailsFromBaseCriteria(def criteria, QueryParameters params) {

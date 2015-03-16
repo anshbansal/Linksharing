@@ -105,8 +105,6 @@ class ApplicationTagLib {
 
                 User curUser = User.get(listingDetails.userId)
 
-                println "User id is ${curUser}"
-
                 listingDetails.listings = topicService.getTopicsForUser(curUser, listingDetails.queryParams)
                 break
         }

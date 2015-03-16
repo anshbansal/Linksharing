@@ -25,7 +25,7 @@ class ReadingItemService {
 
     PagedResult<PostDetails> getReadingItemsForUser(User user, QueryParameters params) {
 
-        def criteria = ReadingItem.forUser(user).unreadItems()
+        def criteria = ReadingItem.readingItemForUser(user).unreadItems()
         if (params.searchTerm != "") {
             criteria = criteria.resourceDescriptionLike(params.searchTerm)
         }

@@ -37,12 +37,12 @@ class TopicService {
     }
 
     PagedResult<TopicDetails> getSubscriptionsForUser(User user, QueryParameters params) {
-        def criteria = subscriptionService.getFilteredCriteria(Subscription.forUser(user), params)
+        def criteria = subscriptionService.getFilteredCriteria(Subscription.subscriptionForUser(user), params)
         getTopicDetailsFromCriteria(criteria, params, TopicDetails.mapFromSubscriptions)
     }
 
     PagedResult<TopicDetails> getTopicsForUser(User user, QueryParameters params) {
-        def criteria = getFilteredCriteria(Topic.forUser(user), params)
+        def criteria = getFilteredCriteria(Topic.topicForUser(user), params)
         getTopicDetailsFromCriteria(criteria, params, TopicDetails.mapFromTopics)
     }
 

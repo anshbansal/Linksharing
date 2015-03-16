@@ -97,7 +97,7 @@ class UserService {
     }
 
     PagedResult<UserDetails> getUsersSubscribedToTopic(Topic topic, QueryParameters params) {
-        List<PagedResultList> pagedResultList = Subscription.forTopic(topic).list(params.queryMapParams)
+        List<PagedResultList> pagedResultList = Subscription.subscriptionForTopic(topic).list(params.queryMapParams)
 
         PagedResult<UserDetails> userDetailsPagedResult = new PagedResult<>()
 

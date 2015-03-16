@@ -34,9 +34,8 @@ class Topic {
             ilike 'name', '%' + term + '%'
         }
 
-        forUser { User user ->
+        topicForUser { User user ->
             eq 'createdBy', user
-            fetchMode('createdBy', FetchMode.JOIN)
         }
 
         publicTopics {
@@ -45,22 +44,20 @@ class Topic {
 
         showTopicToUser { User user ->
             or {
-                publicTopics()
-                //subscribedTopics(user)
+                eq 'scope', Visibility.PUBLIC
+                subscribedTopics(user)
             }
         }
 
-//        subscribedTopics { User user ->
-//            inList 'id', subscribedTopicIds(user)
-//        }
-//
-//        subscribedTopicIds { User user ->
-//            'subscriptions' {
-//                projections {
-//                    'id'
-//                }
-//                forUser(user)
-//            }
-//        }
+        subscribedTopics { User user ->
+            createAlias('subscriptions', 's')
+            createAlias('s.topic', 'subTopic')
+            createAlias('s.user', 'subUser')
+
+            and {
+                eq 's.user', user
+                idEq 'subTopic.id'
+            }
+        }
     }
 }

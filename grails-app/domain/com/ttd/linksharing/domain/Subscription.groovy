@@ -1,6 +1,7 @@
 package com.ttd.linksharing.domain
 
 import com.ttd.linksharing.enums.Seriousness
+import com.ttd.linksharing.enums.Visibility
 import org.hibernate.FetchMode
 
 class Subscription {
@@ -15,37 +16,30 @@ class Subscription {
     }
 
     static namedQueries = {
-        //Makes sense to fetch Topic because topic is subscribed for user
-        forUser { User user ->
-            eq 'user', user
-
-            fetchMode('topic', FetchMode.JOIN)
-            fetchMode('topic.createdBy', FetchMode.JOIN)
-        }
-
         forPublicTopics {
             'topic' {
-                publicTopics()
+                eq 'scope', Visibility.PUBLIC
             }
-            fetchMode('topic', FetchMode.JOIN)
         }
 
-        topicNameLike { String term ->
-            'topic' {
-                nameLike(term)
-            }
-            fetchMode('topic', FetchMode.JOIN)
+        subscriptionForUser { User user ->
+            eq 'user', user
         }
 
-        forTopic { Topic topic ->
+        subscriptionForTopic { Topic topic ->
             eq 'topic', topic
-            fetchMode('topic', FetchMode.JOIN)
         }
 
         showSubscriptionToUser { User user ->
             or {
                 forPublicTopics()
-                forUser(user)
+                subscriptionForUser(user)
+            }
+        }
+
+        topicNameLike { String term ->
+            'topic' {
+                ilike 'name', '%' + term + '%'
             }
         }
     }
