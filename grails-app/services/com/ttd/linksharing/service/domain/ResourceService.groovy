@@ -35,17 +35,18 @@ class ResourceService {
         getPostDetailsFromBaseCriteria(Resource.recentResources, params)
     }
 
-    PagedResult<PostDetails> getPostsForUser(User user, QueryParameters params) {
-        getPostDetailsFromBaseCriteria(Resource.forUser(user), params)
+    PagedResult<PostDetails> getPostsForUserId(Long userId, QueryParameters params) {
+        getPostDetailsFromBaseCriteria(Resource.forUserId(userId), params)
     }
 
     PagedResult<PostDetails> getPostsForTopic(Topic topic, QueryParameters params) {
         getPostDetailsFromBaseCriteria(Resource.forTopic(topic), params)
     }
 
-    private static PagedResult<PostDetails> getPostDetailsFromBaseCriteria(def baseCriteria, QueryParameters params) {
-        def criteria = baseCriteria
-        if (! params.includePrivates) {
+    private static PagedResult<PostDetails> getPostDetailsFromBaseCriteria(def criteria, QueryParameters params) {
+        if (params.loggedUser) {
+            criteria = criteria.showResourceToUser(params.loggedUser)
+        } else {
             criteria = criteria.publicResources()
         }
         if (params.searchTerm) {

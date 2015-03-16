@@ -41,5 +41,15 @@ class Topic {
         publicTopics {
             eq 'scope', Visibility.PUBLIC
         }
+
+        showTopicToUser { User user ->
+            or {
+                publicTopics()
+                'subscriptions' {
+                    eq 'user', user
+                    eq 'topic', this
+                }
+            }
+        }
     }
 }

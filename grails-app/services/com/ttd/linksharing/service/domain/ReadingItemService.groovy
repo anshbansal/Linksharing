@@ -25,20 +25,13 @@ class ReadingItemService {
 
     PagedResult<PostDetails> getReadingItemsForUser(User user, QueryParameters params) {
 
-        def criteria = ReadingItem.unreadForUser(user)
+        def criteria = ReadingItem.forUser(user).unreadItems()
         if (params.searchTerm != "") {
             criteria = criteria.resourceDescriptionLike(params.searchTerm)
         }
 
         List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
 
-        new PagedResult<PostDetails>().setPaginationList(
-                pagedResultList,
-                {
-                    it.collect([]) { ReadingItem readingItem ->
-                        new PostDetails(resource: readingItem.resource, isRead: readingItem.isRead)
-                    }
-                }
-        )
+        new PagedResult<PostDetails>().setPaginationList(pagedResultList, PostDetails.mapFromReadingItem)
     }
 }

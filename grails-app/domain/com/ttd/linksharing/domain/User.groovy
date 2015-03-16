@@ -49,5 +49,9 @@ class User {
             byIdentifier credentials.uniqueIdentifier
             eq 'password', credentials.loginPassword
         }
+
+        isAdmin {
+            eq 'admin', Boolean.TRUE
+        }
     }
 }

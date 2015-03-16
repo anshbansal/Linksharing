@@ -34,8 +34,23 @@ abstract class Resource {
             fetchMode('topic', FetchMode.JOIN)
         }
 
-        forUser { User user ->
-            eq 'createdBy', user
+        showResourceToUser { User user ->
+            or {
+                'user' {
+                    isAdmin()
+                }
+                'topic' {
+                    showTopicToUser()
+                }
+            }
+            fetchMode('topic', FetchMode.JOIN)
+            fetchMode('user', FetchMode.JOIN)
+        }
+
+        forUserId { Long userId ->
+             'createdBy' {
+                 eq 'id', userId
+             }
             fetchMode('createdBy', FetchMode.JOIN)
         }
 

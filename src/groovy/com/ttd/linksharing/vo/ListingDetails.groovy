@@ -23,16 +23,13 @@ class ListingDetails<E> {
 
     @Delegate QueryParameters queryParams
 
-    Long userId
-    Long topicId
-
     void setAttrs(Map attrs) {
         title = attrs.title
 
         queryParams = new QueryParameters()
 
-        queryParams.max = attrs.int('max') ?: 5
-        queryParams.offset = attrs.int('offset') ?: 0
+        max = attrs.int('max') ?: 5
+        offset = attrs.int('offset') ?: 0
 
         idToUpdate = attrs.idToUpdate ?: attrs.type
         paginationController = attrs.paginationController
@@ -40,7 +37,7 @@ class ListingDetails<E> {
         paginationDisable =  Boolean.parseBoolean(attrs.paginationDisable)
 
         searchEnable = Boolean.parseBoolean(attrs.searchEnable)
-        queryParams.searchTerm = attrs.searchTerm ?: ""
+        searchTerm = attrs.searchTerm ?: ""
 
         userId = Mappings.parseStringOrLong(attrs?.userId)
         topicId = Mappings.parseStringOrLong(attrs?.topicId)
