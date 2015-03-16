@@ -44,15 +44,7 @@ class ResourceService {
     }
 
     private static PagedResult<PostDetails> getPostDetailsFromBaseCriteria(def criteria, QueryParameters params) {
-        if (params.loggedUser) {
-            criteria = criteria.showResourceToUser(params.loggedUser)
-        } else {
-            criteria = criteria.publicResources()
-        }
-        if (params.searchTerm) {
-            criteria = criteria.descriptionLike(params.searchTerm)
-        }
-
+        criteria = getFilteredCriteriaForResource(criteria, params)
         getPostDetailsFromCriteria(criteria, params, PostDetails.mapFromResource)
     }
 
@@ -60,5 +52,19 @@ class ResourceService {
         List<PagedResultList> pagedResultList = criteria.list(params.queryMapParams)
 
         new PagedResult<PostDetails>().setPaginationList(pagedResultList, collector)
+    }
+
+    static def getFilteredCriteriaForResource(def criteria, QueryParameters params) {
+        if (params.loggedUser) {
+            if (! params.loggedUser.admin) {
+                criteria = criteria.showResourceToUser(params.loggedUser)
+            }
+        } else {
+            criteria = criteria.publicResources()
+        }
+        if (params.searchTerm) {
+            criteria = criteria.descriptionLike(params.searchTerm)
+        }
+        return criteria
     }
 }

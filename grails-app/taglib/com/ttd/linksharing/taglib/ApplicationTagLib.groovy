@@ -102,8 +102,12 @@ class ApplicationTagLib {
                 break
             case "forUser":
                 listingDetails.title = "Topics"
-                listingDetails.listings = topicService.
-                        getTopicsForUser(User.get(listingDetails.userId), listingDetails.queryParams)
+
+                User curUser = User.get(listingDetails.userId)
+
+                println "User id is ${curUser}"
+
+                listingDetails.listings = topicService.getTopicsForUser(curUser, listingDetails.queryParams)
                 break
         }
 

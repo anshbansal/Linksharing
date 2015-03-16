@@ -29,7 +29,7 @@ class Topic {
     }
 
     static namedQueries = {
-        topicNameLike {String term ->
+        nameLike {String term ->
             ilike 'name', '%' + term + '%'
         }
 
@@ -45,10 +45,13 @@ class Topic {
         showTopicToUser { User user ->
             or {
                 publicTopics()
-                'subscriptions' {
-                    eq 'user', user
-                    eq 'topic', this
-                }
+            }
+        }
+
+        isSubscribedToTopic { User user ->
+            'subscriptions' {
+                eq 'user', user
+                eq 'topic', this
             }
         }
     }

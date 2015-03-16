@@ -38,11 +38,13 @@ class TopicService {
     }
 
     PagedResult<TopicDetails> getSubscriptionsForUser(User user, QueryParameters params) {
-        getTopicDetailsFromCriteria(Subscription.forUser(user), params, TopicDetails.mapFromSubscriptions)
+        def criteria = subscriptionService.getFilteredCriteriaForSubscription(Subscription.forUser(user), params)
+        getTopicDetailsFromCriteria(criteria, params, TopicDetails.mapFromSubscriptions)
     }
 
     PagedResult<TopicDetails> getTopicsForUser(User user, QueryParameters params) {
-        getTopicDetailsFromCriteria(Topic.forUser(user), params, TopicDetails.mapFromTopics)
+        def criteria = getFilteredCriteriaForTopic(Topic.forUser(user), params)
+        getTopicDetailsFromCriteria(criteria, params, TopicDetails.mapFromTopics)
     }
 
     TopicDetails getTopicDetailsForTopic(Topic topic) {
@@ -90,14 +92,6 @@ class TopicService {
     }
 
     private PagedResult<TopicDetails> getTopicDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
-
-        if (! params.includePrivates) {
-            criteria = criteria.publicTopics()
-        }
-        if (params.searchTerm) {
-            criteria = criteria.topicNameLike(params.searchTerm)
-        }
-
         List<PagedResultList> pagedResultList = criteria.list(params.queryMapParams)
 
         PagedResult<TopicDetails> topicsDetail = new PagedResult<>()
@@ -144,5 +138,19 @@ class TopicService {
                 }
 
         return result
+    }
+
+    static def getFilteredCriteriaForTopic(def criteria, QueryParameters params) {
+        if (params.loggedUser) {
+            if (! params.loggedUser.admin) {
+                criteria = criteria.showTopicToUser(params.loggedUser)
+            }
+        } else {
+            criteria = criteria.publicTopics
+        }
+        if (params.searchTerm) {
+            criteria = criteria.nameLike(params.searchTerm)
+        }
+        return criteria
     }
 }

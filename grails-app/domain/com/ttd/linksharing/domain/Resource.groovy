@@ -35,16 +35,10 @@ abstract class Resource {
         }
 
         showResourceToUser { User user ->
-            or {
-                'user' {
-                    isAdmin()
-                }
-                'topic' {
-                    showTopicToUser()
-                }
+            'topic' {
+                showTopicToUser(user)
             }
             fetchMode('topic', FetchMode.JOIN)
-            fetchMode('user', FetchMode.JOIN)
         }
 
         forUserId { Long userId ->
