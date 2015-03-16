@@ -23,6 +23,14 @@ environments {
             logSql = true
         }
     }
+    QA{
+        dataSource {
+            username="aseem-bansal"
+            password="igdefault"
+            dbCreate = "create-drop"
+            url = "jdbc:mysql://localhost:3306/aseem-bansal_QA"
+        }
+    }
     test {
         dataSource {
             dbCreate = "update"
