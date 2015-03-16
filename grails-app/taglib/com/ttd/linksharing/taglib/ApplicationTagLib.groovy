@@ -32,9 +32,9 @@ class ApplicationTagLib {
      * @attr topicId Default (not used). Considered if (type = forTopic)
      */
     def posts = { attrs ->
-        ListingDetails<PostDetails> listingDetails =
-                new ListingDetails<>(renderTemplate: "/templates/post/post", paginationController: "listingsPost",
-                                     attrs: attrs, loggedUser: session?.loggedUser)
+        ListingDetails<PostDetails> listingDetails = new ListingDetails<>(renderTemplate: "/templates/post/post",
+                attrs: attrs, paginationController: "listingsPost", loggedUser: session?.loggedUser)
+
 
         //TODO Check logic of each for (isRead) after mark as read is implemented
         switch (attrs.type) {
@@ -77,9 +77,9 @@ class ApplicationTagLib {
  *                                               (type subscriptions to show user's subscriptions)
      */
     def topics = { attrs ->
-        ListingDetails<TopicDetails> listingDetails =
-                new ListingDetails<>(renderTemplate: "/templates/topic/topic", paginationController: "listingsTopic",
-                                    attrs: attrs, loggedUser: session?.loggedUser)
+        ListingDetails<TopicDetails> listingDetails = new ListingDetails<>(renderTemplate: "/templates/topic/topic",
+                attrs: attrs, paginationController: "listingsTopic", loggedUser: session?.loggedUser)
+
         switch (attrs.type) {
             case "subscriptions":
                 listingDetails.title = "Subscriptions"
@@ -91,8 +91,7 @@ class ApplicationTagLib {
                 } else {
                     curUser = session?.loggedUser
                 }
-                listingDetails.listings = topicService.
-                        getSubscriptionsForUser(curUser, listingDetails.queryParams)
+                listingDetails.listings = topicService.getSubscriptionsForUser(curUser, listingDetails.queryParams)
                 break
             case "trendingTopics":
                 //Search and pagination is not available for this
@@ -124,9 +123,8 @@ class ApplicationTagLib {
      * @attr topicId Default (not used). Considered if (type = forTopic)
      */
     def users = { attrs ->
-        ListingDetails<UserDetails> listingDetails =
-                new ListingDetails<>(renderTemplate: "/templates/user/user", paginationController: "listingsUser",
-                        attrs: attrs, loggedUser: session?.loggedUser)
+        ListingDetails<UserDetails> listingDetails =  new ListingDetails<>(renderTemplate: "/templates/user/user",
+                attrs: attrs, paginationController: "listingsUser", loggedUser: session?.loggedUser)
 
         listingDetails.searchEnable = Boolean.FALSE
 
