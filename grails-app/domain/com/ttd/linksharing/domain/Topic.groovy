@@ -45,6 +45,7 @@ class Topic {
         showTopicToUser { User user ->
             or {
                 publicTopics()
+                isSubscribedToTopic(user)
             }
         }
 
