@@ -5,8 +5,7 @@
 grails.config.locations = [ "classpath:${appName}-config.properties",
                              "classpath:${appName}-config.groovy",
                              "file:${userHome}/.grails/${appName}-config.properties",
-                             "file:${userHome}/.grails/${appName}-config.groovy",
-                             "file:${userHome}/projects/aseem.groovy"]
+                             "file:${userHome}/.grails/${appName}-config.groovy"]
 
 // if (System.properties["${appName}.config.location"]) {
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
@@ -66,6 +65,8 @@ grails {
                  "mail.smtp.socketFactory.port":"465",
                  "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
                  "mail.smtp.socketFactory.fallback":"false"]
+        name = "aseembansalDummy@gmail.com"
+        password = "aseembansaldummy"
 
     }
 }
