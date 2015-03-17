@@ -2,7 +2,7 @@ package com.ttd.linksharing.domain
 
 import com.ttd.linksharing.co.topic.TopicInfo
 import com.ttd.linksharing.enums.Visibility
-import org.hibernate.FetchMode
+import com.ttd.linksharing.service.domain.SubscriptionService
 
 class Topic {
     String name
@@ -26,20 +26,5 @@ class Topic {
     @Override
     String toString() {
         "$name"
-    }
-
-    static namedQueries = {
-        topicNameLike {String term ->
-            ilike 'name', '%' + term + '%'
-        }
-
-        forUser { User user ->
-            eq 'createdBy', user
-            fetchMode('createdBy', FetchMode.JOIN)
-        }
-
-        publicTopics {
-            eq 'scope', Visibility.PUBLIC
-        }
     }
 }

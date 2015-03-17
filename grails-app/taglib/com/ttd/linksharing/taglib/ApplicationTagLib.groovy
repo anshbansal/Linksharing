@@ -1,6 +1,5 @@
 package com.ttd.linksharing.taglib
 
-import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
@@ -8,7 +7,6 @@ import com.ttd.linksharing.vo.ListingDetails
 import com.ttd.linksharing.vo.PostDetails
 import com.ttd.linksharing.vo.TopicDetails
 import com.ttd.linksharing.vo.UserDetails
-import grails.converters.JSON
 
 class ApplicationTagLib {
     static defaultEncodeAs = [taglib: 'raw']
@@ -32,16 +30,15 @@ class ApplicationTagLib {
      * @attr topicId Default (not used). Considered if (type = forTopic)
      */
     def posts = { attrs ->
-        ListingDetails<PostDetails> listingDetails = new ListingDetails<>(
-                renderTemplate: "/templates/post/post", attrs: attrs, paginationController: "listingsPost")
-        listingDetails.includePrivates = includePrivates(listingDetails.userId)
+        ListingDetails<PostDetails> listingDetails = new ListingDetails<>(renderTemplate: "/templates/post/post",
+                attrs: attrs, paginationController: "listingsPost", loggedUser: session?.loggedUser)
+
 
         //TODO Check logic of each for (isRead) after mark as read is implemented
         switch (attrs.type) {
             case "recentShares":
                 listingDetails.title = "Recent Shares"
-                listingDetails.listings = resourceService
-                        .recentPublicResources(listingDetails.queryParams)
+                listingDetails.listings = resourceService.recentPublicResources(listingDetails.queryParams)
                 break
 //            case "topPosts":
 //                title = "Top Posts"
@@ -56,7 +53,7 @@ class ApplicationTagLib {
             case "forUser":
                 listingDetails.title = "Posts"
                 listingDetails.listings = resourceService
-                        .getPostsForUser(User.get(listingDetails.userId), listingDetails.queryParams)
+                        .getPostsForUserId(listingDetails.userId, listingDetails.queryParams)
                 break
             case "forTopic":
                 Topic curTopic = Topic.get(listingDetails.topicId)
@@ -78,9 +75,8 @@ class ApplicationTagLib {
  *                                               (type subscriptions to show user's subscriptions)
      */
     def topics = { attrs ->
-        ListingDetails<TopicDetails> listingDetails = new ListingDetails<>(
-                renderTemplate: "/templates/topic/topic", attrs: attrs, paginationController: 'listingsTopic')
-        listingDetails.includePrivates = includePrivates(listingDetails.userId)
+        ListingDetails<TopicDetails> listingDetails = new ListingDetails<>(renderTemplate: "/templates/topic/topic",
+                attrs: attrs, paginationController: "listingsTopic", loggedUser: session?.loggedUser)
 
         switch (attrs.type) {
             case "subscriptions":
@@ -93,8 +89,7 @@ class ApplicationTagLib {
                 } else {
                     curUser = session?.loggedUser
                 }
-                listingDetails.listings = topicService.
-                        getSubscriptionsForUser(curUser, listingDetails.queryParams)
+                listingDetails.listings = topicService.getTopicsDetailsForUserSubscriptions(curUser, listingDetails.queryParams)
                 break
             case "trendingTopics":
                 //Search and pagination is not available for this
@@ -105,8 +100,10 @@ class ApplicationTagLib {
                 break
             case "forUser":
                 listingDetails.title = "Topics"
-                listingDetails.listings = topicService.
-                        getTopicsForUser(User.get(listingDetails.userId), listingDetails.queryParams)
+
+                User curUser = User.get(listingDetails.userId)
+
+                listingDetails.listings = topicService.getTopicsDetailsForTopicsCreatedByUser(curUser, listingDetails.queryParams)
                 break
         }
 
@@ -126,10 +123,10 @@ class ApplicationTagLib {
      * @attr topicId Default (not used). Considered if (type = forTopic)
      */
     def users = { attrs ->
-        ListingDetails<UserDetails> listingDetails = new ListingDetails<>(
-                renderTemplate: "/templates/user/user", attrs: attrs, paginationController: 'listingsUser')
+        ListingDetails<UserDetails> listingDetails =  new ListingDetails<>(renderTemplate: "/templates/user/user",
+                attrs: attrs, paginationController: "listingsUser", loggedUser: session?.loggedUser)
+
         listingDetails.searchEnable = Boolean.FALSE
-        listingDetails.includePrivates = includePrivates(listingDetails.userId)
 
         switch (attrs.type) {
             case "forTopic":
@@ -146,7 +143,7 @@ class ApplicationTagLib {
      */
     def user = { attrs ->
         User user = attrs.user
-        UserDetails details = userService.getUserDetailsForUser(user, includePrivates(user))
+        UserDetails details = userService.getUserDetailsForUser(user, session?.loggedUser)
 
         out << render(template: "/templates/user/user", model: [listing: details])
     }
@@ -178,13 +175,5 @@ class ApplicationTagLib {
                 from: Subscription.forUser(session?.loggedUser).list().topic,
                 optionKey: 'id')
 
-    }
-
-    private Boolean includePrivates(User user) {
-        includePrivates(user?.id)
-    }
-
-    private Boolean includePrivates(Long id) {
-        session?.loggedUser?.id == id || session?.loggedUser?.admin
     }
 }

@@ -25,6 +25,14 @@ class Mappings {
         }
     }
 
+    static Map getIdToPropertyMapping(def properties) {
+        Map result = [:]
+        properties.each { row ->
+            result[row[0]] = row[1]
+        }
+        result
+    }
+
     static void setScaledImage(MultipartFile file, def co) {
         if(! file?.size) {
             return

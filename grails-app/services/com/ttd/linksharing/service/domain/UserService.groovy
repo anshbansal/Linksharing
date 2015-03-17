@@ -19,6 +19,7 @@ import org.apache.commons.lang.RandomStringUtils
 class UserService {
 
     def sendMailService
+    def topicService
 
     User save(User user, Boolean isFlushEnabled = false) {
 
@@ -90,57 +91,66 @@ class UserService {
         return newPassword
     }
 
-    UserDetails getUserDetailsForUser(User user, Boolean includePrivates) {
+    UserDetails getUserDetailsForUser(User user, User loggedUser) {
         UserDetails userDetails = new UserDetails(user: user)
 
-        getUserDetailsWithSubscriptionAndTopicCount([userDetails], includePrivates)[0]
+        getUserDetailsWithSubscriptionAndTopicCount([userDetails], loggedUser)[0]
     }
 
     PagedResult<UserDetails> getUsersSubscribedToTopic(Topic topic, QueryParameters params) {
-        List<PagedResultList> pagedResultList = Subscription.forTopic(topic).list(params.queryMapParams)
+        PagedResultList pagedResultList = Subscription.createCriteria().list(params.queryMapParams) {
+            eq 'topic', topic
+        }
 
         PagedResult<UserDetails> userDetailsPagedResult = new PagedResult<>()
 
-        userDetailsPagedResult.with {
-            setPaginationList(pagedResultList, UserDetails.mapFromSubscriptions)
-            paginationList = getUserDetailsWithSubscriptionAndTopicCount(paginationList, params.includePrivates)
-        }
+        userDetailsPagedResult.paginationList = UserDetails.mapFromSubscriptions(pagedResultList)
+        userDetailsPagedResult.totalCount = pagedResultList.totalCount
+
+        userDetailsPagedResult.paginationList = getUserDetailsWithSubscriptionAndTopicCount(userDetailsPagedResult.paginationList, params.loggedUser)
+
         userDetailsPagedResult
     }
 
     private List<UserDetails> getUserDetailsWithSubscriptionAndTopicCount(List<UserDetails> userDetailsList,
-                                                                    Boolean includePrivates) {
+                                                                          User loggedUser) {
 
-        Map temp = getNumberSubscriptionsAndTopics(userDetailsList*.userId, includePrivates)
+        List<Long> topicIdsToBeShown = topicService.getTopicIdsToBeShownToUser(loggedUser)
+
+        Map numSubscriptionsForUser = getNumberOfSubscriptionsForUserIds(userDetailsList*.userId, topicIdsToBeShown)
+        Map numTopicsForUser = getNumberOfTopicsForUserIds(userDetailsList*.userId, topicIdsToBeShown)
 
         userDetailsList.collect([]) { UserDetails userDetails ->
-            Map userDetailsMap = temp[userDetails.userId] as Map
-
-            new UserDetails(user: userDetails.user, numSubscriptions: userDetailsMap['numSubs'], numTopics: userDetailsMap['numTopics'])
+            new UserDetails(user: userDetails.user,
+                    numSubscriptions: numSubscriptionsForUser[userDetails.userId],
+                    numTopics: numTopicsForUser[userDetails.userId])
         }
     }
 
-    //TODO Refactor
-    private Map getNumberSubscriptionsAndTopics(List<Long> userIds, Boolean includePrivates) {
-        Map result = [:]
+    def Map getNumberOfSubscriptionsForUserIds(List<Long> userIds, List<Long> topicIds) {
+        def subscriptions = Subscription.createCriteria().list {
+            createAlias 'user', 'u'
+            createAlias 'topic', 't'
+            projections {
+                groupProperty('u.id')
+                rowCount()
+            }
+            'in' 'u.id', userIds
+            'in' 't.id', topicIds
+        }
+        Mappings.getIdToPropertyMapping(subscriptions)
+    }
 
-        User.executeQuery("""
-            select u.id,
-                (select count(*) from Subscription
-                    where user.id = u.id
-                      and topic.scope in (:scopes)
-                    ) as numSubs,
-                (select count(*) from Topic
-                    where createdBy.id = u.id
-                      and scope in (:scopes)
-                    ) as numTopics
-            from User as u
-            where u.id in (:ids)
-            """, ['ids': userIds,'scopes':  Mappings.getScopes(includePrivates)])
-                .each {
-                    result[it[0]] = [numSubs: it[1], numTopics: it[2]]
-                }
-
-        return result
+    def Map getNumberOfTopicsForUserIds(List<Long> userIds, List<Long> topicIds) {
+        def topics = Topic.createCriteria().list {
+            createAlias 'createdBy', 'u'
+            projections {
+                groupProperty('u.id')
+                rowCount()
+            }
+            'in' 'u.id', userIds
+            'in' 'id', topicIds
+        }
+        Mappings.getIdToPropertyMapping(topics)
     }
 }

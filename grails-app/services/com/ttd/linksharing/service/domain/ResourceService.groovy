@@ -1,6 +1,7 @@
 package com.ttd.linksharing.service.domain
 
 import com.ttd.linksharing.domain.Topic
+import com.ttd.linksharing.util.Mappings
 import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.PostDetails
 import com.ttd.linksharing.domain.ReadingItem
@@ -15,6 +16,7 @@ import grails.transaction.Transactional
 class ResourceService {
 
     def readingItemService
+    def subscriptionService
 
     Resource save(Resource resource, Boolean isFlushEnabled = false) {
 
@@ -32,32 +34,52 @@ class ResourceService {
     }
 
     PagedResult<PostDetails> recentPublicResources(QueryParameters params) {
-        getPostDetailsFromBaseCriteria(Resource.recentResources, params)
+
+        def coreBusinessLogicCriteriaForRecentResources = Resource.recentResources
+        PagedResultList recentResources = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteriaForRecentResources, params)
+
+        getPostDetailsFromCriteria(recentResources)
     }
 
-    PagedResult<PostDetails> getPostsForUser(User user, QueryParameters params) {
-        getPostDetailsFromBaseCriteria(Resource.forUser(user), params)
+    PagedResult<PostDetails> getPostsForUserId(Long userId, QueryParameters params) {
+
+        def coreBusinessLogicCriteria = Resource.resourcesForCreatorId(userId)
+        PagedResultList resourcesForCreatorId = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteria, params)
+
+        getPostDetailsFromCriteria(resourcesForCreatorId)
     }
 
     PagedResult<PostDetails> getPostsForTopic(Topic topic, QueryParameters params) {
-        getPostDetailsFromBaseCriteria(Resource.forTopic(topic), params)
+
+        def coreBusinessLogicCriteria = Resource.resourcesOfTopic(topic)
+        PagedResultList resourcesForTopic = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteria, params)
+
+        getPostDetailsFromCriteria(resourcesForTopic)
     }
 
-    private static PagedResult<PostDetails> getPostDetailsFromBaseCriteria(def baseCriteria, QueryParameters params) {
-        def criteria = baseCriteria
-        if (! params.includePrivates) {
-            criteria = criteria.publicResources()
+    private PagedResult<PostDetails> getPostDetailsFromCriteria(PagedResultList pagedResultList) {
+        PagedResult<PostDetails> result = new PagedResult<>()
+        result.paginationList = PostDetails.mapFromResource(pagedResultList)
+        result.totalCount = pagedResultList.totalCount
+
+        result
+    }
+
+    private PagedResultList getResourcesPagedResultListForLoggedUserAndSearch(def criteria, QueryParameters params) {
+
+        if (params.loggedUser) {
+            if (! params.loggedUser.admin) {
+                List<Long> subscribedPrivateTopicIdsForUser = subscriptionService.getSubscribedPrivateTopicIdsForUser(params.loggedUser)
+
+                criteria = criteria.resourcesOfPublicTopicsOrHavingTopicIds(subscribedPrivateTopicIdsForUser)
+            }
+        } else {
+            criteria = criteria.resourcesOfPublicTopics()
         }
+
         if (params.searchTerm) {
-            criteria = criteria.descriptionLike(params.searchTerm)
+            criteria = criteria.resourcesHavingDescriptionIlike(params.searchTerm)
         }
-
-        getPostDetailsFromCriteria(criteria, params, PostDetails.mapFromResource)
-    }
-
-    private static PagedResult<PostDetails> getPostDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
-        List<PagedResultList> pagedResultList = criteria.list(params.queryMapParams)
-
-        new PagedResult<PostDetails>().setPaginationList(pagedResultList, collector)
+        criteria.list(params.queryMapParams)
     }
 }

@@ -14,14 +14,13 @@ class TopicDetails {
         topic.id
     }
 
-    static Closure mapFromSubscriptions = { List<Subscription> subscriptions ->
+    static Closure mapFromSubscriptions = { subscriptions ->
         subscriptions.collect([]) { Subscription subscription ->
             new TopicDetails(topic: subscription.topic, creator: subscription.topic.createdBy)
-
         }
     }
 
-    static Closure mapFromTopics = { List<Topic> topics ->
+    static def mapFromTopics = { topics ->
         topics.collect([]) { Topic topic ->
             new TopicDetails(topic: topic, creator: topic.createdBy)
         }

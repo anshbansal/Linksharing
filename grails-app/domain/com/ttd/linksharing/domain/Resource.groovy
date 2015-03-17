@@ -1,5 +1,6 @@
 package com.ttd.linksharing.domain
 
+import com.ttd.linksharing.enums.Visibility
 import org.hibernate.FetchMode
 
 abstract class Resource {
@@ -23,28 +24,36 @@ abstract class Resource {
     static namedQueries = {
         recentResources {
             order("dateCreated", "desc")
-
-            fetchMode('createdBy', FetchMode.JOIN)
         }
 
-        publicResources {
-            'topic' {
-                publicTopics()
-            }
-            fetchMode('topic', FetchMode.JOIN)
+        resourcesHavingDescriptionIlike { String term ->
+            ilike 'description', '%' + term + '%'
         }
-
-        forUser { User user ->
-            eq 'createdBy', user
-            fetchMode('createdBy', FetchMode.JOIN)
-        }
-
-        forTopic { Topic topic ->
+        resourcesOfTopic { Topic topic ->
             eq 'topic', topic
         }
 
-        descriptionLike { String term ->
-            ilike 'description', '%' + term + '%'
+        resourcesOfPublicTopics {
+            'topic' {
+                eq 'scope', Visibility.PUBLIC
+            }
+        }
+
+        resourcesOfPublicTopicsOrHavingTopicIds { List<Long> topicIds ->
+            createAlias('topic', 't')
+            or {
+                eq 't.scope', Visibility.PUBLIC
+
+                if (topicIds.size()) {
+                    'in' 't.id', topicIds
+                }
+            }
+        }
+
+        resourcesForCreatorId { Long creatorId ->
+            'createdBy' {
+                eq 'id', creatorId
+            }
         }
     }
 }

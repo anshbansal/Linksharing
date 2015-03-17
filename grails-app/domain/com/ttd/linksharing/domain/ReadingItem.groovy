@@ -8,8 +8,11 @@ class ReadingItem {
     static belongsTo = [resource: Resource, user: User]
 
     static namedQueries = {
-        unreadForUser { User user ->
+        readingItemForUser { User user ->
             eq ('user', user)
+        }
+
+        unreadItems {
             eq('isRead', Boolean.FALSE)
 
             fetchMode('resource', FetchMode.JOIN)
@@ -17,7 +20,7 @@ class ReadingItem {
         }
         resourceDescriptionLike { String term ->
             'resource' {
-                descriptionLike(term)
+                resourcesHavingDescriptionIlike(term)
             }
         }
     }
