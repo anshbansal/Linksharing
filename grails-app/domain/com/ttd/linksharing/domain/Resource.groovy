@@ -35,7 +35,7 @@ abstract class Resource {
 
         resourcesOfPublicTopics {
             'topic' {
-                publicTopics()
+                eq 'scope', Visibility.PUBLIC
             }
         }
 

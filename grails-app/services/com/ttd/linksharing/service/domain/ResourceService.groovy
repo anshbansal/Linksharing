@@ -16,6 +16,7 @@ import grails.transaction.Transactional
 class ResourceService {
 
     def readingItemService
+    def subscriptionService
 
     Resource save(Resource resource, Boolean isFlushEnabled = false) {
 
@@ -35,8 +36,7 @@ class ResourceService {
     PagedResult<PostDetails> recentPublicResources(QueryParameters params) {
 
         def coreBusinessLogicCriteriaForRecentResources = Resource.recentResources
-        List<PagedResultList> recentResources = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteriaForRecentResources, params)
-
+        PagedResultList recentResources = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteriaForRecentResources, params)
 
         getPostDetailsFromCriteria(recentResources)
     }
@@ -44,7 +44,7 @@ class ResourceService {
     PagedResult<PostDetails> getPostsForUserId(Long userId, QueryParameters params) {
 
         def coreBusinessLogicCriteria = Resource.resourcesForCreatorId(userId)
-        List<PagedResultList> resourcesForCreatorId = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteria, params)
+        PagedResultList resourcesForCreatorId = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteria, params)
 
         getPostDetailsFromCriteria(resourcesForCreatorId)
     }
@@ -52,20 +52,24 @@ class ResourceService {
     PagedResult<PostDetails> getPostsForTopic(Topic topic, QueryParameters params) {
 
         def coreBusinessLogicCriteria = Resource.resourcesOfTopic(topic)
-        List<PagedResultList> resourcesForTopic = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteria, params)
+        PagedResultList resourcesForTopic = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteria, params)
 
         getPostDetailsFromCriteria(resourcesForTopic)
     }
 
-    private static PagedResult<PostDetails> getPostDetailsFromCriteria(List<PagedResultList> pagedResultList) {
-        new PagedResult<PostDetails>().setPaginationList(pagedResultList, PostDetails.mapFromResource)
+    private PagedResult<PostDetails> getPostDetailsFromCriteria(PagedResultList pagedResultList) {
+        PagedResult<PostDetails> result = new PagedResult<>()
+        result.paginationList = PostDetails.mapFromResource(pagedResultList)
+        result.totalCount = pagedResultList.totalCount
+
+        result
     }
 
-    static List<PagedResultList> getResourcesPagedResultListForLoggedUserAndSearch(def criteria, QueryParameters params) {
+    private PagedResultList getResourcesPagedResultListForLoggedUserAndSearch(def criteria, QueryParameters params) {
 
         if (params.loggedUser) {
             if (! params.loggedUser.admin) {
-                List<Long> subscribedPrivateTopicIdsForUser = SubscriptionService.getSubscribedPrivateTopicIdsForUser(params.loggedUser)
+                List<Long> subscribedPrivateTopicIdsForUser = subscriptionService.getSubscribedPrivateTopicIdsForUser(params.loggedUser)
 
                 criteria = criteria.resourcesOfPublicTopicsOrHavingTopicIds(subscribedPrivateTopicIdsForUser)
             }

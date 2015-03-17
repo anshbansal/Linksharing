@@ -32,7 +32,7 @@ class SubscriptionService {
     }
 
     @NotTransactional
-    static List<Long> getSubscribedPrivateTopicIdsForUser(User user) {
+    List<Long> getSubscribedPrivateTopicIdsForUser(User user) {
         Subscription.createCriteria().list {
 
             createAlias('topic', 't')

@@ -10,6 +10,7 @@ import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.QueryParameters
 import com.ttd.linksharing.vo.TopicDetails
 import grails.gorm.PagedResultList
+import grails.transaction.NotTransactional
 import grails.transaction.Transactional
 import org.hibernate.FetchMode
 
@@ -38,30 +39,14 @@ class TopicService {
     }
 
     PagedResult<TopicDetails> getTopicsDetailsForUserSubscriptions(User user, QueryParameters params) {
+        List<Long> topicIdsToBeShown = getTopicIdsToBeShownToUser(params.loggedUser, params.searchTerm)
 
         PagedResultList subscriptionsForUser = Subscription.createCriteria().list(params.queryMapParams) {
+            createAlias('topic', 't')
+
             eq 'user', user
-
-            'topic' {
-                if (!params.loggedUser) {
-                    eq 'scope', Visibility.PUBLIC
-                }
-
-                if (! params.loggedUser?.admin) {
-                    or {
-                        eq 'scope', Visibility.PUBLIC
-
-                        List<Long> subscribedPrivateTopicIdsForUser = SubscriptionService.getSubscribedPrivateTopicIdsForUser(params.loggedUser)
-
-                        if (subscribedPrivateTopicIdsForUser.size()) {
-                            'in' 'id', subscribedPrivateTopicIdsForUser
-                        }
-                    }
-                }
-
-                if (params.searchTerm) {
-                    ilike 'name', '%' + params.searchTerm + '%'
-                }
+            if (topicIdsToBeShown?.size()) {
+                'in' 't.id', topicIdsToBeShown
             }
         }
 
@@ -69,28 +54,12 @@ class TopicService {
     }
 
     PagedResult<TopicDetails> getTopicsDetailsForTopicsCreatedByUser(User user, QueryParameters params) {
+        List<Long> topicIdsToBeShown = getTopicIdsToBeShownToUser(params.loggedUser, params.searchTerm)
 
         PagedResultList topicsForUser = Topic.createCriteria().list(params.queryMapParams) {
             eq 'createdBy', user
-
-            if (! params.loggedUser) {
-                eq 'scope', Visibility.PUBLIC
-            }
-
-            if (! params.loggedUser?.admin) {
-                or {
-                    eq 'scope', Visibility.PUBLIC
-
-                    List<Long> subscribedPrivateTopicIdsForUser = SubscriptionService.getSubscribedPrivateTopicIdsForUser(params.loggedUser)
-
-                    if (subscribedPrivateTopicIdsForUser.size()) {
-                        'in' 'id', subscribedPrivateTopicIdsForUser
-                    }
-                }
-            }
-
-            if (params.searchTerm) {
-                ilike 'name', '%' + params.searchTerm + '%'
+            if (topicIdsToBeShown?.size()) {
+                'in' 'id', topicIdsToBeShown
             }
         }
 
@@ -141,7 +110,7 @@ class TopicService {
         } > 0
     }
 
-    private PagedResult<TopicDetails> getListOfTopicDetailsFromPagedResultList(
+    PagedResult<TopicDetails> getListOfTopicDetailsFromPagedResultList(
             PagedResultList listResults, Closure<List<TopicDetails>> collector) {
 
         List<TopicDetails> topicDetailsList = collector(listResults)
@@ -153,7 +122,7 @@ class TopicService {
         new PagedResult<>(paginationList: topicDetailsList, totalCount: listResults.totalCount)
     }
 
-    private List<TopicDetails> getTopicsDetailWithSubscriptionAndResourceCount(List<TopicDetails> topicDetailsList) {
+    List<TopicDetails> getTopicsDetailWithSubscriptionAndResourceCount(List<TopicDetails> topicDetailsList) {
 
         Map temp = getNumberSubscriptionsAndResources(topicDetailsList*.topicId)
 
@@ -167,7 +136,7 @@ class TopicService {
     }
 
     //TODO Refactor for individual maps
-    private Map getNumberSubscriptionsAndResources(List<Long> topicIds) {
+    Map getNumberSubscriptionsAndResources(List<Long> topicIds) {
         Map result = [:]
 
         Topic.executeQuery("""
@@ -182,5 +151,37 @@ class TopicService {
         }
 
         return result
+    }
+
+    @NotTransactional
+    List<Long> getTopicIdsToBeShownToUser(User user, String topicNameSearchTerm = null) {
+        if (user?.admin && !topicNameSearchTerm) {
+            return null
+        }
+
+        Topic.createCriteria().list {
+            projections {
+                property('id')
+            }
+
+            if (user) {
+                if (!user.admin) {
+                    List<Long> subscribedPrivateTopicIdsForUser = subscriptionService
+                                                                    .getSubscribedPrivateTopicIdsForUser(user)
+                    or {
+                        eq 'scope', Visibility.PUBLIC
+                        if (subscribedPrivateTopicIdsForUser.size()) {
+                            'in' 'id', subscribedPrivateTopicIdsForUser
+                        }
+                    }
+                }
+            } else {
+                eq 'scope', Visibility.PUBLIC
+            }
+
+            if (topicNameSearchTerm) {
+                ilike 'name', '%' + topicNameSearchTerm + '%'
+            }
+        }
     }
 }

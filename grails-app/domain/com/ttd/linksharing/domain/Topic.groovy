@@ -27,44 +27,4 @@ class Topic {
     String toString() {
         "$name"
     }
-
-    static namedQueries = {
-        topicsCreatedBy { User creator ->
-            eq 'createdBy', creator
-        }
-
-        topicsHavingNameIlike {String term ->
-            ilike 'name', '%' + term + '%'
-        }
-
-        publicTopics {
-            eq 'scope', Visibility.PUBLIC
-        }
-
-        publicTopicsOrHavingIds { List<Long> topicIds ->
-            or {
-                publicTopics()
-                inList 'id', topicIds
-            }
-        }
-
-        allowedTopicsForUser { User user ->
-            if (! user) {
-                eq 'scope', Visibility.PUBLIC
-            }
-
-            if (! user?.admin) {
-                or {
-                    eq 'scope', Visibility.PUBLIC
-
-                    List<Long> subscribedPrivateTopicIdsForUser = SubscriptionService.getSubscribedPrivateTopicIdsForUser(user)
-
-                    if (subscribedPrivateTopicIdsForUser.size()) {
-                        'in' 'id', subscribedPrivateTopicIdsForUser
-                    }
-                }
-            }
-        }
-
-    }
 }
