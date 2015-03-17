@@ -1,7 +1,6 @@
 package com.ttd.linksharing.service.domain
 
 import com.ttd.linksharing.domain.Topic
-import com.ttd.linksharing.util.Mappings
 import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.PostDetails
 import com.ttd.linksharing.domain.ReadingItem
@@ -15,6 +14,7 @@ import grails.transaction.Transactional
 @Transactional
 class ResourceService {
 
+    def topicService
     def readingItemService
     def subscriptionService
 
@@ -35,29 +35,49 @@ class ResourceService {
 
     PagedResult<PostDetails> recentPublicResources(QueryParameters params) {
 
-        def coreBusinessLogicCriteriaForRecentResources = Resource.recentResources
-        PagedResultList recentResources = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteriaForRecentResources, params)
+        PagedResultList recentResources =  Resource.createCriteria().list(params.queryMapParams) {
+            createAlias('topic', 't')
 
-        getPostDetailsFromCriteria(recentResources)
+            filterResourcesToBeShownToUserForSearchTerm.delegate = delegate
+            filterResourcesToBeShownToUserForSearchTerm(params, 't')
+
+            order("dateCreated", "desc")
+        }
+
+        getPostDetailsFromPagedResultList(recentResources)
     }
 
     PagedResult<PostDetails> getPostsForUserId(Long userId, QueryParameters params) {
 
-        def coreBusinessLogicCriteria = Resource.resourcesForCreatorId(userId)
-        PagedResultList resourcesForCreatorId = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteria, params)
+        PagedResultList resourcesForCreatorId =  Resource.createCriteria().list(params.queryMapParams) {
+            createAlias('topic', 't')
 
-        getPostDetailsFromCriteria(resourcesForCreatorId)
+            'createdBy' {
+                eq 'id', userId
+            }
+
+            filterResourcesToBeShownToUserForSearchTerm.delegate = delegate
+            filterResourcesToBeShownToUserForSearchTerm(params, 't')
+        }
+
+        getPostDetailsFromPagedResultList(resourcesForCreatorId)
     }
 
     PagedResult<PostDetails> getPostsForTopic(Topic topic, QueryParameters params) {
 
-        def coreBusinessLogicCriteria = Resource.resourcesOfTopic(topic)
-        PagedResultList resourcesForTopic = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteria, params)
+        PagedResultList resourcesForTopic =  Resource.createCriteria().list(params.queryMapParams) {
+            createAlias('topic', 't')
 
-        getPostDetailsFromCriteria(resourcesForTopic)
+            eq 'topic', topic
+
+            filterResourcesToBeShownToUserForSearchTerm.delegate = delegate
+            filterResourcesToBeShownToUserForSearchTerm(params, 't')
+        }
+
+        getPostDetailsFromPagedResultList(resourcesForTopic)
     }
 
-    private PagedResult<PostDetails> getPostDetailsFromCriteria(PagedResultList pagedResultList) {
+    private PagedResult<PostDetails> getPostDetailsFromPagedResultList(PagedResultList pagedResultList) {
         PagedResult<PostDetails> result = new PagedResult<>()
         result.paginationList = PostDetails.mapFromResource(pagedResultList)
         result.totalCount = pagedResultList.totalCount
@@ -65,21 +85,14 @@ class ResourceService {
         result
     }
 
-    private PagedResultList getResourcesPagedResultListForLoggedUserAndSearch(def criteria, QueryParameters params) {
-
-        if (params.loggedUser) {
-            if (! params.loggedUser.admin) {
-                List<Long> subscribedPrivateTopicIdsForUser = subscriptionService.getSubscribedPrivateTopicIdsForUser(params.loggedUser)
-
-                criteria = criteria.resourcesOfPublicTopicsOrHavingTopicIds(subscribedPrivateTopicIdsForUser)
-            }
-        } else {
-            criteria = criteria.resourcesOfPublicTopics()
+    def filterResourcesToBeShownToUserForSearchTerm = { QueryParameters params, String topicAlias ->
+        List<Long> topicIdsToBeShown = topicService.getTopicIdsToBeShownToUser(params.loggedUser)
+        if (topicIdsToBeShown?.size()) {
+            'in' "${topicAlias}.id", topicIdsToBeShown
         }
 
         if (params.searchTerm) {
-            criteria = criteria.resourcesHavingDescriptionIlike(params.searchTerm)
+            ilike 'description', '%' + params.searchTerm + '%'
         }
-        criteria.list(params.queryMapParams)
     }
 }

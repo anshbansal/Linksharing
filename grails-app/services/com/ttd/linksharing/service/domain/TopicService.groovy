@@ -40,12 +40,13 @@ class TopicService {
     }
 
     PagedResult<TopicDetails> getTopicsDetailsForUserSubscriptions(User user, QueryParameters params) {
-        List<Long> topicIdsToBeShown = getTopicIdsToBeShownToUser(params.loggedUser, params.searchTerm)
 
         PagedResultList subscriptionsForUser = Subscription.createCriteria().list(params.queryMapParams) {
             createAlias('topic', 't')
 
             eq 'user', user
+
+            List<Long> topicIdsToBeShown = getTopicIdsToBeShownToUser(params.loggedUser)
             if (topicIdsToBeShown?.size()) {
                 'in' 't.id', topicIdsToBeShown
             }
@@ -55,10 +56,11 @@ class TopicService {
     }
 
     PagedResult<TopicDetails> getTopicsDetailsForTopicsCreatedByUser(User user, QueryParameters params) {
-        List<Long> topicIdsToBeShown = getTopicIdsToBeShownToUser(params.loggedUser, params.searchTerm)
 
         PagedResultList topicsForUser = Topic.createCriteria().list(params.queryMapParams) {
             eq 'createdBy', user
+
+            List<Long> topicIdsToBeShown = getTopicIdsToBeShownToUser(params.loggedUser, params.searchTerm)
             if (topicIdsToBeShown?.size()) {
                 'in' 'id', topicIdsToBeShown
             }

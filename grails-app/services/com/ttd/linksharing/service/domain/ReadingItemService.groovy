@@ -23,12 +23,16 @@ class ReadingItemService {
     @NotTransactional
     PagedResult<PostDetails> getReadingItemsForUser(User user, QueryParameters params) {
 
-        def criteria = ReadingItem.readingItemForUser(user).unreadItems()
-        if (params.searchTerm != "") {
-            criteria = criteria.resourceDescriptionLike(params.searchTerm)
-        }
+        PagedResultList pagedResultList = ReadingItem.createCriteria().list(params.queryMapParams) {
+            eq ('user', user)
+            eq('isRead', Boolean.FALSE)
 
-        PagedResultList pagedResultList = criteria.list(max: params.max, offset: params.offset)
+            if (params.searchTerm) {
+                'resource' {
+                    ilike 'description', '%' + params.searchTerm + '%'
+                }
+            }
+        }
 
         PagedResult<PostDetails> readingItems = new PagedResult<PostDetails>()
         readingItems.paginationList = PostDetails.mapFromReadingItem(pagedResultList)

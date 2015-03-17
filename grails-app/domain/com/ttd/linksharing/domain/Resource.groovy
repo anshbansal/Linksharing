@@ -20,40 +20,4 @@ abstract class Resource {
     static mapping = {
         tablePerHierarchy false
     }
-
-    static namedQueries = {
-        recentResources {
-            order("dateCreated", "desc")
-        }
-
-        resourcesHavingDescriptionIlike { String term ->
-            ilike 'description', '%' + term + '%'
-        }
-        resourcesOfTopic { Topic topic ->
-            eq 'topic', topic
-        }
-
-        resourcesOfPublicTopics {
-            'topic' {
-                eq 'scope', Visibility.PUBLIC
-            }
-        }
-
-        resourcesOfPublicTopicsOrHavingTopicIds { List<Long> topicIds ->
-            createAlias('topic', 't')
-            or {
-                eq 't.scope', Visibility.PUBLIC
-
-                if (topicIds.size()) {
-                    'in' 't.id', topicIds
-                }
-            }
-        }
-
-        resourcesForCreatorId { Long creatorId ->
-            'createdBy' {
-                eq 'id', creatorId
-            }
-        }
-    }
 }
