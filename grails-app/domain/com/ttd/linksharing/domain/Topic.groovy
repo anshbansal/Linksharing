@@ -3,7 +3,6 @@ package com.ttd.linksharing.domain
 import com.ttd.linksharing.co.topic.TopicInfo
 import com.ttd.linksharing.enums.Visibility
 import com.ttd.linksharing.service.domain.SubscriptionService
-import com.ttd.linksharing.service.domain.TopicService
 
 class Topic {
     String name

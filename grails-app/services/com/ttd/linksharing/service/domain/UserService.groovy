@@ -97,15 +97,19 @@ class UserService {
     }
 
     PagedResult<UserDetails> getUsersSubscribedToTopic(Topic topic, QueryParameters params) {
-        List<PagedResultList> pagedResultList = Subscription.subscriptionForTopic(topic).list(params.queryMapParams)
+        PagedResultList pagedResultList = Subscription.createCriteria().list(params.queryMapParams) {
+            eq 'topic', topic
+        }
+
 
         PagedResult<UserDetails> userDetailsPagedResult = new PagedResult<>()
 
-        userDetailsPagedResult.with {
-            setPaginationList(pagedResultList, UserDetails.mapFromSubscriptions)
-            //TODO FIx this
-//            paginationList = getUserDetailsWithSubscriptionAndTopicCount(paginationList, params.includePrivates)
-        }
+        userDetailsPagedResult.paginationList = UserDetails.mapFromSubscriptions(pagedResultList)
+        userDetailsPagedResult.totalCount = pagedResultList.totalCount
+
+        //TODO Fix this
+//        userDetailsPagedResult.paginationList = getUserDetailsWithSubscriptionAndTopicCount(userDetailsPagedResult.paginationList, params.includePrivates)
+
         userDetailsPagedResult
     }
 

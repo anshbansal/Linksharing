@@ -12,9 +12,11 @@ class UserDetails {
         user.id
     }
 
-    static Closure mapFromSubscriptions = { List<Subscription> subscriptions ->
-        subscriptions.collect([]) { Subscription subscription ->
+    static Closure<List<UserDetails>> mapFromSubscriptions = { List<Subscription> subscriptions ->
+        List<UserDetails> usersDetail = []
+        subscriptions.collect(usersDetail) { Subscription subscription ->
             new UserDetails(user: subscription.user)
         }
+        usersDetail
     }
 }
