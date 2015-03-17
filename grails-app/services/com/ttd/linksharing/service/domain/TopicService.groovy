@@ -110,8 +110,7 @@ class TopicService {
         } > 0
     }
 
-    PagedResult<TopicDetails> getListOfTopicDetailsFromPagedResultList(
-            PagedResultList listResults, Closure<List<TopicDetails>> collector) {
+    PagedResult<TopicDetails> getListOfTopicDetailsFromPagedResultList(PagedResultList listResults, Closure collector) {
 
         List<TopicDetails> topicDetailsList = collector(listResults)
 
@@ -124,33 +123,52 @@ class TopicService {
 
     List<TopicDetails> getTopicsDetailWithSubscriptionAndResourceCount(List<TopicDetails> topicDetailsList) {
 
-        Map temp = getNumberSubscriptionsAndResources(topicDetailsList*.topicId)
+        Map numSubscriptionsForTopics = getNumberOfSubscriptionsForTopicIds(topicDetailsList*.topicId)
+        Map numResourcesForTopics = getNumberOfResourcesForTopicIds(topicDetailsList*.topicId)
 
-        topicDetailsList.each { TopicDetails topicDetails ->
+        List<TopicDetails> result = []
+        topicDetailsList.collect(result) { TopicDetails topicDetails ->
 
-            Map topicDetailsMap = temp[topicDetails.topicId] as Map
+            Topic curTopic = topicDetails.topic
 
-            new TopicDetails(topic: topicDetails.topic, creator: topicDetails.creator,
-                    numSubscriptions: topicDetailsMap['numSubs'], numResources: topicDetailsMap['numRes'])
+            new TopicDetails(topic: curTopic, creator: topicDetails.creator,
+                    numSubscriptions: numSubscriptionsForTopics[curTopic.id],
+                    numResources: numResourcesForTopics[curTopic.id])
         }
+        result
     }
 
-    //TODO Refactor for individual maps
-    Map getNumberSubscriptionsAndResources(List<Long> topicIds) {
-        Map result = [:]
-
-        Topic.executeQuery("""
-            select t.id,
-                (select count(*) from Subscription where topic.id = t.id) as numSubs,
-                (select count(*) from Resource where topic.id = t.id) as numRes
-            from Topic as t
-            where t.id in (:ids)
-            """, ['ids': topicIds])
-                .each {
-            result[it[0]] = [numSubs: it[1], numRes: it[2]]
+    def getNumberOfSubscriptionsForTopicIds(List<Long> topicIds) {
+        def subscriptions = Subscription.createCriteria().list {
+            getNumberOfPropertyMappedByTopicIds.delegate = delegate
+            getNumberOfPropertyMappedByTopicIds(topicIds)
         }
+        getPropertyToIdMapping(subscriptions)
+    }
 
-        return result
+    def getNumberOfResourcesForTopicIds(List<Long> topicIds) {
+        def resources = Resource.createCriteria().list {
+            getNumberOfPropertyMappedByTopicIds.delegate = delegate
+            getNumberOfPropertyMappedByTopicIds(topicIds)
+        }
+      getPropertyToIdMapping(resources)
+    }
+
+    Map getPropertyToIdMapping(def properties) {
+        Map result = [:]
+        properties.each { row ->
+            result[row[0]] = row[1]
+        }
+        result
+    }
+
+    private def getNumberOfPropertyMappedByTopicIds = {List<Long> topicIds ->
+        createAlias('topic', 't')
+        projections {
+            groupProperty('t.id')
+            rowCount()
+        }
+        'in' 't.id', topicIds
     }
 
     @NotTransactional
