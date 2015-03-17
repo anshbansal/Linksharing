@@ -41,6 +41,7 @@ class TopicService {
 
         PagedResultList subscriptionsForUser = Subscription.createCriteria().list(params.queryMapParams) {
             eq 'user', user
+
             'topic' {
                 if (!params.loggedUser) {
                     eq 'scope', Visibility.PUBLIC
@@ -104,7 +105,7 @@ class TopicService {
     PagedResult<TopicDetails> getTrendingTopics(QueryParameters params) {
         //TODO Needs review
         //TODO Eager fetching not working
-        List<PagedResultList> pagedResultList = Resource.createCriteria().list(params.queryMapParams) {
+        PagedResultList pagedResultList = Resource.createCriteria().list(params.queryMapParams) {
 
             createAlias('topic', 't')
 
@@ -120,17 +121,17 @@ class TopicService {
         }
 
         PagedResult<TopicDetails> topicsDetail = new PagedResult<>()
-
         topicsDetail.paginationList = pagedResultList.collect([]) {
             new TopicDetails(topic: it[0], creator: it[0].createdBy)
         }
+        topicsDetail.paginationList = getTopicsDetailWithSubscriptionAndResourceCount(topicsDetail.paginationList)
 
         //Pattern not followed here bcause totalCount was giving count of resources instead of count of group property.
 //        topicsDetail.totalCount = Topic.where {
 //            resources.size() > 0
 //        }.count()
 
-        getUpdatedTopicsDetail(topicsDetail)
+        topicsDetail
     }
 
     Boolean isTopicPresentForUser(User user, String topicName) {

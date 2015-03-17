@@ -31,22 +31,6 @@ class SubscriptionService {
         subscription
     }
 
-    static List<PagedResultList> getSubscriptionsPagedResultListForLoggedUserAndSearch(def criteria, QueryParameters params) {
-        if (params.loggedUser) {
-            if (! params.loggedUser.admin) {
-                    List<Long> subscribedPrivateTopicIdsForUser = getSubscribedPrivateTopicIdsForUser(params.loggedUser)
-
-                criteria = criteria.subscriptionsOfPublicTopicsOrHavingTopicIds(subscribedPrivateTopicIdsForUser)
-            }
-        } else {
-            criteria = criteria.subscriptionsOfPublicTopics
-        }
-        if (params.searchTerm) {
-            criteria = criteria.subscriptionsHavingTopicNameIlike(params.searchTerm)
-        }
-        criteria.list(params.queryMapParams)
-    }
-
     @NotTransactional
     static List<Long> getSubscribedPrivateTopicIdsForUser(User user) {
         Subscription.createCriteria().list {
