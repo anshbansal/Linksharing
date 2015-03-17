@@ -37,7 +37,7 @@ class TopicService {
         topic
     }
 
-    PagedResult<TopicDetails> getSubscriptionsForUser(User user, QueryParameters params) {
+    PagedResult<TopicDetails> getTopicsDetailsForUserSubscriptions(User user, QueryParameters params) {
 
         PagedResultList subscriptionsForUser = Subscription.createCriteria().list(params.queryMapParams) {
             eq 'user', user
@@ -68,7 +68,7 @@ class TopicService {
         getListOfTopicDetailsFromPagedResultList(subscriptionsForUser, TopicDetails.mapFromSubscriptions)
     }
 
-    PagedResult<TopicDetails> getTopicsForUser(User user, QueryParameters params) {
+    PagedResult<TopicDetails> getTopicsDetailsForTopicsCreatedByUser(User user, QueryParameters params) {
 
         PagedResultList topicsForUser = Topic.createCriteria().list(params.queryMapParams) {
             eq 'createdBy', user

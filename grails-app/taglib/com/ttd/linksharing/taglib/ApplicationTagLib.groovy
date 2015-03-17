@@ -1,6 +1,5 @@
 package com.ttd.linksharing.taglib
 
-import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
@@ -8,7 +7,6 @@ import com.ttd.linksharing.vo.ListingDetails
 import com.ttd.linksharing.vo.PostDetails
 import com.ttd.linksharing.vo.TopicDetails
 import com.ttd.linksharing.vo.UserDetails
-import grails.converters.JSON
 
 class ApplicationTagLib {
     static defaultEncodeAs = [taglib: 'raw']
@@ -91,7 +89,7 @@ class ApplicationTagLib {
                 } else {
                     curUser = session?.loggedUser
                 }
-                listingDetails.listings = topicService.getSubscriptionsForUser(curUser, listingDetails.queryParams)
+                listingDetails.listings = topicService.getTopicsDetailsForUserSubscriptions(curUser, listingDetails.queryParams)
                 break
             case "trendingTopics":
                 //Search and pagination is not available for this
@@ -105,7 +103,7 @@ class ApplicationTagLib {
 
                 User curUser = User.get(listingDetails.userId)
 
-                listingDetails.listings = topicService.getTopicsForUser(curUser, listingDetails.queryParams)
+                listingDetails.listings = topicService.getTopicsDetailsForTopicsCreatedByUser(curUser, listingDetails.queryParams)
                 break
         }
 
