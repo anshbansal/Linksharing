@@ -5,6 +5,7 @@ import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
+import com.ttd.linksharing.enums.Visibility
 import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.QueryParameters
 import com.ttd.linksharing.vo.TopicDetails
@@ -38,18 +39,59 @@ class TopicService {
 
     PagedResult<TopicDetails> getSubscriptionsForUser(User user, QueryParameters params) {
 
-        def coreBusinessLogicCriteriaForUserSubscriptions = Subscription.subscriptionsOfUser(user)
+        PagedResultList subscriptionsForUser = Subscription.createCriteria().list(params.queryMapParams) {
+            eq 'user', user
+            'topic' {
+                if (!params.loggedUser) {
+                    eq 'scope', Visibility.PUBLIC
+                }
 
-        List<PagedResultList> subscriptions = subscriptionService
-                .getSubscriptionsPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteriaForUserSubscriptions, params)
+                if (! params.loggedUser?.admin) {
+                    or {
+                        eq 'scope', Visibility.PUBLIC
 
-        getListOfTopicDetailsFromPagedResultList(subscriptions, TopicDetails.mapFromSubscriptions)
+                        List<Long> subscribedPrivateTopicIdsForUser = SubscriptionService.getSubscribedPrivateTopicIdsForUser(params.loggedUser)
+
+                        if (subscribedPrivateTopicIdsForUser.size()) {
+                            'in' 'id', subscribedPrivateTopicIdsForUser
+                        }
+                    }
+                }
+
+                if (params.searchTerm) {
+                    ilike 'name', '%' + params.searchTerm + '%'
+                }
+            }
+        }
+
+        getListOfTopicDetailsFromPagedResultList(subscriptionsForUser, TopicDetails.mapFromSubscriptions)
     }
 
     PagedResult<TopicDetails> getTopicsForUser(User user, QueryParameters params) {
 
-        def coreBusinessLogicCriteriaForTopicsCreatedByUser = Topic.topicsCreatedBy(user)
-        List<PagedResultList> topicsForUser = getTopicsPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteriaForTopicsCreatedByUser, params)
+        PagedResultList topicsForUser = Topic.createCriteria().list(params.queryMapParams) {
+            eq 'createdBy', user
+
+            if (! params.loggedUser) {
+                eq 'scope', Visibility.PUBLIC
+            }
+
+            if (! params.loggedUser?.admin) {
+                or {
+                    eq 'scope', Visibility.PUBLIC
+
+                    List<Long> subscribedPrivateTopicIdsForUser = SubscriptionService.getSubscribedPrivateTopicIdsForUser(params.loggedUser)
+
+                    if (subscribedPrivateTopicIdsForUser.size()) {
+                        'in' 'id', subscribedPrivateTopicIdsForUser
+                    }
+                }
+            }
+
+            if (params.searchTerm) {
+                ilike 'name', '%' + params.searchTerm + '%'
+            }
+        }
 
         getListOfTopicDetailsFromPagedResultList(topicsForUser, TopicDetails.mapFromTopics)
     }
@@ -98,21 +140,15 @@ class TopicService {
         } > 0
     }
 
-    private PagedResult<TopicDetails> getListOfTopicDetailsFromPagedResultList(List<PagedResultList> pagedResultList, Closure collector) {
+    private PagedResult<TopicDetails> getListOfTopicDetailsFromPagedResultList(PagedResultList listResults, Closure collector) {
 
-        PagedResult<TopicDetails> topicsDetail = new PagedResult<>()
-        topicsDetail.setPaginationList(pagedResultList, collector)
+        List<TopicDetails> topicDetailsList = collector(listResults)
 
-        getUpdatedTopicsDetail(topicsDetail)
-    }
-
-    private PagedResult<TopicDetails> getUpdatedTopicsDetail(PagedResult<TopicDetails> topicsDetail) {
-        topicsDetail?.with {
-            if (size() > 0) {
-                paginationList = getTopicsDetailWithSubscriptionAndResourceCount(paginationList)
-            }
+        if (listResults?.size() > 0) {
+            topicDetailsList = getTopicsDetailWithSubscriptionAndResourceCount(topicDetailsList)
         }
-        topicsDetail
+
+        new PagedResult<>(paginationList: topicDetailsList, totalCount: listResults.totalCount)
     }
 
     private List<TopicDetails> getTopicsDetailWithSubscriptionAndResourceCount(List<TopicDetails> topicDetailsList) {
@@ -144,22 +180,5 @@ class TopicService {
         }
 
         return result
-    }
-
-    static List<PagedResultList> getTopicsPagedResultListForLoggedUserAndSearch(def criteria, QueryParameters params) {
-        if (params.loggedUser) {
-            if (! params.loggedUser.admin) {
-
-                List<Long> subscribedPrivateTopicIdsForUser = SubscriptionService.getSubscribedPrivateTopicIdsForUser(params.loggedUser)
-
-                criteria = criteria.publicTopicsOrHavingIds(subscribedPrivateTopicIdsForUser)
-            }
-        } else {
-            criteria = criteria.publicTopics
-        }
-        if (params.searchTerm) {
-            criteria = criteria.topicsHavingNameIlike(params.searchTerm)
-        }
-        criteria.list(params.queryMapParams)
     }
 }

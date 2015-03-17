@@ -40,8 +40,13 @@ abstract class Resource {
         }
 
         resourcesOfPublicTopicsOrHavingTopicIds { List<Long> topicIds ->
-            'topic' {
-                publicTopicsOrHavingIds(topicIds)
+            createAlias('topic', 't')
+            or {
+                eq 't.scope', Visibility.PUBLIC
+
+                if (topicIds.size()) {
+                    'in' 't.id', topicIds
+                }
             }
         }
 

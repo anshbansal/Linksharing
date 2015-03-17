@@ -21,10 +21,12 @@ class TopicDetails {
         }
     }
 
-    static Closure mapFromTopics = { List<Topic> topics ->
-        topics.collect([]) { Topic topic ->
+    static Closure<List<TopicDetails>> mapFromTopics = { List<Topic> topics ->
+        List<TopicDetails> topicDetailsList = []
+        topics.collect(topicDetailsList) { Topic topic ->
             new TopicDetails(topic: topic, creator: topic.createdBy)
         }
+        topicDetailsList
     }
 
     @Override
