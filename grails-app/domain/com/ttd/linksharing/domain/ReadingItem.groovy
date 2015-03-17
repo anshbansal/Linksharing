@@ -20,7 +20,7 @@ class ReadingItem {
         }
         resourceDescriptionLike { String term ->
             'resource' {
-                descriptionLike(term)
+                resourcesHavingDescriptionIlike(term)
             }
         }
     }

@@ -3,9 +3,13 @@ package com.ttd.linksharing.service.domain
 import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
+import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
+import com.ttd.linksharing.enums.Visibility
 import com.ttd.linksharing.util.Mappings
 import com.ttd.linksharing.vo.QueryParameters
+import grails.gorm.PagedResultList
+import grails.transaction.NotTransactional
 import grails.transaction.Transactional
 
 
@@ -27,17 +31,34 @@ class SubscriptionService {
         subscription
     }
 
-    static def getFilteredCriteria(def criteria, QueryParameters params) {
+    static List<PagedResultList> getSubscriptionsPagedResultListForLoggedUserAndSearch(def criteria, QueryParameters params) {
         if (params.loggedUser) {
             if (! params.loggedUser.admin) {
-                criteria = criteria.showSubscriptionToUser(params.loggedUser)
+                    List<Long> subscribedPrivateTopicIdsForUser = getSubscribedPrivateTopicIdsForUser(params.loggedUser)
+
+                criteria = criteria.subscriptionsOfPublicTopicsOrHavingTopicIds(subscribedPrivateTopicIdsForUser)
             }
         } else {
-            criteria = criteria.forPublicTopics
+            criteria = criteria.subscriptionsOfPublicTopics
         }
         if (params.searchTerm) {
-            criteria = criteria.topicNameLike(params.searchTerm)
+            criteria = criteria.subscriptionsHavingTopicNameIlike(params.searchTerm)
         }
-        return criteria
+        criteria.list(params.queryMapParams)
+    }
+
+    @NotTransactional
+    static List<Long> getSubscribedPrivateTopicIdsForUser(User user) {
+        Subscription.createCriteria().list {
+
+            createAlias('topic', 't')
+
+            projections {
+                property('t.id')
+            }
+
+            eq 't.scope', Visibility.PRIVATE
+            eq 'user', user
+        }
     }
 }

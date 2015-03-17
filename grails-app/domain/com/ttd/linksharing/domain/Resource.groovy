@@ -26,30 +26,29 @@ abstract class Resource {
             order("dateCreated", "desc")
         }
 
-        publicResources {
-            'topic' {
-                eq 'scope', Visibility.PUBLIC
-            }
+        resourcesHavingDescriptionIlike { String term ->
+            ilike 'description', '%' + term + '%'
         }
-
-        showResourceToUser { User user ->
-            'topic' {
-                showTopicToUser(user)
-            }
-        }
-
-        resourceForUserId { Long userId ->
-             'createdBy' {
-                 eq 'id', userId
-             }
-        }
-
-        resourceForTopic { Topic topic ->
+        resourcesOfTopic { Topic topic ->
             eq 'topic', topic
         }
 
-        descriptionLike { String term ->
-            ilike 'description', '%' + term + '%'
+        resourcesOfPublicTopics {
+            'topic' {
+                publicTopics()
+            }
+        }
+
+        resourcesOfPublicTopicsOrHavingTopicIds { List<Long> topicIds ->
+            'topic' {
+                publicTopicsOrHavingIds(topicIds)
+            }
+        }
+
+        resourcesForCreatorId { Long creatorId ->
+            'createdBy' {
+                eq 'id', creatorId
+            }
         }
     }
 }

@@ -2,7 +2,6 @@ package com.ttd.linksharing.domain
 
 import com.ttd.linksharing.enums.Seriousness
 import com.ttd.linksharing.enums.Visibility
-import org.hibernate.FetchMode
 
 class Subscription {
     Seriousness seriousness = Seriousness.SERIOUS
@@ -16,30 +15,34 @@ class Subscription {
     }
 
     static namedQueries = {
-        forPublicTopics {
-            'topic' {
-                eq 'scope', Visibility.PUBLIC
-            }
-        }
 
-        subscriptionForUser { User user ->
+        subscriptionsOfUser { User user ->
             eq 'user', user
         }
 
-        subscriptionForTopic { Topic topic ->
+        subscriptionsOfTopic { Topic topic ->
             eq 'topic', topic
         }
 
-        showSubscriptionToUser { User user ->
+        subscriptionsOfPublicTopics {
+            'topic' {
+                publicTopics()
+            }
+        }
+        subscriptionsOfPublicTopicsOrHavingTopicIds { List<Long> topicIds ->
+            createAlias('topic', 't')
             or {
-                forPublicTopics()
-                subscriptionForUser(user)
+                eq 't.scope', Visibility.PUBLIC
+
+                if (topicIds.size()) {
+                    'in' 't.id', topicIds
+                }
             }
         }
 
-        topicNameLike { String term ->
+        subscriptionsHavingTopicNameIlike { String term ->
             'topic' {
-                ilike 'name', '%' + term + '%'
+                topicsHavingNameIlike(term)
             }
         }
     }

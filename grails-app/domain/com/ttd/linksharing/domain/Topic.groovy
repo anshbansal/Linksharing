@@ -2,8 +2,6 @@ package com.ttd.linksharing.domain
 
 import com.ttd.linksharing.co.topic.TopicInfo
 import com.ttd.linksharing.enums.Visibility
-import org.hibernate.FetchMode
-import org.hibernate.criterion.DetachedCriteria
 
 class Topic {
     String name
@@ -30,34 +28,24 @@ class Topic {
     }
 
     static namedQueries = {
-        nameLike {String term ->
-            ilike 'name', '%' + term + '%'
+        topicsCreatedBy { User creator ->
+            eq 'createdBy', creator
         }
 
-        topicForUser { User user ->
-            eq 'createdBy', user
+        topicsHavingNameIlike {String term ->
+            ilike 'name', '%' + term + '%'
         }
 
         publicTopics {
             eq 'scope', Visibility.PUBLIC
         }
 
-        showTopicToUser { User user ->
+        publicTopicsOrHavingIds { List<Long> topicIds ->
             or {
-                eq 'scope', Visibility.PUBLIC
-                subscribedTopics(user)
+                publicTopics()
+                inList 'id', topicIds
             }
         }
 
-        subscribedTopics { User user ->
-            createAlias('subscriptions', 's')
-            createAlias('s.topic', 'subTopic')
-            createAlias('s.user', 'subUser')
-
-            and {
-                eq 's.user', user
-                idEq 'subTopic.id'
-            }
-        }
     }
 }

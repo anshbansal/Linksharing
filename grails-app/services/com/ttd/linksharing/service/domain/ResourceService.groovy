@@ -33,44 +33,49 @@ class ResourceService {
     }
 
     PagedResult<PostDetails> recentPublicResources(QueryParameters params) {
-        getPostDetailsFromBaseCriteria(Resource.recentResources, params)
+
+        def coreBusinessLogicCriteriaForRecentResources = Resource.recentResources
+        List<PagedResultList> recentResources = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteriaForRecentResources, params)
+
+
+        getPostDetailsFromCriteria(recentResources)
     }
 
     PagedResult<PostDetails> getPostsForUserId(Long userId, QueryParameters params) {
-        getPostDetailsFromBaseCriteria(Resource.resourceForUserId(userId), params)
+
+        def coreBusinessLogicCriteria = Resource.resourcesForCreatorId(userId)
+        List<PagedResultList> resourcesForCreatorId = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteria, params)
+
+        getPostDetailsFromCriteria(resourcesForCreatorId)
     }
 
     PagedResult<PostDetails> getPostsForTopic(Topic topic, QueryParameters params) {
-        println "Params are ${params}"
-        getPostDetailsFromBaseCriteria(Resource.resourceForTopic(topic), params)
+
+        def coreBusinessLogicCriteria = Resource.resourcesOfTopic(topic)
+        List<PagedResultList> resourcesForTopic = getResourcesPagedResultListForLoggedUserAndSearch(coreBusinessLogicCriteria, params)
+
+        getPostDetailsFromCriteria(resourcesForTopic)
     }
 
-    private static PagedResult<PostDetails> getPostDetailsFromBaseCriteria(def criteria, QueryParameters params) {
-        criteria = getFilteredCriteria(criteria, params)
-        getPostDetailsFromCriteria(criteria, params, PostDetails.mapFromResource)
+    private static PagedResult<PostDetails> getPostDetailsFromCriteria(List<PagedResultList> pagedResultList) {
+        new PagedResult<PostDetails>().setPaginationList(pagedResultList, PostDetails.mapFromResource)
     }
 
-    private static PagedResult<PostDetails> getPostDetailsFromCriteria(def criteria, QueryParameters params, Closure collector) {
-        List<PagedResultList> pagedResultList = criteria.list(params.queryMapParams)
-
-        new PagedResult<PostDetails>().setPaginationList(pagedResultList, collector)
-    }
-
-    static def getFilteredCriteria(def criteria, QueryParameters params) {
+    static List<PagedResultList> getResourcesPagedResultListForLoggedUserAndSearch(def criteria, QueryParameters params) {
 
         if (params.loggedUser) {
             if (! params.loggedUser.admin) {
-                println "Paramas are ${params}"
-                criteria = criteria.showResourceToUser(params.loggedUser)
+                List<Long> subscribedPrivateTopicIdsForUser = SubscriptionService.getSubscribedPrivateTopicIdsForUser(params.loggedUser)
+
+                criteria = criteria.resourcesOfPublicTopicsOrHavingTopicIds(subscribedPrivateTopicIdsForUser)
             }
         } else {
-            criteria = criteria.publicResources()
+            criteria = criteria.resourcesOfPublicTopics()
         }
-
 
         if (params.searchTerm) {
-            criteria = criteria.descriptionLike(params.searchTerm)
+            criteria = criteria.resourcesHavingDescriptionIlike(params.searchTerm)
         }
-        return criteria
+        criteria.list(params.queryMapParams)
     }
 }
