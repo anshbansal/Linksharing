@@ -17,7 +17,6 @@ class TopicDetails {
     static Closure mapFromSubscriptions = { List<Subscription> subscriptions ->
         subscriptions.collect([]) { Subscription subscription ->
             new TopicDetails(topic: subscription.topic, creator: subscription.topic.createdBy)
-
         }
     }
 

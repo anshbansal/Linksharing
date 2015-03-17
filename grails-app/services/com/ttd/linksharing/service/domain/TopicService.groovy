@@ -141,7 +141,8 @@ class TopicService {
         } > 0
     }
 
-    private PagedResult<TopicDetails> getListOfTopicDetailsFromPagedResultList(PagedResultList listResults, Closure collector) {
+    private PagedResult<TopicDetails> getListOfTopicDetailsFromPagedResultList(
+            PagedResultList listResults, Closure<List<TopicDetails>> collector) {
 
         List<TopicDetails> topicDetailsList = collector(listResults)
 

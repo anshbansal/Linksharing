@@ -38,7 +38,7 @@ class BootstrapService {
                 }
             }
 
-            readingItemService.findForUser(user).each { ReadingItem item ->
+            ReadingItem.findAllWhere(user: user).each { ReadingItem item ->
                 if (item.id % 3 == 0) {
                     item.isRead = true
                 }

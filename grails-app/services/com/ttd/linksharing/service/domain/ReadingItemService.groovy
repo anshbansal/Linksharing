@@ -6,6 +6,7 @@ import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.User
 import com.ttd.linksharing.vo.QueryParameters
 import grails.gorm.PagedResultList
+import grails.transaction.NotTransactional
 import grails.transaction.Transactional
 
 @Transactional
@@ -19,10 +20,7 @@ class ReadingItemService {
         readingItem
     }
 
-    List<ReadingItem> findForUser(User user) {
-        ReadingItem.findAllWhere(user: user)
-    }
-
+    @NotTransactional
     PagedResult<PostDetails> getReadingItemsForUser(User user, QueryParameters params) {
 
         def criteria = ReadingItem.readingItemForUser(user).unreadItems()
@@ -30,8 +28,15 @@ class ReadingItemService {
             criteria = criteria.resourceDescriptionLike(params.searchTerm)
         }
 
-        List<PagedResultList> pagedResultList = criteria.list(max: params.max, offset: params.offset)
+        PagedResultList pagedResultList = criteria.list(max: params.max, offset: params.offset)
 
-        new PagedResult<PostDetails>().setPaginationList(pagedResultList, PostDetails.mapFromReadingItem)
+        PagedResult<PostDetails> readingItems = new PagedResult<PostDetails>()
+        readingItems.paginationList = PostDetails.mapFromReadingItem(pagedResultList)
+
+        if (pagedResultList.size() > 0) {
+            readingItems.totalCount = pagedResultList.totalCount
+        }
+
+        readingItems
     }
 }

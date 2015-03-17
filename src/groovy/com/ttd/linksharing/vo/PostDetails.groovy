@@ -8,15 +8,19 @@ class PostDetails {
     Resource resource
     Boolean isRead
 
-    static Closure mapFromResource = { List<Resource> resourceList ->
-        resourceList.collect([]) { Resource resource ->
+    static Closure<List<PostDetails>> mapFromResource = { List<Resource> resourceList ->
+        List<PostDetails> postsDetail = []
+        resourceList.collect(postsDetail) { Resource resource ->
             new PostDetails(resource: resource)
         }
+        postsDetail
     }
 
-    static Closure mapFromReadingItem = { List<ReadingItem> readingItems ->
-        readingItems.collect([]) { ReadingItem readingItem ->
+    static Closure<List<PostDetails>> mapFromReadingItem = { List<ReadingItem> readingItems ->
+        List<PostDetails> postsDetail = []
+        readingItems.collect(postsDetail) { ReadingItem readingItem ->
             new PostDetails(resource: readingItem.resource, isRead: readingItem.isRead)
         }
+        postsDetail
     }
 }
