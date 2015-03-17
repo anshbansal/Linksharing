@@ -143,7 +143,7 @@ class ApplicationTagLib {
      */
     def user = { attrs ->
         User user = attrs.user
-        UserDetails details = userService.getUserDetailsForUser(user, includePrivates(user))
+        UserDetails details = userService.getUserDetailsForUser(user, session?.loggedUser)
 
         out << render(template: "/templates/user/user", model: [listing: details])
     }
@@ -175,13 +175,5 @@ class ApplicationTagLib {
                 from: Subscription.forUser(session?.loggedUser).list().topic,
                 optionKey: 'id')
 
-    }
-
-    private Boolean includePrivates(User user) {
-        includePrivates(user?.id)
-    }
-
-    private Boolean includePrivates(Long id) {
-        session?.loggedUser?.id == id || session?.loggedUser?.admin
     }
 }

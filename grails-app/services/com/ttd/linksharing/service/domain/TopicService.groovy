@@ -6,6 +6,7 @@ import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.Topic
 import com.ttd.linksharing.domain.User
 import com.ttd.linksharing.enums.Visibility
+import com.ttd.linksharing.util.Mappings
 import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.QueryParameters
 import com.ttd.linksharing.vo.TopicDetails
@@ -138,28 +139,20 @@ class TopicService {
         result
     }
 
-    def getNumberOfSubscriptionsForTopicIds(List<Long> topicIds) {
+    def Map getNumberOfSubscriptionsForTopicIds(List<Long> topicIds) {
         def subscriptions = Subscription.createCriteria().list {
             getNumberOfPropertyMappedByTopicIds.delegate = delegate
             getNumberOfPropertyMappedByTopicIds(topicIds)
         }
-        getPropertyToIdMapping(subscriptions)
+        Mappings.getIdToPropertyMapping(subscriptions)
     }
 
-    def getNumberOfResourcesForTopicIds(List<Long> topicIds) {
+    def Map getNumberOfResourcesForTopicIds(List<Long> topicIds) {
         def resources = Resource.createCriteria().list {
             getNumberOfPropertyMappedByTopicIds.delegate = delegate
             getNumberOfPropertyMappedByTopicIds(topicIds)
         }
-      getPropertyToIdMapping(resources)
-    }
-
-    Map getPropertyToIdMapping(def properties) {
-        Map result = [:]
-        properties.each { row ->
-            result[row[0]] = row[1]
-        }
-        result
+        Mappings.getIdToPropertyMapping(resources)
     }
 
     private def getNumberOfPropertyMappedByTopicIds = {List<Long> topicIds ->
