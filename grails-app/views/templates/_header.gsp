@@ -5,6 +5,7 @@
     <g:if test="${loggedUser?.username != null}">
         <a href="#" onclick="createPopup(createTopicTemplateURL)">Create Topic</a>
         <a href="#" onclick="createPopup(createLinkResourceTemplateURL)">Create Link</a>
+        <a href="#" onclick="createPopup(sendInvitationTemplateURL)">Send Invitation</a>
 
         <span id="popup" hidden="hidden">
         </span>
