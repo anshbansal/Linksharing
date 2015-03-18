@@ -9,6 +9,8 @@ import grails.transaction.Transactional
 @Transactional
 class InvitationService {
 
+    def sendMailService
+
     Invitation save(Invitation invitation, Boolean isFlushEnabled = false) {
         if (!invitation.save(flush: isFlushEnabled)) {
             return null
@@ -17,6 +19,12 @@ class InvitationService {
     }
 
     Invitation createOrUpdateInvitationAndSendEmail(User invitedUser, Topic inviteTopic) {
+        Invitation invitation = createOrUpdateInvitation(invitedUser, inviteTopic)
+        sendMailService.sendInvitationMail(invitedUser, invitation)
+        invitation
+    }
+
+    Invitation createOrUpdateInvitation(User invitedUser, Topic inviteTopic) {
         String randomToken = getUniqueToken()
         Invitation invitation = Invitation.findByInvitedUserAndTopic(invitedUser, inviteTopic)
         if (invitation) {

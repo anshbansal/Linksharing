@@ -65,9 +65,6 @@ grails {
                  "mail.smtp.socketFactory.port":"465",
                  "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
                  "mail.smtp.socketFactory.fallback":"false"]
-        name = "aseembansalDummy@gmail.com"
-        password = "aseembansaldummy"
-
     }
 }
 
@@ -132,6 +129,13 @@ log4j.main = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
+
+    // Enable the Asynchronous Mail plugin logging
+    trace 'grails.app.jobs.grails.plugin.asyncmail',
+            'grails.app.services.grails.plugin.asyncmail',
+            'grails.plugin.asyncmail'
+    // Enable the Quartz plugin logging
+    debug 'grails.plugins.quartz'
 }
 
 //grails.assets.bundle = true

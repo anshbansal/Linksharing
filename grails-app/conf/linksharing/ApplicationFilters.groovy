@@ -21,7 +21,7 @@ class ApplicationFilters {
                             allow = actionName in ['home']
                             break
                         case 'user':
-                            allow =  actionName in ['loginHandler', 'show', 'isUniqueIdentifierValid', 'photo']
+                            allow =  actionName in ['loginHandler', 'show', 'isUniqueIdentifierValid', 'photo', 'resetPassword']
                             break
                     }
 
