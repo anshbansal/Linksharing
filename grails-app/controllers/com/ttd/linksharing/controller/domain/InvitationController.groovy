@@ -1,6 +1,7 @@
 package com.ttd.linksharing.controller.domain
 
 import com.ttd.linksharing.co.invitation.InvitationCO
+import com.ttd.linksharing.domain.User
 
 class InvitationController {
 
@@ -18,10 +19,16 @@ class InvitationController {
             return
         }
 
-        if (invitationService.create(invitationCO)) {
+        User invitedUser = User.findByEmail(invitationCO.emailOfUser)
+        if ( subscriptionService.isUserSubscribedToTopic(invitedUser, invitationCO.inviteTopic)) {
+            render "User is already subscribed to this topic"
+            return
+        }
+
+        if (invitationService.createOrUpdateInvitationAndSendEmail(invitedUser, invitationCO.inviteTopic)) {
             render "Invitation Sent"
         } else {
-            render "Invitation for this topic is already present for this user"
+            render "Error occurred"
         }
     }
 }

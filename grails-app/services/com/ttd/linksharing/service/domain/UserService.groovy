@@ -139,7 +139,9 @@ class UserService {
                 rowCount()
             }
             'in' 'u.id', userIds
-            'in' 't.id', topicIds
+            if (topicIds) {
+                'in' 't.id', topicIds
+            }
         }
         Mappings.getIdToPropertyMapping(subscriptions)
     }
@@ -152,7 +154,9 @@ class UserService {
                 rowCount()
             }
             'in' 'u.id', userIds
-            'in' 'id', topicIds
+            if (topicIds) {
+                'in' 'id', topicIds
+            }
         }
         Mappings.getIdToPropertyMapping(topics)
     }

@@ -12,7 +12,7 @@ class SendMailService {
         asynchronousMailService.sendMail {
             to user.email
             subject "Your Password Reset Details"
-            body groovyPageRenderer.render(view: "/templates/mail/_reset_password", model: [user: user, newPassword: newPassword])
+            html groovyPageRenderer.render(view: "/mail/reset_password", model: [user: user, newPassword: newPassword])
         }
     }
 }

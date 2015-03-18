@@ -2,13 +2,13 @@ package com.ttd.linksharing.domain
 
 class Invitation {
     String randomToken
-    Date dateCreated
+    Date lastUpdated
 
-    static belongsTo = [invitedUser: User, invitationOfTopic: Topic]
+    static belongsTo = [invitedUser: User, topic: Topic]
 
     static constraints = {
-        randomToken size: 20..20
-        invitationOfTopic unique: 'invitedUser'
+        randomToken size: 20..20, unique: true
+        topic unique: 'invitedUser'
     }
 
     static mapping = {
