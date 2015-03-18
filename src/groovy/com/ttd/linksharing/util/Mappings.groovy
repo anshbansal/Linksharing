@@ -10,10 +10,6 @@ import java.awt.image.BufferedImage
 
 class Mappings {
 
-    static List getScopes(Boolean includePrivates) {
-        includePrivates ? Visibility.values() : [Visibility.PUBLIC]
-    }
-
     static Long parseStringOrLong(def attr, Long defaultValue = 0) {
         if (! attr) {
             return defaultValue
