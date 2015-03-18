@@ -13,7 +13,6 @@ import com.ttd.linksharing.vo.UserDetails
 import grails.gorm.PagedResultList
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
-import org.apache.commons.lang.RandomStringUtils
 
 @Transactional
 class UserService {
@@ -87,7 +86,7 @@ class UserService {
     }
 
     String resetPassword(User user) {
-        String newPassword = RandomStringUtils.random(20, true, true)
+        String newPassword = Mappings.getRandomStringOfSize(20)
 
         user.password = newPassword
         save(user)

@@ -17,13 +17,13 @@ var emailRule = {
 
 var isEmailPresentRule = {
   rules: {
-      emailToInvite: {
+      emailOfUser: {
         remote: {url : isEmailPresentURL},
         email: true
       }
   },
   messages: {
-      emailToInvite: {
+      emailOfUser: {
           remote: "No user is present for this email ID"
       }
   }

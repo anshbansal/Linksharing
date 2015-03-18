@@ -1,7 +1,7 @@
 <g:applyLayout name="container" params="[title: 'Send Invitation']">
     <g:form action="create" class="lines-container tooltipster-form" name="send_invite_form">
-        <label for="emailToInvite">Email</label>
-        <g:textField name="emailToInvite" required="true"/>
+        <label for="emailOfUser">Email</label>
+        <g:textField name="emailOfUser" required="true"/>
 
         <label for="inviteTopic.id">Topic</label>
         <ls:getTopicsForUser name="inviteTopic.id"/>

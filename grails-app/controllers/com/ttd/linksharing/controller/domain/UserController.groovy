@@ -46,8 +46,8 @@ class UserController {
         render userService.isUniqueIdentifierValid(uniqueIdentifier, session?.loggedUser) ? "true" : "false"
     }
 
-    def isEmailPresent(String emailToInvite) {
-        render userService.isEmailPresent(emailToInvite) ? "true" : "false"
+    def isEmailPresent(String emailOfUser) {
+        render userService.isEmailPresent(emailOfUser) ? "true" : "false"
     }
 
     def updateDetails(UserDetailsCO userDetailsCO) {

@@ -38,6 +38,10 @@ class SubscriptionService {
         Subscription.findAllByUser(user).topic
     }
 
+    Boolean isUserSubscribedToTopic(User user, Topic topic) {
+        Subscription.countByUserAndTopic(user, topic) == 1
+    }
+
     @NotTransactional
     List<Long> getSubscribedPrivateTopicIdsForUser(User user) {
         Subscription.createCriteria().list {

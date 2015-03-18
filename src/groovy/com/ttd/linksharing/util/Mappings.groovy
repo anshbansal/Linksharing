@@ -1,6 +1,7 @@
 package com.ttd.linksharing.util
 
 import com.ttd.linksharing.enums.Visibility
+import org.apache.commons.lang.RandomStringUtils
 import org.imgscalr.Scalr
 import org.springframework.web.multipart.MultipartFile
 
@@ -48,5 +49,9 @@ class Mappings {
 
         co.photo = outputStream.toByteArray()
         co.validate()
+    }
+
+    static String getRandomStringOfSize(int size) {
+        RandomStringUtils.random(size, true, true)
     }
 }
