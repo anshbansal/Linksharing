@@ -6,6 +6,7 @@ import grails.gsp.PageRenderer
 
 class SendMailService {
 
+    def grailsApplication
     def asynchronousMailService
     PageRenderer groovyPageRenderer
 
@@ -21,7 +22,8 @@ class SendMailService {
         asynchronousMailService.sendMail {
             to user.email
             subject "Invitation to join"
-            html groovyPageRenderer.render(view: "/mail/invitation", model: [user: user, invitation: invitation])
+            html groovyPageRenderer.render(view: "/mail/invitation", model: [user: user, invitation: invitation,
+                                                                             baseUrl: grailsApplication.config.grails.serverURL])
         }
     }
 }

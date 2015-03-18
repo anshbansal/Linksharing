@@ -25,11 +25,9 @@ class InvitationService {
     }
 
     Invitation createOrUpdateInvitation(User invitedUser, Topic inviteTopic) {
-        String randomToken = getUniqueToken()
         Invitation invitation = Invitation.findByInvitedUserAndTopic(invitedUser, inviteTopic)
-        if (invitation) {
-            invitation.randomToken = randomToken
-        } else {
+        if (!invitation) {
+            String randomToken = getUniqueToken()
             invitation = new Invitation(invitedUser: invitedUser, topic: inviteTopic, randomToken: randomToken)
         }
         save(invitation)

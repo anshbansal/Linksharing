@@ -23,6 +23,9 @@ class ApplicationFilters {
                         case 'user':
                             allow =  actionName in ['loginHandler', 'show', 'isUniqueIdentifierValid', 'photo', 'resetPassword']
                             break
+                        case 'subscription':
+                            allow = actionName in ['subscribeByUniqueToken']
+                            break
                     }
 
                     if (allow) {

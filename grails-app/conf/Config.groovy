@@ -97,6 +97,7 @@ grails.hibernate.osiv.readonly = false
 environments {
     development {
         grails.logging.jul.usebridge = true
+        grails.serverURL = "http://localhost:8080/Linksharing"
     }
     QA{
         grails.serverURL = "http://aseem-bansal.qa6.intelligrape.net"
