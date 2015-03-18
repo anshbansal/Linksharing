@@ -31,6 +31,13 @@ class SubscriptionService {
         subscription
     }
 
+    List<Topic> getAllSubscribedTopicsOfUser(User user) {
+        if (! user) {
+            return []
+        }
+        Subscription.findAllByUser(user).topic
+    }
+
     @NotTransactional
     List<Long> getSubscribedPrivateTopicIdsForUser(User user) {
         Subscription.createCriteria().list {

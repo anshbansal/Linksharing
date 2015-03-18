@@ -172,7 +172,7 @@ class ApplicationTagLib {
 
     def getTopicsForUser = { attrs ->
         out << g.select(name: attrs.name,
-                from: Subscription.findAllByUser(session?.loggedUser).topic,
+                from: subscriptionService.getAllSubscribedTopicsOfUser(session?.loggedUser),
                 optionKey: 'id')
 
     }
