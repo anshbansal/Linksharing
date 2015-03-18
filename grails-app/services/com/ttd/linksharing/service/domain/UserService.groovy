@@ -59,6 +59,10 @@ class UserService {
         User.byIdentifier(newIdentifier).count(criteria) == 0
     }
 
+    Boolean isEmailPresent(String email) {
+        User.countByEmail(email) == 1
+    }
+
     User updateDetails(UserDetailsCO userDetailsCO, Long userId) {
 
         User user = User.get(userId)

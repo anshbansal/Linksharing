@@ -23,6 +23,7 @@
 
         <g:javascript>
             var uniqueIdentifierURL = "${createLink(controller:'user',action:'isUniqueIdentifierValid')}";
+            var isEmailPresentURL = "${createLink(controller: 'user', action: 'isEmailPresent')}";
             var createTopicTemplateURL = "${createLink(controller: 'topic')}";
             var createLinkResourceTemplateURL = "${createLink(controller: 'linkResource')}";
             var sendInvitationTemplateURL = "${createLink(controller: 'subscription')}";

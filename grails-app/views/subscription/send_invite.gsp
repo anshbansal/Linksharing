@@ -3,8 +3,8 @@
         <label for="emailToInvite">Email</label>
         <g:textField name="emailToInvite" required="true"/>
 
-        <label for="linkTopics">Topic</label>
-        <ls:getTopicsForUser name="linkTopics"/>
+        <label for="inviteTopic.id">Topic</label>
+        <ls:getTopicsForUser name="inviteTopic.id"/>
 
         <span></span>
         <span>

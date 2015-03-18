@@ -15,6 +15,20 @@ var emailRule = {
     }
 };
 
+var isEmailPresentRule = {
+  rules: {
+      emailToInvite: {
+        remote: {url : isEmailPresentURL},
+        email: true
+      }
+  },
+  messages: {
+      emailToInvite: {
+          remote: "No user is present for this email ID"
+      }
+  }
+};
+
 var usernameRule = {
     rules: {
         username: {

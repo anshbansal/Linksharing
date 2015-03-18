@@ -46,6 +46,10 @@ class UserController {
         render userService.isUniqueIdentifierValid(uniqueIdentifier, session?.loggedUser) ? "true" : "false"
     }
 
+    def isEmailPresent(String emailToInvite) {
+        render userService.isEmailPresent(emailToInvite) ? "true" : "false"
+    }
+
     def updateDetails(UserDetailsCO userDetailsCO) {
 
         Mappings.setScaledImage(request.getFile('photo'), userDetailsCO)
