@@ -1,5 +1,6 @@
 package com.ttd.linksharing.service.domain
 
+import com.ttd.linksharing.domain.Invitation
 import com.ttd.linksharing.domain.ReadingItem
 import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
@@ -29,6 +30,13 @@ class SubscriptionService {
             readingItemService.save(readingItem, isFlushEnabled)
         }
         subscription
+    }
+
+    Subscription subscribeUserByInvitationToken(String uniqueToken) {
+        Invitation invitation = Invitation.findByRandomToken(uniqueToken)
+
+        Subscription subscription = new Subscription(user: invitation.invitedUser, topic: invitation.topic)
+        save(subscription)
     }
 
     List<Topic> getAllSubscribedTopicsOfUser(User user) {
