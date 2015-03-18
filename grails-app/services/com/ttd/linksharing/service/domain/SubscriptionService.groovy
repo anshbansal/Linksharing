@@ -37,6 +37,8 @@ class SubscriptionService {
 
         Subscription subscription = new Subscription(user: invitation.invitedUser, topic: invitation.topic)
         save(subscription)
+        invitation.delete()
+        subscription
     }
 
     List<Topic> getAllSubscribedTopicsOfUser(User user) {
