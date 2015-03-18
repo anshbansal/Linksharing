@@ -22,7 +22,8 @@ class User {
         subscriptions: Subscription,
         ratings: ResourceRating,
         readingsItems: ReadingItem,
-        resources: Resource
+        resources: Resource,
+        invitations: Invitation
     ]
 
     static constraints = {

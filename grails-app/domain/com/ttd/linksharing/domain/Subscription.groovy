@@ -1,7 +1,6 @@
 package com.ttd.linksharing.domain
 
 import com.ttd.linksharing.enums.Seriousness
-import com.ttd.linksharing.enums.Visibility
 
 class Subscription {
     Seriousness seriousness = Seriousness.SERIOUS

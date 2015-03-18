@@ -2,7 +2,6 @@ package com.ttd.linksharing.domain
 
 import com.ttd.linksharing.co.topic.TopicInfo
 import com.ttd.linksharing.enums.Visibility
-import com.ttd.linksharing.service.domain.SubscriptionService
 
 class Topic {
     String name
@@ -17,7 +16,7 @@ class Topic {
     }
 
     static belongsTo = [createdBy: User]
-    static hasMany = [resources: Resource, subscriptions: Subscription]
+    static hasMany = [resources: Resource, subscriptions: Subscription, invitations: Invitation]
 
     static constraints = {
         name unique: 'createdBy'
