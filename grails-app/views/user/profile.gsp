@@ -15,8 +15,8 @@
         <tmpl:edit_profile />
     </section>
 
-    <section class="minor-part left-part" id="subscriptions">
-        <ls:topics type="subscriptions" title="Topics" searchEnable="true" max="10"/>
+    <section class="minor-part left-part" id="forUser">
+        <ls:topics type="forUser" userId="${session?.loggedUser?.id}" title="Topics" searchEnable="true" max="10"/>
     </section>
 
     <section class="major-part right-part">
