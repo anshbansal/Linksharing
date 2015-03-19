@@ -36,7 +36,7 @@ class SubscriptionService {
         Invitation invitation = Invitation.findByRandomToken(uniqueToken)
 
         Subscription subscription = new Subscription(user: invitation.invitedUser, topic: invitation.topic)
-        save(subscription)
+        subscription.save()
         invitation.delete()
         subscription
     }

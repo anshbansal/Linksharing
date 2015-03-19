@@ -37,7 +37,7 @@ class TopicController {
     }
 
     def updateTopicName(String newTopicName, Long topicId) {
-        println "Found newtopicname is ${newTopicName} with topicid ${topicId}"
-        render params
+        topicService.updateTopicNameById(newTopicName, topicId)
+        render "success"
     }
 }

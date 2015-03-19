@@ -30,6 +30,7 @@ class TopicService {
     def save(Topic topic, Boolean isFlushEnabled = false) {
 
         if (!topic.save(flush: isFlushEnabled)) {
+            println "Topic had errors ${topic.errors}"
             return null
         }
 
@@ -139,6 +140,12 @@ class TopicService {
                     numResources: numResourcesForTopics[curTopic.id])
         }
         result
+    }
+
+    Topic updateTopicNameById(String newTopicName, Long topicId) {
+        Topic topic = Topic.findById(topicId)
+        topic.name = newTopicName
+        topic.save()
     }
 
     def Map getNumberOfSubscriptionsForTopicIds(List<Long> topicIds) {

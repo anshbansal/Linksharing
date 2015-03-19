@@ -44,6 +44,7 @@ function displayEditOptions(currentTopicClass) {
     var currentTopic = $("." + currentTopicClass);
     currentTopic.find(".editTopicEnabled").css('visibility', 'visible');
     currentTopic.find(".editTopicDisabled").css('visibility', 'hidden');
+    currentTopic.find('input:text').select();
 }
 
 function hideEditOptions(currentTopicClass) {
