@@ -24,8 +24,6 @@
 
                     <ls:isAdminOrOwnerOfTopic topic="${topic}">
                         <span class="editTopicEnabled">
-                            %{--TODO add topic name edit field--}%
-                            %{--${topic.name}--}%
                             <g:textField name="topicNameEdit" value="${topic.name}" size="8"/>
                         </span>
                     </ls:isAdminOrOwnerOfTopic>

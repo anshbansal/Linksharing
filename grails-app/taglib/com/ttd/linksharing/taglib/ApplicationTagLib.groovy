@@ -33,8 +33,6 @@ class ApplicationTagLib {
         ListingDetails<PostDetails> listingDetails = new ListingDetails<>(renderTemplate: "/templates/post/post",
                 attrs: attrs, paginationController: "listingsPost", loggedUser: session?.loggedUser)
 
-
-        //TODO Check logic of each for (isRead) after mark as read is implemented
         switch (attrs.type) {
             case "recentShares":
                 listingDetails.title = "Recent Shares"
