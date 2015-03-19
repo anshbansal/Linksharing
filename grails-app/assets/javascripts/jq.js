@@ -39,3 +39,15 @@ function ajaxCallToMarkReadController(resourceId, readUnread) {
         }
     });
 }
+
+function displayEditOptions(currentTopicClass) {
+    var currentTopic = $("." + currentTopicClass);
+    currentTopic.find(".editTopicEnabled").css('visibility', 'visible');
+    currentTopic.find(".editTopicDisabled").css('visibility', 'hidden');
+}
+
+function hideEditOptions(currentTopicClass) {
+    var currentTopic = $("." + currentTopicClass);
+    currentTopic.find(".editTopicEnabled").css('visibility', 'hidden');
+    currentTopic.find(".editTopicDisabled").css('visibility', 'visible');
+}

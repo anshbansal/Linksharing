@@ -2,9 +2,10 @@
 
 <g:set var="topic" value="${listing.topic}"/>
 <g:set var="creator" value="${listing.creator}"/>
+<g:set var="currentTopicClass" value="topic_id_${topic.id}"/>
 
-<section class="group topic_id_${topic.id}">
-    <div>
+<section class="group ${currentTopicClass}">
+    <div class="group">
         <div class="left-part">
             <ls:photo user="${creator}"/>
         </div>
@@ -12,15 +13,16 @@
         <div class="right-part">
             <div class="grid-3">
                 <div>
-                    <span class="editTopicDisable">
+                    <span class="editTopicDisabled">
                         %{--TODO Needs to be parametrized for topic listing page later--}%
                         <g:link uri="/topic/show/${topic.id}">${topic.name}</g:link>
                     </span>
 
                     <ls:isAdminOrOwnerOfTopic topic="${topic}">
-                        <span class="editTopic" hidden="hidden">
+                        <span class="editTopicEnabled" >
                             %{--TODO add topic name edit field--}%
-                            ${topic.name}
+                            %{--${topic.name}--}%
+                            <input value="${topic.name}" size="8">
                         </span>
                     </ls:isAdminOrOwnerOfTopic>
                 </div>
@@ -31,16 +33,16 @@
                     <ls:isNotOwnerOfTopic topic="${topic}">
                         Subscribe
                     </ls:isNotOwnerOfTopic>
-                    <span> </span>
                 </div>
             </div>
 
             <div class="grid-3">
                 <div>
                     <ls:isAdminOrOwnerOfTopic topic="${topic}">
-                        <span class="editTopic" hidden="hidden">
+                        <span class="editTopicEnabled" >
                             <g:submitButton name="save"/>
                         </span>
+                        <span class="ediTopicDisabled"> </span>
                     </ls:isAdminOrOwnerOfTopic>
                 </div>
 
@@ -52,9 +54,10 @@
             <div class="grid-3">
                 <div>
                     <ls:isAdminOrOwnerOfTopic topic="${topic}">
-                        <span class="editTopic" hidden="hidden">
-                            <g:submitButton name="cancel"/>
+                        <span class="editTopicEnabled" >
+                            <g:submitButton name="cancel" onclick="hideEditOptions('${currentTopicClass}')"/>
                         </span>
+                        <span class="ediTopicDisabled"> </span>
                     </ls:isAdminOrOwnerOfTopic>
                 </div>
 
@@ -70,14 +73,10 @@
 
         <ls:isAdminOrOwnerOfTopic topic="${topic}">
             <g:select name="visibility" from="${Visibility.values()}" value="${topic.scope}"/>
-            Edit
+            <span onclick="displayEditOptions('${currentTopicClass}')">Edit</span>
             Delete
         </ls:isAdminOrOwnerOfTopic>
 
         Invite
     </div>
-
-    <g:javascript>
-
-    </g:javascript>
 </section>
