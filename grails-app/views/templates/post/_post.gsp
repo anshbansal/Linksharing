@@ -14,9 +14,7 @@
         <div>${post.description}</div>
         <div class="small-part">
             <ls:resourceType post="${post}"/>
-            <g:if test="${loggedUser}">
-                <g:render template="/templates/post/markRead" model="[isRead: listing.isRead]"/>
-            </g:if>
+            <g:render template="/templates/post/markRead" model="[postDetails: listing]"/>
         </div>
     </div>
 </section>

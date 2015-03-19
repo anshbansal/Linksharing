@@ -15,3 +15,22 @@ function searchAjaxCallToUpdateId(searchBoxId, ajaxUrl, jsonData, idToUpdate) {
         });
     })
 }
+
+function ajaxCallToMarkReadController(resourceId, readUnread) {
+    $.ajax({
+        url: markReadURL,
+        data: {readUnread: readUnread, resourceId: resourceId}
+    }).success(function(data, status) {
+
+        var markReadSpan = $("#markRead" + resourceId);
+        var markUnreadSpan = $("#markUnread" + resourceId);
+
+        if (data == 'markedRead') {
+            markReadSpan.hide();
+            markUnreadSpan.show();
+        } else {
+            markReadSpan.show();
+            markUnreadSpan.hide();
+        }
+    });
+}
