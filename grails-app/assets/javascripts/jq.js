@@ -25,14 +25,17 @@ function ajaxCallToMarkReadController(resourceId, readUnread) {
         var markReadSpan = $("#markRead" + resourceId);
         var markUnreadSpan = $("#markUnread" + resourceId);
 
-        if (data == 'markedRead') {
-            markReadSpan.hide();
-            markUnreadSpan.show();
-        } else {
-            markReadSpan.show();
-            markUnreadSpan.hide();
-        }
+        if (data !== 'Error') {
 
-        $("#inbox").find(".post_id_" + resourceId).hide();
+            if (data == 'markedRead') {
+                markReadSpan.hide();
+                markUnreadSpan.show();
+            } else {
+                markReadSpan.show();
+                markUnreadSpan.hide();
+            }
+
+            $("#inbox").find(".post_id_" + resourceId).hide();
+        }
     });
 }
