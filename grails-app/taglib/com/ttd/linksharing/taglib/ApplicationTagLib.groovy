@@ -191,6 +191,20 @@ class ApplicationTagLib {
         }
     }
 
+    def isUserSubscribedToTopic = { attrs, body ->
+        Topic currentTopic = attrs.topic
+        if (subscriptionService.isUserSubscribedToTopic(session?.loggedUser, currentTopic)) {
+            out << body()
+        }
+    }
+
+    def isUserNotSubscribedToTopic = { attrs, body ->
+        Topic currentTopic = attrs.topic
+        if (!subscriptionService.isUserSubscribedToTopic(session?.loggedUser, currentTopic)) {
+            out << body()
+        }
+    }
+
     private static Boolean isUserSame(User user1, User user2) {
         user1?.id == user2?.id
     }

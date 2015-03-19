@@ -35,7 +35,12 @@
 
                 <div>
                     <ls:isNotOwnerOfTopic topic="${topic}">
-                        Subscribe
+                        <span class="subscribeToTopic">
+                            Subscribe
+                        </span>
+                        <span class="unsubscribeFromTopic">
+                            UnSubscribe
+                        </span>
                     </ls:isNotOwnerOfTopic>
                 </div>
             </div>
@@ -73,8 +78,10 @@
     </div>
 
     <div>
-        <g:select name="seriousness" from="${Seriousness.values()}"
-                  onchange="updateSeriousness('${currentTopicClass}', '${topic.id}')"/>
+        <span class="unsubscribeFromTopic">
+            <g:select name="seriousness" from="${Seriousness.values()}"
+                      onchange="updateSeriousness('${currentTopicClass}', '${topic.id}')"/>
+        </span>
 
         <ls:isAdminOrOwnerOfTopic topic="${topic}">
             <g:select name="visibility" from="${Visibility.values()}" value="${topic.scope}"
@@ -85,4 +92,16 @@
 
         Invite
     </div>
+
+    <ls:isUserSubscribedToTopic>
+        <g:javascript>
+            showSubscribeToTopic('${currentTopicClass}');
+        </g:javascript>
+    </ls:isUserSubscribedToTopic>
+
+    <ls:isUserNotSubscribedToTopic topic="${topic}">
+        <g:javascript>
+            showUnsubscribeFromTopic('${currentTopicClass}');
+        </g:javascript>
+    </ls:isUserNotSubscribedToTopic>
 </section>

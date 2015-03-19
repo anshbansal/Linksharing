@@ -98,3 +98,17 @@ function updateSeriousness(currentTopicClass, topicId) {
         data: {'topic.id': topicId, newSeriousness: selectValue}
     })
 }
+
+function showSubscribeToTopic(currentTopicClass) {
+    var currentTopic = $("." + currentTopicClass);
+
+    currentTopic.find('.subscribeToTopic').show();
+    currentTopic.find('.unsubscribeFromTopic').hide();
+}
+
+function showUnsubscribeFromTopic(currentTopicClass) {
+    var currentTopic = $("." + currentTopicClass);
+
+    currentTopic.find('.subscribeToTopic').hide();
+    currentTopic.find('.unsubscribeFromTopic').show();
+}
