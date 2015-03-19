@@ -94,22 +94,20 @@ class TopicService {
     }
 
     PagedResult<TopicDetails> getTrendingTopics(QueryParameters params) {
-        //TODO Needs review
         //TODO Eager fetching not working
-        PagedResultList pagedResultList = Resource.createCriteria().list(params.queryMapParams) {
+        PagedResultList pagedResultList = Subscription.createCriteria().list(params.queryMapParams) {
 
             createAlias('topic', 't')
-
             projections {
                 groupProperty('topic')
-                count('id', 'resourceCount')
+                rowCount('myCount')
             }
 
             fetchMode('topic', FetchMode.JOIN)
             fetchMode('t.createdBy', FetchMode.JOIN)
-
-            order('resourceCount', 'desc')
+            order 'myCount', 'desc'
         }
+
 
         PagedResult<TopicDetails> topicsDetail = new PagedResult<>()
         topicsDetail.paginationList = pagedResultList.collect([]) {
@@ -122,6 +120,7 @@ class TopicService {
 //            resources.size() > 0
 //        }.count()
 
+        println "Inside trendign topics"
         topicsDetail
     }
 
