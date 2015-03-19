@@ -95,13 +95,13 @@
 
     <ls:isUserSubscribedToTopic topic="${topic}">
         <g:javascript>
-            showSubscribeToTopic('${currentTopicClass}');
+            showUnsubscribeFromTopic('${currentTopicClass}');
         </g:javascript>
     </ls:isUserSubscribedToTopic>
 
     <ls:isUserNotSubscribedToTopic topic="${topic}">
         <g:javascript>
-            showUnsubscribeFromTopic('${currentTopicClass}');
+            showSubscribeToTopic('${currentTopicClass}');
         </g:javascript>
     </ls:isUserNotSubscribedToTopic>
 </section>

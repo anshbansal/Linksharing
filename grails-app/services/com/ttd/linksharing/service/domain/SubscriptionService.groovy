@@ -41,6 +41,10 @@ class SubscriptionService {
         subscription
     }
 
+    def unsubscribeUserFromTopic(User user, Topic topic) {
+        Subscription.findByUserAndTopic(user, topic).delete()
+    }
+
     List<Topic> getAllSubscribedTopicsOfUser(User user) {
         if (! user) {
             return []
