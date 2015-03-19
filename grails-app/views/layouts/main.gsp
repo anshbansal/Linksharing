@@ -34,6 +34,8 @@
             var deleteTopicURL = "${createLink(controller: 'topic', action: 'delete')}";
             var updateTopicSeriousnessURL = "${createLink(controller: 'topic', action: 'updateTopicSeriousness')}";
             var updateTopicVisibilityURL = "${createLink(controller: 'topic', action: 'updateTopicVisibility')}";
+            var subscribeToTopicURL = "${createLink(controller: 'subscription', action: 'subscribeToTopic')}";
+            var unsubscribeFromTopicURL = "${createLink(controller: 'subscription', action: 'unsubscribeFromTopic')}";
         </g:javascript>
         <asset:javascript src="application.js"/>
 	</body>

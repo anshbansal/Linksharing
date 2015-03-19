@@ -112,3 +112,21 @@ function showUnsubscribeFromTopic(currentTopicClass) {
     currentTopic.find('.subscribeToTopic').hide();
     currentTopic.find('.unsubscribeFromTopic').show();
 }
+
+function subscribeToTopic(topicId) {
+    $.ajax({
+        url: subscribeToTopicURL,
+        data: {'topic.id': topicId}
+    }).success(function() {
+        location.reload(true);
+    });
+}
+
+function unsubscribeFromTopic(topicId) {
+    $.ajax({
+        url: unsubscribeFromTopicURL,
+        data: {'topic.id': topicId}
+    }).success(function () {
+        location.reload(true);
+    });
+}

@@ -1,5 +1,7 @@
 package com.ttd.linksharing.controller.domain
 
+import com.ttd.linksharing.domain.Topic
+
 class SubscriptionController {
 
     def subscriptionService
@@ -10,5 +12,13 @@ class SubscriptionController {
         } else {
             render "Invite Token is no longer valid"
         }
+    }
+
+    def subscribeToTopic(Topic topic) {
+
+    }
+
+    def unsubscribeFromTopic(Topic topic) {
+
     }
 }

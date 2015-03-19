@@ -35,10 +35,10 @@
 
                 <div>
                     <ls:isNotOwnerOfTopic topic="${topic}">
-                        <span class="subscribeToTopic">
+                        <span class="subscribeToTopic" onclick="subscribeToTopic('${topic.id}')">
                             Subscribe
                         </span>
-                        <span class="unsubscribeFromTopic">
+                        <span class="unsubscribeFromTopic" onclick="unsubscribeFromTopic('${topic.id}')">
                             UnSubscribe
                         </span>
                     </ls:isNotOwnerOfTopic>
@@ -93,7 +93,7 @@
         Invite
     </div>
 
-    <ls:isUserSubscribedToTopic>
+    <ls:isUserSubscribedToTopic topic="${topic}">
         <g:javascript>
             showSubscribeToTopic('${currentTopicClass}');
         </g:javascript>
