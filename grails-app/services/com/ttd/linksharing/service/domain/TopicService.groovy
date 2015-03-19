@@ -1,6 +1,8 @@
 package com.ttd.linksharing.service.domain
 
 import com.ttd.linksharing.co.topic.TopicInfo
+import com.ttd.linksharing.co.topic.TopicSeriousnessDetails
+import com.ttd.linksharing.co.topic.TopicVisibility
 import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.domain.Subscription
 import com.ttd.linksharing.domain.Topic
@@ -43,6 +45,17 @@ class TopicService {
     def deleteTopicById(Long topicId) {
         Topic topic = Topic.get(topicId)
         topic.delete()
+    }
+
+    def updateTopicSeriousness(TopicSeriousnessDetails topicSeriousnessDetails, User user) {
+        Subscription subscription = Subscription.findByTopicAndUser(topicSeriousnessDetails.topic, user)
+        subscription.seriousness = topicSeriousnessDetails.newSeriousness
+        subscription.save()
+    }
+
+    def updateTopicVisibility(TopicVisibility topicVisibility) {
+        topicVisibility.topic.scope = topicVisibility.newVisibility
+        topicVisibility.topic.save()
     }
 
     PagedResult<TopicDetails> getTopicsDetailsForUserSubscriptions(User user, QueryParameters params) {

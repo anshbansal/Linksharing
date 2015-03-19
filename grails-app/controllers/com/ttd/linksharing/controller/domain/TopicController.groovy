@@ -37,11 +37,13 @@ class TopicController {
     }
 
     def updateTopicSeriousness(TopicSeriousnessDetails topicSeriousnessDetails) {
-        render "Got seriousness details"
+        topicService.updateTopicSeriousness(topicSeriousnessDetails, session?.loggedUser)
+        render "Success"
     }
 
     def updateTopicVisibility(TopicVisibility topicVisibility) {
-        render "Got visibility details"
+        topicService.updateTopicVisibility(topicVisibility)
+        render "Success"
     }
 
     def delete(Long topicId) {
