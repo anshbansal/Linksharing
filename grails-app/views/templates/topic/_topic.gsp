@@ -14,15 +14,19 @@
             <div class="grid-3">
                 <div>
                     <span class="editTopicDisabled">
-                        %{--TODO Needs to be parametrized for topic listing page later--}%
-                        <g:link uri="/topic/show/${topic.id}">${topic.name}</g:link>
+                    %{--TODO Needs to be parametrized for topic listing page later--}%
+                        <g:link uri="/topic/show/${topic.id}">
+                            <span class="topicName">
+                                ${topic.name}
+                            </span>
+                        </g:link>
                     </span>
 
                     <ls:isAdminOrOwnerOfTopic topic="${topic}">
-                        <span class="editTopicEnabled" >
+                        <span class="editTopicEnabled">
                             %{--TODO add topic name edit field--}%
                             %{--${topic.name}--}%
-                            <input value="${topic.name}" size="8">
+                            <g:textField name="topicNameEdit" value="${topic.name}" size="8"/>
                         </span>
                     </ls:isAdminOrOwnerOfTopic>
                 </div>
@@ -39,10 +43,10 @@
             <div class="grid-3">
                 <div>
                     <ls:isAdminOrOwnerOfTopic topic="${topic}">
-                        <span class="editTopicEnabled" >
+                        <span class="editTopicEnabled" onclick="updateTopicName('${currentTopicClass}', '${topic.id}')">
                             <g:submitButton name="save"/>
                         </span>
-                        <span class="ediTopicDisabled"> </span>
+                        <span class="ediTopicDisabled"></span>
                     </ls:isAdminOrOwnerOfTopic>
                 </div>
 
@@ -54,10 +58,10 @@
             <div class="grid-3">
                 <div>
                     <ls:isAdminOrOwnerOfTopic topic="${topic}">
-                        <span class="editTopicEnabled" >
-                            <g:submitButton name="cancel" onclick="hideEditOptions('${currentTopicClass}')"/>
+                        <span class="editTopicEnabled" onclick="hideEditOptions('${currentTopicClass}')">
+                            <g:submitButton name="cancel"/>
                         </span>
-                        <span class="ediTopicDisabled"> </span>
+                        <span class="ediTopicDisabled"></span>
                     </ls:isAdminOrOwnerOfTopic>
                 </div>
 

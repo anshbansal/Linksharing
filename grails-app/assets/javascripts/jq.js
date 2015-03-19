@@ -51,3 +51,18 @@ function hideEditOptions(currentTopicClass) {
     currentTopic.find(".editTopicEnabled").css('visibility', 'hidden');
     currentTopic.find(".editTopicDisabled").css('visibility', 'visible');
 }
+
+function updateTopicName(currentTopicClass, topicId) {
+    var currentTopic = $("." + currentTopicClass);
+    var newTopicName = currentTopic.find('input:text').val();
+    var topicName = currentTopic.find('.topicName');
+
+    $.ajax({
+        url: updateTopicNameURL,
+        data: {newTopicName: newTopicName, topicId: topicId}
+    }).success(function(data, status) {
+        topicName.html(newTopicName);
+    });
+
+    hideEditOptions(currentTopicClass);
+}

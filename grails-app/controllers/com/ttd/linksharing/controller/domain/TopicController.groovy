@@ -32,7 +32,12 @@ class TopicController {
         }
     }
 
-    def topics(String topicListType, Integer userId) {
+    def topics(String topicListType, Long userId) {
         render(view: "/templates/_topics", model: [topicListType: topicListType, userId: userId])
+    }
+
+    def updateTopicName(String newTopicName, Long topicId) {
+        println "Found newtopicname is ${newTopicName} with topicid ${topicId}"
+        render params
     }
 }

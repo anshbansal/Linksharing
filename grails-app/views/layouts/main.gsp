@@ -29,7 +29,8 @@
             var sendInvitationTemplateURL = "${createLink(controller: 'invitation')}";
             var topicNameURL = "${createLink(controller: "topic", action: "isTopicPresent")}";
             var resetPasswordURL = "${createLink(controller: "user", action: "resetPassword")}";
-            var markReadURL = "${createLink(controller: 'readingItem', action: 'markAsRead')}"
+            var markReadURL = "${createLink(controller: 'readingItem', action: 'markAsRead')}";
+            var updateTopicNameURL = "${createLink(controller: 'topic', action: 'updateTopicName')}";
         </g:javascript>
         <asset:javascript src="application.js"/>
 	</body>
