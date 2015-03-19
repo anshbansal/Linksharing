@@ -3,7 +3,7 @@
 <g:set var="topic" value="${listing.topic}"/>
 <g:set var="creator" value="${listing.creator}"/>
 
-<section class="group">
+<section class="group topic_id_${topic.id}">
     <div>
         <div class="left-part">
             <ls:photo user="${creator}"/>
@@ -12,20 +12,36 @@
         <div class="right-part">
             <div class="grid-3">
                 <div>
-                    %{--TODO Needs to be parametrized for topic listing page later--}%
-                    <g:link uri="/topic/show/${topic.id}">${topic.name}</g:link>
+                    <span class="editTopicDisable">
+                        %{--TODO Needs to be parametrized for topic listing page later--}%
+                        <g:link uri="/topic/show/${topic.id}">${topic.name}</g:link>
+                    </span>
+
+                    <ls:isAdminOrOwnerOfTopic topic="${topic}">
+                        <span class="editTopic" hidden="hidden">
+                            %{--TODO add topic name edit field--}%
+                            ${topic.name}
+                        </span>
+                    </ls:isAdminOrOwnerOfTopic>
                 </div>
 
                 <div>${creator}</div>
 
-                <ls:isNotOwnerOfTopic topic="${topic}">
-                    <div>Subscribe</div>
-                </ls:isNotOwnerOfTopic>
+                <div>
+                    <ls:isNotOwnerOfTopic topic="${topic}">
+                        Subscribe
+                    </ls:isNotOwnerOfTopic>
+                    <span> </span>
+                </div>
             </div>
 
             <div class="grid-3">
                 <div>
-                    <g:submitButton name="save"/>
+                    <ls:isAdminOrOwnerOfTopic topic="${topic}">
+                        <span class="editTopic" hidden="hidden">
+                            <g:submitButton name="save"/>
+                        </span>
+                    </ls:isAdminOrOwnerOfTopic>
                 </div>
 
                 <div>Subscriptions</div>
@@ -35,7 +51,11 @@
 
             <div class="grid-3">
                 <div>
-                    <g:submitButton name="cancel"/>
+                    <ls:isAdminOrOwnerOfTopic topic="${topic}">
+                        <span class="editTopic" hidden="hidden">
+                            <g:submitButton name="cancel"/>
+                        </span>
+                    </ls:isAdminOrOwnerOfTopic>
                 </div>
 
                 <div>Post</div>
@@ -56,4 +76,8 @@
 
         Invite
     </div>
+
+    <g:javascript>
+
+    </g:javascript>
 </section>

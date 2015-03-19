@@ -179,15 +179,19 @@ class ApplicationTagLib {
 
     def isAdminOrOwnerOfTopic = { attrs, body ->
         Topic currentTopic = attrs.topic
-        if (session?.loggedUser == currentTopic.createdBy || session?.loggedUser.admin) {
+        if (isUserSame(session?.loggedUser, currentTopic?.createdBy) || session?.loggedUser?.admin) {
             out << body()
         }
     }
 
     def isNotOwnerOfTopic = { attrs, body ->
         Topic currentTopic = attrs.topic
-        if (session?.loggedUser != currentTopic.createdBy) {
+        if (!isUserSame(session?.loggedUser, currentTopic.createdBy)) {
             out << body()
         }
+    }
+
+    private static Boolean isUserSame(User user1, User user2) {
+        user1?.id == user2?.id
     }
 }
