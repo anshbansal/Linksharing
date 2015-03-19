@@ -12,12 +12,12 @@
 
     <g:if test="${postDetails.isRead}">
         <g:javascript>
-            $("#markUnread${resourceId}").hide();
+            $("#markRead${resourceId}").hide();
         </g:javascript>
     </g:if>
     <g:else>
         <g:javascript>
-            $("#markRead${resourceId}").hide();
+            $("#markUnread${resourceId}").hide();
         </g:javascript>
     </g:else>
 </g:if>

@@ -1,5 +1,6 @@
 package com.ttd.linksharing.service.domain
 
+import com.ttd.linksharing.domain.Resource
 import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.PostDetails
 import com.ttd.linksharing.domain.ReadingItem
@@ -15,6 +16,7 @@ class ReadingItemService {
     def save(ReadingItem readingItem, Boolean isFlushEnabled = false) {
 
         if (! readingItem.save(flush: isFlushEnabled)) {
+            println "Errors occured ${readingItem.errors}"
             return null
         }
         readingItem
@@ -42,5 +44,13 @@ class ReadingItemService {
         }
 
         readingItems
+    }
+    
+    ReadingItem toggleResourceReadStatus(User user, Long resourceId, Boolean isRead) {
+        Resource resource = Resource.get(resourceId)
+        ReadingItem readingItem = ReadingItem.findByUserAndResource(user, resource)
+
+        readingItem.isRead = ! isRead
+        save(readingItem)
     }
 }
