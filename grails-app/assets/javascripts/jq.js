@@ -76,3 +76,25 @@ function deleteTopic(topicId) {
         location.reload(true);
     });
 }
+
+function updateVisibility(currentTopicClass, topicId) {
+    var currentTopic = $("." + currentTopicClass);
+    var selectValue = currentTopic.find('#visibility').val();
+
+    console.log(selectValue);
+    $.ajax({
+       url: updateTopicVisibilityURL,
+        data: {'topic.id': topicId, newVisibility: selectValue}
+    });
+}
+
+function updateSeriousness(currentTopicClass, topicId) {
+    var currentTopic = $("." + currentTopicClass);
+    var selectValue = currentTopic.find('#seriousness').val();
+
+    console.log(selectValue);
+    $.ajax({
+        url: updateTopicSeriousnessURL,
+        data: {'topic.id': topicId, newSeriousness: selectValue}
+    })
+}

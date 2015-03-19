@@ -73,10 +73,12 @@
     </div>
 
     <div>
-        <g:select name="seriousness" from="${Seriousness.values()}"/>
+        <g:select name="seriousness" from="${Seriousness.values()}"
+                  onchange="updateSeriousness('${currentTopicClass}', '${topic.id}')"/>
 
         <ls:isAdminOrOwnerOfTopic topic="${topic}">
-            <g:select name="visibility" from="${Visibility.values()}" value="${topic.scope}"/>
+            <g:select name="visibility" from="${Visibility.values()}" value="${topic.scope}"
+                      onchange="updateVisibility('${currentTopicClass}', '${topic.id}')"/>
             <span onclick="displayEditOptions('${currentTopicClass}')">Edit</span>
             <span onclick="deleteTopic('${topic.id}')">Delete</span>
         </ls:isAdminOrOwnerOfTopic>

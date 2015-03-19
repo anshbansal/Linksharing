@@ -32,6 +32,8 @@
             var markReadURL = "${createLink(controller: 'readingItem', action: 'markAsRead')}";
             var updateTopicNameURL = "${createLink(controller: 'topic', action: 'updateTopicName')}";
             var deleteTopicURL = "${createLink(controller: 'topic', action: 'delete')}";
+            var updateTopicSeriousnessURL = "${createLink(controller: 'topic', action: 'updateTopicSeriousness')}";
+            var updateTopicVisibilityURL = "${createLink(controller: 'topic', action: 'updateTopicVisibility')}";
         </g:javascript>
         <asset:javascript src="application.js"/>
 	</body>

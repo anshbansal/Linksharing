@@ -1,7 +1,11 @@
 package com.ttd.linksharing.controller.domain
 
 import com.ttd.linksharing.co.topic.TopicInfo
+import com.ttd.linksharing.co.topic.TopicSeriousnessDetails
+import com.ttd.linksharing.co.topic.TopicVisibility
 import com.ttd.linksharing.domain.Topic
+import com.ttd.linksharing.enums.Seriousness
+import com.ttd.linksharing.enums.Visibility
 
 class TopicController {
 
@@ -30,6 +34,14 @@ class TopicController {
         } else {
             render "Error occurred"
         }
+    }
+
+    def updateTopicSeriousness(TopicSeriousnessDetails topicSeriousnessDetails) {
+        render "Got seriousness details"
+    }
+
+    def updateTopicVisibility(TopicVisibility topicVisibility) {
+        render "Got visibility details"
     }
 
     def delete(Long topicId) {
