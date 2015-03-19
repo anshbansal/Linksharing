@@ -67,3 +67,12 @@ function updateTopicName(currentTopicClass, topicId) {
 
     hideEditOptions(currentTopicClass);
 }
+
+function deleteTopic(topicId) {
+    $.ajax({
+        url: deleteTopicURL,
+        data: {topicId: topicId}
+    }).success(function(data, status) {
+        location.reload(true);
+    });
+}

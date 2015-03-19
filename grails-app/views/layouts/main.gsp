@@ -31,6 +31,7 @@
             var resetPasswordURL = "${createLink(controller: "user", action: "resetPassword")}";
             var markReadURL = "${createLink(controller: 'readingItem', action: 'markAsRead')}";
             var updateTopicNameURL = "${createLink(controller: 'topic', action: 'updateTopicName')}";
+            var deleteTopicURL = "${createLink(controller: 'topic', action: 'delete')}";
         </g:javascript>
         <asset:javascript src="application.js"/>
 	</body>

@@ -78,7 +78,7 @@
         <ls:isAdminOrOwnerOfTopic topic="${topic}">
             <g:select name="visibility" from="${Visibility.values()}" value="${topic.scope}"/>
             <span onclick="displayEditOptions('${currentTopicClass}')">Edit</span>
-            Delete
+            <span onclick="deleteTopic('${topic.id}')">Delete</span>
         </ls:isAdminOrOwnerOfTopic>
 
         Invite

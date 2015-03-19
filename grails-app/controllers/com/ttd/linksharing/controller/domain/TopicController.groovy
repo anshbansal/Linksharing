@@ -32,6 +32,11 @@ class TopicController {
         }
     }
 
+    def delete(Long topicId) {
+        topicService.deleteTopicById(topicId)
+        render "Success"
+    }
+
     def topics(String topicListType, Long userId) {
         render(view: "/templates/_topics", model: [topicListType: topicListType, userId: userId])
     }

@@ -40,6 +40,11 @@ class TopicService {
         topic
     }
 
+    def deleteTopicById(Long topicId) {
+        Topic topic = Topic.get(topicId)
+        topic.delete()
+    }
+
     PagedResult<TopicDetails> getTopicsDetailsForUserSubscriptions(User user, QueryParameters params) {
 
         PagedResultList subscriptionsForUser = Subscription.createCriteria().list(params.queryMapParams) {
