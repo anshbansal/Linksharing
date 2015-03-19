@@ -1,7 +1,7 @@
 <g:set var="post" value="${listing.resource}"/>
 <g:set var="creator" value="${post.createdBy}"/>
 
-<section class="group">
+<section class="group post_id_${post.id}">
     <div class="left-part">
         <ls:photo user="${creator}"/>
     </div>

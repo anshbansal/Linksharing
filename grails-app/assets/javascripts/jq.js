@@ -32,5 +32,7 @@ function ajaxCallToMarkReadController(resourceId, readUnread) {
             markReadSpan.show();
             markUnreadSpan.hide();
         }
+
+        $("#inbox").find(".post_id_" + resourceId).hide();
     });
 }
