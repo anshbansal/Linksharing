@@ -4,6 +4,8 @@
 <g:set var="creator" value="${listing.creator}"/>
 <g:set var="currentTopicClass" value="topic_id_${topic.id}"/>
 
+<g:set var="isUserSubscribedToTopic" value="${ls.isUserSubscribedToTopic([topic: topic])}"/>
+
 <section class="group ${currentTopicClass}">
     <div class="group">
         <div class="left-part">
@@ -91,15 +93,14 @@
         Invite
     </div>
 
-    <ls:isUserSubscribedToTopic topic="${topic}">
+    <g:if test="${isUserSubscribedToTopic}">
         <g:javascript>
             showUnsubscribeFromTopic('${currentTopicClass}');
         </g:javascript>
-    </ls:isUserSubscribedToTopic>
-
-    <ls:isUserNotSubscribedToTopic topic="${topic}">
+    </g:if>
+    <g:else>
         <g:javascript>
             showSubscribeToTopic('${currentTopicClass}');
         </g:javascript>
-    </ls:isUserNotSubscribedToTopic>
+    </g:else>
 </section>

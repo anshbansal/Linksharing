@@ -12,6 +12,8 @@ class ApplicationTagLib {
     static defaultEncodeAs = [taglib: 'raw']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
 
+    static returnObjectForTags = ['isUserSubscribedToTopic']
+
     static namespace = "ls"
 
     def resourceService
@@ -191,16 +193,7 @@ class ApplicationTagLib {
 
     def isUserSubscribedToTopic = { attrs, body ->
         Topic currentTopic = attrs.topic
-        if (subscriptionService.isUserSubscribedToTopic(session?.loggedUser, currentTopic)) {
-            out << body()
-        }
-    }
-
-    def isUserNotSubscribedToTopic = { attrs, body ->
-        Topic currentTopic = attrs.topic
-        if (!subscriptionService.isUserSubscribedToTopic(session?.loggedUser, currentTopic)) {
-            out << body()
-        }
+        subscriptionService.isUserSubscribedToTopic(session?.loggedUser, currentTopic)
     }
 
     private static Boolean isUserSame(User user1, User user2) {
