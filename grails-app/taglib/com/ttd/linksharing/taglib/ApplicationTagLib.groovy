@@ -176,4 +176,18 @@ class ApplicationTagLib {
                 optionKey: 'id')
 
     }
+
+    def isAdminOrOwnerOfTopic = { attrs, body ->
+        Topic currentTopic = attrs.topic
+        if (session?.loggedUser == currentTopic.createdBy || session?.loggedUser.admin) {
+            out << body()
+        }
+    }
+
+    def isNotOwnerOfTopic = { attrs, body ->
+        Topic currentTopic = attrs.topic
+        if (session?.loggedUser != currentTopic.createdBy) {
+            out << body()
+        }
+    }
 }
