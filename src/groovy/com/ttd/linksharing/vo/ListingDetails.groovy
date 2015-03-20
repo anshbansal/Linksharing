@@ -81,7 +81,7 @@ class ListingDetails<E> {
 
     Map getPaginationParams() {
         [title: title, userId: userId, topicId: topicId, searchEnable: searchEnable,
-         paginationDisable: paginationDisable, idToUpdate: idToUpdate, idToUpdateOnClick: idToUpdateWithPostsOnClick]
+         paginationDisable: paginationDisable, idToUpdate: idToUpdate, idToUpdateWithPostsOnClick: idToUpdateWithPostsOnClick]
     }
 
     Boolean getHasFooter() {

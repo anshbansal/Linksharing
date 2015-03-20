@@ -93,6 +93,10 @@ class ApplicationTagLib {
                 listingDetails.title = "Trending Topics"
                 listingDetails.listings = topicService.getTrendingTopics(listingDetails.queryParams)
                 break
+            case "allTopics":
+                listingDetails.title = "Topics"
+                listingDetails.listings = topicService.getTopicDetailsForAllTopicsForAdmin(listingDetails.queryParams)
+                break
             case "forUser":
                 listingDetails.title = "Topics"
                 listingDetails.listings = topicService.getTopicsDetailsForTopicsCreatedByUser(curUser, listingDetails.queryParams)

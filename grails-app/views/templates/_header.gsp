@@ -20,7 +20,11 @@
                     <li>
                         <g:link controller="user" action="users">Users</g:link>
                     </li>
-                    <li>Topics</li>
+                    <li>
+                        <g:link controller="topic" action="topics" params="[topicListType: 'allTopics']">
+                            Topics
+                        </g:link>
+                    </li>
                     <li>Posts</li>
                 </g:if>
                 <li>

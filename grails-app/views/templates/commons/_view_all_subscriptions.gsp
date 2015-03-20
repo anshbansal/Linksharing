@@ -1,3 +1,3 @@
-<g:link controller="topic" action="topics" params="[topicListType: 'subscriptions', userId: session?.loggedUser]">
+<g:link controller="topic" action="topics" params="[topicListType: 'subscriptions']">
     View All
 </g:link>

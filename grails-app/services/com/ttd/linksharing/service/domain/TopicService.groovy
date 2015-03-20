@@ -74,8 +74,6 @@ class TopicService {
 
     PagedResult<TopicDetails> getTopicsDetailsForTopicsCreatedByUser(User user, QueryParameters params) {
 
-        println "TOpic params are ${params.queryMapParams}"
-
         PagedResultList topicsForUser = Topic.createCriteria().list(params.queryMapParams) {
             eq 'createdBy', user
 
@@ -84,6 +82,15 @@ class TopicService {
             order 'name'
         }
 
+        getListOfTopicDetailsFromPagedResultList(topicsForUser, TopicDetails.mapFromTopics)
+    }
+
+    PagedResult<TopicDetails> getTopicDetailsForAllTopicsForAdmin(QueryParameters params) {
+        PagedResultList topicsForUser = Topic.createCriteria().list(params.queryMapParams) {
+            filterTopicToBeShownToUserForSearchTerm.delegate = delegate
+            filterTopicToBeShownToUserForSearchTerm(params.loggedUser, null, params.searchTerm)
+            order 'name'
+        }
         getListOfTopicDetailsFromPagedResultList(topicsForUser, TopicDetails.mapFromTopics)
     }
 
