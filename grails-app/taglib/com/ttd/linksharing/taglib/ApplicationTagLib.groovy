@@ -78,17 +78,12 @@ class ApplicationTagLib {
         ListingDetails<TopicDetails> listingDetails = new ListingDetails<>(renderTemplate: "/templates/topic/topic",
                 attrs: attrs, paginationController: "listingsTopic", loggedUser: session?.loggedUser)
 
+        User curUser = getUserByIdOrCurrentUser(listingDetails, session)
+
         switch (attrs.type) {
             case "subscriptions":
-                listingDetails.title = "Subscriptions"
-                User curUser
-
                 //TODO Need to be changed for sort order
-                if (listingDetails.userId != 0) {
-                    curUser = User.get(listingDetails.userId)
-                } else {
-                    curUser = session?.loggedUser
-                }
+                listingDetails.title = "Subscriptions"
                 listingDetails.listings = topicService.getTopicsDetailsForUserSubscriptions(curUser, listingDetails.queryParams)
                 break
             case "trendingTopics":
@@ -100,9 +95,6 @@ class ApplicationTagLib {
                 break
             case "forUser":
                 listingDetails.title = "Topics"
-
-                User curUser = User.get(listingDetails.userId)
-
                 listingDetails.listings = topicService.getTopicsDetailsForTopicsCreatedByUser(curUser, listingDetails.queryParams)
                 break
         }
@@ -198,5 +190,13 @@ class ApplicationTagLib {
 
     private static Boolean isUserSame(User user1, User user2) {
         user1?.id == user2?.id
+    }
+
+    private static User getUserByIdOrCurrentUser(ListingDetails listingDetails, def session) {
+        if (listingDetails?.userId) {
+            User.get(listingDetails?.userId)
+        } else {
+            session?.loggedUser
+        }
     }
 }
