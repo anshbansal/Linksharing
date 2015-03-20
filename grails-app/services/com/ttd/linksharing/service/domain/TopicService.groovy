@@ -83,6 +83,7 @@ class TopicService {
             if (topicIdsToBeShown?.size()) {
                 'in' 'id', topicIdsToBeShown
             }
+            order 'name'
         }
 
         getListOfTopicDetailsFromPagedResultList(topicsForUser, TopicDetails.mapFromTopics)
