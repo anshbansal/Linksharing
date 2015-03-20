@@ -95,6 +95,7 @@ grails.hibernate.pass.readonly = false
 grails.hibernate.osiv.readonly = false
 
 environments {
+    grails.linksharing.files.rootPath = "${userHome}/.grails/${appName}"
     development {
         grails.logging.jul.usebridge = true
         grails.serverURL = "http://localhost:8080/Linksharing"

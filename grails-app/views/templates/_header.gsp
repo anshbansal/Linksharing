@@ -6,6 +6,7 @@
         <a href="#" onclick="createPopup(createTopicTemplateURL)">Create Topic</a>
         <a href="#" onclick="createPopup(createLinkResourceTemplateURL)">Create Link</a>
         <a href="#" onclick="createPopup(sendInvitationTemplateURL)">Send Invitation</a>
+        <a href="#" onclick="createPopup(createDocumentResourceTemplateURL)">Share Document</a>
 
         <span id="popup" hidden="hidden">
         </span>

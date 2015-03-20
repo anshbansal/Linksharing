@@ -26,6 +26,7 @@
             var isEmailPresentURL = "${createLink(controller: 'user', action: 'isEmailPresent')}";
             var createTopicTemplateURL = "${createLink(controller: 'topic')}";
             var createLinkResourceTemplateURL = "${createLink(controller: 'linkResource')}";
+            var createDocumentResourceTemplateURL = "${createLink(controller: 'documentResource')}";
             var sendInvitationTemplateURL = "${createLink(controller: 'invitation')}";
             var topicNameURL = "${createLink(controller: "topic", action: "isTopicPresent")}";
             var resetPasswordURL = "${createLink(controller: "user", action: "resetPassword")}";
