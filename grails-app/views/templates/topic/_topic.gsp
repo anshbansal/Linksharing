@@ -97,11 +97,12 @@
         <ls:isAdminOrOwnerOfTopic topic="${topic}">
             <g:select name="visibility" from="${Visibility.values()}" value="${topic.scope}"
                       onchange="updateVisibility('${currentTopicClass}', '${topic.id}')"/>
-            <span onclick="displayEditOptions('${currentTopicClass}')">Edit</span>
-            <span onclick="deleteTopic('${topic.id}')">Delete</span>
+            <a href="#" onclick="displayEditOptions('${currentTopicClass}')">Edit</a>
+            <a href="#" onclick="deleteTopic('${topic.id}')">Delete</a>
         </ls:isAdminOrOwnerOfTopic>
-
-        Invite
+        <g:if test="${isUserSubscribedToTopic}">
+            <a href="#" onclick="createPopup(sendInvitationTemplateURL)">Invite</a>
+        </g:if>
     </div>
 
     <g:if test="${isUserSubscribedToTopic}">
