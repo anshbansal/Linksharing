@@ -16,12 +16,23 @@
             <div class="grid-3">
                 <div>
                     <span class="editTopicDisabled">
-                    %{--TODO Needs to be parametrized for topic listing page later--}%
-                        <g:link uri="/topic/show/${topic.id}">
-                            <span class="topicName">
+                        <g:if test="${idToUpdateWithPostsOnClick}">
+                            <g:set var="curUrl" value="${createLink(controller: 'listingsPost', action: 'forTopic',
+                                    params: [searchEnable: true, topicId: topic.id, idToUpdate: idToUpdateWithPostsOnClick])}"/>
+
+                            <span class="topicName"
+                                  onclick="getPostsForTopicId('${curUrl}', '${idToUpdateWithPostsOnClick}')">
                                 ${topic.name}
                             </span>
-                        </g:link>
+
+                        </g:if>
+                        <g:else>
+                            <g:link uri="/topic/show/${topic.id}">
+                                <span class="topicName">
+                                    ${topic.name}
+                                </span>
+                            </g:link>
+                        </g:else>
                     </span>
 
                     <ls:isAdminOrOwnerOfTopic topic="${topic}">

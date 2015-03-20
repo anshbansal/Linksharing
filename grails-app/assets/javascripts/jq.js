@@ -130,3 +130,11 @@ function unsubscribeFromTopic(topicId) {
         location.reload(true);
     });
 }
+
+function getPostsForTopicId(postsURL, idToUpdate) {
+    $.ajax({
+        url: postsURL
+    }).success(function(data, status) {
+        $("#" + idToUpdate).html(data);
+    });
+}

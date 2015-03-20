@@ -22,7 +22,9 @@
             </g:if>
         </content>
 
-        <g:render template="${listingDetails.renderTemplate}" var="listing" collection="${listings}"/>
+        <g:render template="${listingDetails.renderTemplate}" var="listing" collection="${listings}"
+                                    model="[idToUpdateWithPostsOnClick: listingDetails.idToUpdateWithPostsOnClick]"/>
+                                    %{--Refer COMMENT_GENERIC_CONTROL_OBJECT in ListingDetails co--}%
 
         <g:if test="${listingDetails.hasFooter}">
             <content tag="footer">
