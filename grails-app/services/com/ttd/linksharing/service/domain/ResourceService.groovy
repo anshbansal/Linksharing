@@ -74,6 +74,25 @@ class ResourceService {
         getPostDetailsFromPagedResultList(resourcesForTopic)
     }
 
+    PagedResult<PostDetails> getPostsForAllTopics(QueryParameters params) {
+        PagedResultList resourcesForTopic = Resource.createCriteria().list(params.queryMapParams) {
+
+            createAlias('topic', 't')
+            
+            TopicService.filterTopicToBeShownToUserForSearchTerm.delegate = delegate
+            TopicService.filterTopicToBeShownToUserForSearchTerm(params.loggedUser, 't', null)
+
+            if (params.searchTerm) {
+                or {
+                    ilike 't.name', '%' + params.searchTerm + '%'
+                    ilike 'description', '%' + params.searchTerm + '%'
+                }
+            }
+            order("dateCreated", "desc")
+        }
+        getPostDetailsFromPagedResultList(resourcesForTopic)
+    }
+
     private PagedResult<PostDetails> getPostDetailsFromPagedResultList(PagedResultList pagedResultList) {
         PagedResult<PostDetails> result = new PagedResult<>()
         result.paginationList = PostDetails.mapFromResource(pagedResultList)

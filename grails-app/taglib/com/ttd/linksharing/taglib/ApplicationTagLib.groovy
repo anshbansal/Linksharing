@@ -60,6 +60,21 @@ class ApplicationTagLib {
                 listingDetails.title = 'Posts: "' + curTopic?.name + '"'
                 listingDetails.listings = resourceService.getPostsForTopic(curTopic, listingDetails.queryParams)
                 break
+            case "allPostsForSearchTerm":
+                Boolean showResults = true
+                if (listingDetails.searchTerm) {
+                    listingDetails.title = "Search for '${listingDetails.searchTerm}' "
+                } else {
+                    listingDetails.title = "Search Results"
+                    if (!session?.loggedUser?.admin) {
+                        showResults = false
+                    }
+                }
+
+                if (showResults) {
+                    listingDetails.listings = resourceService.getPostsForAllTopics(listingDetails.queryParams)
+                }
+                break
         }
 
         out << render(listingDetails.renderMap)
