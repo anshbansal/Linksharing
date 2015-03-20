@@ -10,7 +10,7 @@
     </section>
 
     <section class="major-part right-part" id="allPostsForSearchTerm">
-        <ls:posts type="allPostsForSearchTerm" searchEnable="true"/>
+        <ls:posts type="allPostsForSearchTerm" searchEnable="true" searchTerm="${params.searchTerm}"/>
     </section>
 </body>
 </html>

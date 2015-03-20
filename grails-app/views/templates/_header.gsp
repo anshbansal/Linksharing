@@ -33,7 +33,10 @@
             </ul>
         </nav>
     </g:if>
-    <span class="searchBox">
+    <span class="searchBox" id="main-search-box">
         <ls:searchBox/>
+        <span hidden="hidden" id="globalSearchLink">
+            ${g.createLink(controller: 'search')}
+        </span>
     </span>
 </header>

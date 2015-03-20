@@ -25,3 +25,11 @@ popup.on('click', ".cancelButton", function(e) {
     popup.html("");
     return false;
 });
+
+var mainSearchBox = $("#main-search-box");
+
+mainSearchBox.find(".searchEnd").on('click', function () {
+    var link = $('#globalSearchLink').html().trim();
+    var searchText = mainSearchBox.find('.searchText').val();
+    document.location = link + '?searchTerm=' + searchText;
+});
