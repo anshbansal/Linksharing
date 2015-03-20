@@ -65,10 +65,8 @@ class TopicService {
 
             eq 'user', user
 
-            List<Long> topicIdsToBeShown = getTopicIdsToBeShownToUser(params.loggedUser)
-            if (topicIdsToBeShown?.size()) {
-                'in' 't.id', topicIdsToBeShown
-            }
+            filterTopicToBeShownToUserForSearchTerm.delegate = delegate
+            filterTopicToBeShownToUserForSearchTerm(params.loggedUser, 't', params.searchTerm)
         }
 
         getListOfTopicDetailsFromPagedResultList(subscriptionsForUser, TopicDetails.mapFromSubscriptions)
@@ -76,13 +74,13 @@ class TopicService {
 
     PagedResult<TopicDetails> getTopicsDetailsForTopicsCreatedByUser(User user, QueryParameters params) {
 
+        println "TOpic params are ${params.queryMapParams}"
+
         PagedResultList topicsForUser = Topic.createCriteria().list(params.queryMapParams) {
             eq 'createdBy', user
 
-            List<Long> topicIdsToBeShown = getTopicIdsToBeShownToUser(params.loggedUser, params.searchTerm)
-            if (topicIdsToBeShown?.size()) {
-                'in' 'id', topicIdsToBeShown
-            }
+            filterTopicToBeShownToUserForSearchTerm.delegate = delegate
+            filterTopicToBeShownToUserForSearchTerm(params.loggedUser, null, params.searchTerm)
             order 'name'
         }
 
@@ -120,8 +118,6 @@ class TopicService {
 //        topicsDetail.totalCount = Topic.where {
 //            resources.size() > 0
 //        }.count()
-
-        println "Inside trendign topics"
         topicsDetail
     }
 
@@ -191,35 +187,39 @@ class TopicService {
         'in' 't.id', topicIds
     }
 
-    @NotTransactional
-    List<Long> getTopicIdsToBeShownToUser(User user, String topicNameSearchTerm = null) {
-        if (user?.admin && !topicNameSearchTerm) {
-            return null
+    static def filterTopicToBeShownToUserForSearchTerm = { User loggedUser, String topicAlias, String topicNameSearchTerm ->
+
+        if (topicAlias != null) {
+            topicAlias = topicAlias + "."
+        } else {
+            topicAlias = ""
         }
 
-        Topic.createCriteria().list {
-            projections {
-                property('id')
-            }
+        def scopeAlias = "${topicAlias}scope"
+        def idAlias = "${topicAlias}id"
+        def nameAlias = "${topicAlias}name"
 
-            if (user) {
-                if (!user.admin) {
-                    List<Long> subscribedPrivateTopicIdsForUser = subscriptionService
-                                                                    .getSubscribedPrivateTopicIdsForUser(user)
-                    or {
-                        eq 'scope', Visibility.PUBLIC
-                        if (subscribedPrivateTopicIdsForUser.size()) {
-                            'in' 'id', subscribedPrivateTopicIdsForUser
-                        }
-                    }
+        //Check whether only public topics to be shown
+        Boolean onlyPubic = true
+        List topicIdsToBeShown = null
+        if (!loggedUser?.admin) {
+            topicIdsToBeShown = SubscriptionService.getSubscribedPrivateTopicIdsForUser(loggedUser)
+            onlyPubic = false
+        }
+
+        if (onlyPubic) {
+            eq scopeAlias, Visibility.PUBLIC
+        } else {
+            or {
+                eq scopeAlias, Visibility.PUBLIC
+                if (topicIdsToBeShown.size() > 0) {
+                    'in' idAlias, topicIdsToBeShown
                 }
-            } else {
-                eq 'scope', Visibility.PUBLIC
             }
+        }
 
-            if (topicNameSearchTerm) {
-                ilike 'name', '%' + topicNameSearchTerm + '%'
-            }
+        if (topicNameSearchTerm) {
+            ilike nameAlias, '%' + topicNameSearchTerm + '%'
         }
     }
 }

@@ -118,7 +118,13 @@ class UserService {
     private List<UserDetails> getUserDetailsWithSubscriptionAndTopicCount(List<UserDetails> userDetailsList,
                                                                           User loggedUser) {
 
-        List<Long> topicIdsToBeShown = topicService.getTopicIdsToBeShownToUser(loggedUser)
+        List<Long> topicIdsToBeShown = Topic.createCriteria().list {
+            projections {
+                property('id')
+            }
+            TopicService.filterTopicToBeShownToUserForSearchTerm.delegate = delegate
+            TopicService.filterTopicToBeShownToUserForSearchTerm(loggedUser, null, null)
+        }
 
         Map numSubscriptionsForUser = getNumberOfSubscriptionsForUserIds(userDetailsList*.userId, topicIdsToBeShown)
         Map numTopicsForUser = getNumberOfTopicsForUserIds(userDetailsList*.userId, topicIdsToBeShown)
@@ -139,7 +145,7 @@ class UserService {
                 rowCount()
             }
             'in' 'u.id', userIds
-            if (topicIds) {
+            if (topicIds != null) {
                 'in' 't.id', topicIds
             }
         }
@@ -154,7 +160,7 @@ class UserService {
                 rowCount()
             }
             'in' 'u.id', userIds
-            if (topicIds) {
+            if (topicIds != null) {
                 'in' 'id', topicIds
             }
         }

@@ -56,8 +56,7 @@ class SubscriptionService {
         Subscription.countByUserAndTopic(user, topic) == 1
     }
 
-    @NotTransactional
-    List<Long> getSubscribedPrivateTopicIdsForUser(User user) {
+    static List<Long> getSubscribedPrivateTopicIdsForUser(User user) {
         Subscription.createCriteria().list {
 
             createAlias('topic', 't')

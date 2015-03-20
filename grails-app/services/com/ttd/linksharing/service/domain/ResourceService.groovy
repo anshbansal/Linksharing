@@ -1,12 +1,9 @@
 package com.ttd.linksharing.service.domain
 
-import com.ttd.linksharing.domain.Topic
+import com.ttd.linksharing.domain.*
+import com.ttd.linksharing.enums.Visibility
 import com.ttd.linksharing.vo.PagedResult
 import com.ttd.linksharing.vo.PostDetails
-import com.ttd.linksharing.domain.ReadingItem
-import com.ttd.linksharing.domain.Resource
-import com.ttd.linksharing.domain.Subscription
-import com.ttd.linksharing.domain.User
 import com.ttd.linksharing.vo.QueryParameters
 import grails.gorm.PagedResultList
 import grails.transaction.Transactional
@@ -20,7 +17,7 @@ class ResourceService {
 
     Resource save(Resource resource, Boolean isFlushEnabled = false) {
 
-        if (! resource.save(flush: isFlushEnabled)) {
+        if (!resource.save(flush: isFlushEnabled)) {
             return null
         }
 
@@ -35,7 +32,7 @@ class ResourceService {
 
     PagedResult<PostDetails> recentPublicResources(QueryParameters params) {
 
-        PagedResultList recentResources =  Resource.createCriteria().list(params.queryMapParams) {
+        PagedResultList recentResources = Resource.createCriteria().list(params.queryMapParams) {
             createAlias('topic', 't')
 
             filterResourcesToBeShownToUserForSearchTerm.delegate = delegate
@@ -49,7 +46,7 @@ class ResourceService {
 
     PagedResult<PostDetails> getPostsForUserId(Long userId, QueryParameters params) {
 
-        PagedResultList resourcesForCreatorId =  Resource.createCriteria().list(params.queryMapParams) {
+        PagedResultList resourcesForCreatorId = Resource.createCriteria().list(params.queryMapParams) {
             createAlias('topic', 't')
 
             'createdBy' {
@@ -65,7 +62,7 @@ class ResourceService {
 
     PagedResult<PostDetails> getPostsForTopic(Topic topic, QueryParameters params) {
 
-        PagedResultList resourcesForTopic =  Resource.createCriteria().list(params.queryMapParams) {
+        PagedResultList resourcesForTopic = Resource.createCriteria().list(params.queryMapParams) {
             createAlias('topic', 't')
 
             eq 'topic', topic
@@ -86,10 +83,8 @@ class ResourceService {
     }
 
     def filterResourcesToBeShownToUserForSearchTerm = { QueryParameters params, String topicAlias ->
-        List<Long> topicIdsToBeShown = topicService.getTopicIdsToBeShownToUser(params.loggedUser)
-        if (topicIdsToBeShown?.size()) {
-            'in' "${topicAlias}.id", topicIdsToBeShown
-        }
+        TopicService.filterTopicToBeShownToUserForSearchTerm.delegate = delegate
+        TopicService.filterTopicToBeShownToUserForSearchTerm(params.loggedUser, topicAlias, null)
 
         if (params.searchTerm) {
             ilike 'description', '%' + params.searchTerm + '%'
