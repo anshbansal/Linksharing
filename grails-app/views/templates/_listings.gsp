@@ -20,6 +20,11 @@
                 </span>
 
             </g:if>
+
+            <g:if test="${listingDetails.headerAdditionalTemplate}">
+                <g:render template="${listingDetails.headerAdditionalTemplate}"/>
+            </g:if>
+
         </content>
 
         <g:render template="${listingDetails.renderTemplate}" var="listing" collection="${listings}"
@@ -46,5 +51,4 @@
     </g:applyLayout>
     %{--TODO Pages should be of fixed size for some cases--}%
     %{--TODO pagesSizes need not to be shown if no more and is least--}%
-    %{--TODO Consider making headers as separate template for specific cases--}%
 </g:if>

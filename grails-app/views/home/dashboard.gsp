@@ -13,7 +13,7 @@
         </section>
     </section>
     <section class="minor-part" id="subscriptions">
-        <ls:topics type="subscriptions" searchEnable="true"/>
+        <ls:topics type="subscriptions" searchEnable="true" headerAdditionalTemplate="/templates/commons/view_all_subscriptions"/>
     </section>
     <section class="minor-part left-part" id="trendingTopics">
         <ls:topics type="trendingTopics" paginationDisable="true"/>

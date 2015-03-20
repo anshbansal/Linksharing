@@ -9,6 +9,7 @@ class ListingDetails<E> {
 
     String title
     String renderTemplate
+    String headerAdditionalTemplate
 
     List<E> listings
     Integer totalListings = 0
@@ -37,6 +38,7 @@ class ListingDetails<E> {
 
     void setAttrs(Map attrs) {
         title = attrs.title
+        headerAdditionalTemplate = attrs.headerAdditionalTemplate
 
         queryParams = new QueryParameters()
 
