@@ -13,4 +13,4 @@
         </span>
     </g:form>
 </g:applyLayout>
-<asset:javascript src="send_invite.js"/>
+<asset:javascript src="forms/send_invite.js"/>

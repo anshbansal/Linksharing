@@ -4,6 +4,7 @@
         <label for="documentDescription">Description</label>
         <g:textArea name="documentDescription"/>
 
+        %{--TODO Add validation that file is actually uploaded--}%
         <label for="document">Document</label>
         <input type="file" name="document" id="document"/>
 
@@ -17,4 +18,4 @@
         </span>
     </g:form>
 </g:applyLayout>
-<asset:javascript src="create_documentResource.js"/>
+<asset:javascript src="forms/create_documentResource.js"/>

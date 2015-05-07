@@ -15,4 +15,4 @@
         </span>
     </g:form>
 </g:applyLayout>
-<asset:javascript src="create_topic.js"/>
+<asset:javascript src="forms/create_topic.js"/>

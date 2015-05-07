@@ -16,4 +16,4 @@
         </span>
     </g:form>
 </g:applyLayout>
-<asset:javascript src="create_linkresource.js"/>
+<asset:javascript src="forms/create_linkresource.js"/>
