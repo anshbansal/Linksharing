@@ -12,6 +12,7 @@ class DocumentResourceService {
 
     DocumentResource create(DocumentResourceCO documentResourceCO, User user, String filePath) {
         resourceService.save(new DocumentResource(description: documentResourceCO.documentDescription,
-                topic: documentResourceCO.documentTopic, createdBy: user, filePath: filePath))
+                topic: documentResourceCO.documentTopic, createdBy: user, filePath: filePath,
+                fileType: documentResourceCO.document.contentType))
     }
 }

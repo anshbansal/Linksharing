@@ -1,6 +1,8 @@
 package com.ttd.linksharing.controller.domain
 
 import com.ttd.linksharing.co.resource.DocumentResourceCO
+import com.ttd.linksharing.domain.DocumentResource
+import org.springframework.web.multipart.MultipartFile
 
 class DocumentResourceController {
 
@@ -32,5 +34,20 @@ class DocumentResourceController {
         } else {
             render "Error occurred"
         }
+    }
+
+    def download(DocumentResource documentResource) {
+        String documentRoot = grailsApplication.config.grails.linksharing.files.rootPath
+
+        println "Docuemnt rot is ${documentRoot}"
+        println "Path is ${documentRoot}/${documentResource.filePath}"
+
+        MultipartFile file = new File("${documentRoot}/${documentResource.filePath}")
+        response.contentType = file.contentType
+        response.contentLength = file.bytes.size()
+
+        OutputStream out = response.outputStream
+        out.write(file.bytes)
+        out.close()
     }
 }
