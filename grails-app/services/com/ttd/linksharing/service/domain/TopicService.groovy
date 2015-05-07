@@ -170,28 +170,25 @@ class TopicService {
     }
 
     def Map getNumberOfSubscriptionsForTopicIds(List<Long> topicIds) {
-        def subscriptions = Subscription.createCriteria().list {
-            getNumberOfPropertyMappedByTopicIds.delegate = delegate
-            getNumberOfPropertyMappedByTopicIds(topicIds)
-        }
-        Mappings.getIdToPropertyMapping(subscriptions)
+        getNumberOfPropertyMappedByTopicIds.delegate = Subscription
+        getNumberOfPropertyMappedByTopicIds(topicIds)
     }
 
     def Map getNumberOfResourcesForTopicIds(List<Long> topicIds) {
-        def resources = Resource.createCriteria().list {
-            getNumberOfPropertyMappedByTopicIds.delegate = delegate
-            getNumberOfPropertyMappedByTopicIds(topicIds)
-        }
-        Mappings.getIdToPropertyMapping(resources)
+        getNumberOfPropertyMappedByTopicIds.delegate = Resource
+        getNumberOfPropertyMappedByTopicIds(topicIds)
     }
 
     private def getNumberOfPropertyMappedByTopicIds = {List<Long> topicIds ->
-        createAlias('topic', 't')
-        projections {
-            groupProperty('t.id')
-            rowCount()
+        List properties = createCriteria().list{
+            createAlias('topic', 't')
+            projections {
+                groupProperty('t.id')
+                rowCount()
+            }
+            'in' 't.id', topicIds
         }
-        'in' 't.id', topicIds
+        Mappings.getIdToPropertyMapping(properties)
     }
 
     static def filterTopicToBeShownToUserForSearchTerm = { User loggedUser, String topicAlias, String topicNameSearchTerm ->
