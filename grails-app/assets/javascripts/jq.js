@@ -1,4 +1,5 @@
 //= require jquery
+//= require bootstrap
 //= require_self
 
 function searchAjaxCallToUpdateId(searchBoxId, ajaxUrl, jsonData, idToUpdate) {
