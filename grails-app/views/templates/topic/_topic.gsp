@@ -7,83 +7,85 @@
 <g:set var="isUserSubscribedToTopic" value="${ls.isUserSubscribedToTopic([topic: topic])}"/>
 
 <section class="group ${currentTopicClass}">
-    <div class="group">
-        <div class="left-part">
-            <ls:photo user="${creator}"/>
-        </div>
+    <div class="group container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <ls:photo user="${creator}"/>
+            </div>
 
-        <div class="right-part">
-            <div class="grid-3">
-                <div>
-                    <span class="editTopicDisabled">
-                        <g:if test="${idToUpdateWithPostsOnClick}">
-                            <g:set var="curUrl" value="${createLink(controller: 'listingsPost', action: 'forTopic',
-                                    params: [searchEnable: true, topicId: topic.id, idToUpdate: idToUpdateWithPostsOnClick])}"/>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-4">
+                        <span class="editTopicDisabled">
+                            <g:if test="${idToUpdateWithPostsOnClick}">
+                                <g:set var="curUrl" value="${createLink(controller: 'listingsPost', action: 'forTopic',
+                                        params: [searchEnable: true, topicId: topic.id, idToUpdate: idToUpdateWithPostsOnClick])}"/>
 
-                            <span class="topicName"
-                                  onclick="getPostsForTopicId('${curUrl}', '${idToUpdateWithPostsOnClick}')">
-                                ${topic.name}
-                            </span>
-
-                        </g:if>
-                        <g:else>
-                            <g:link uri="/topic/show/${topic.id}">
-                                <span class="topicName">
+                                <span class="topicName"
+                                      onclick="getPostsForTopicId('${curUrl}', '${idToUpdateWithPostsOnClick}')">
                                     ${topic.name}
                                 </span>
-                            </g:link>
-                        </g:else>
-                    </span>
 
+                            </g:if>
+                            <g:else>
+                                <g:link uri="/topic/show/${topic.id}">
+                                    <span class="topicName">
+                                        ${topic.name}
+                                    </span>
+                                </g:link>
+                            </g:else>
+                        </span>
+
+                        <ls:isAdminOrOwnerOfTopic topic="${topic}">
+                            <span class="editTopicEnabled">
+                                <g:textField name="topicNameEdit" value="${topic.name}" size="8"/>
+                            </span>
+                        </ls:isAdminOrOwnerOfTopic>
+                    </div>
                     <ls:isAdminOrOwnerOfTopic topic="${topic}">
-                        <span class="editTopicEnabled">
-                            <g:textField name="topicNameEdit" value="${topic.name}" size="8"/>
-                        </span>
+                        <div class="col-md-4">
+                            <span class="editTopicEnabled"
+                                  onclick="updateTopicName('${currentTopicClass}', '${topic.id}')">
+                                <g:submitButton name="save"/>
+                            </span>
+                        </div>
+
+                        <div class="col-md-4">
+                            <span class="editTopicEnabled" onclick="hideEditOptions('${currentTopicClass}')">
+                                <g:submitButton name="cancel"/>
+                            </span>
+                        </div>
                     </ls:isAdminOrOwnerOfTopic>
+
                 </div>
 
-                <div>${creator}</div>
+                <div class="row">
+                    <div class="col-md-6">
+                        ${creator}
+                    </div>
 
-                <div>
-                    <ls:isNotOwnerOfTopic topic="${topic}">
-                        <span class="subscribeToTopic" onclick="subscribeToTopic('${topic.id}')">
-                            Subscribe
-                        </span>
-                        <span class="unsubscribeFromTopic" onclick="unsubscribeFromTopic('${topic.id}')">
-                            UnSubscribe
-                        </span>
-                    </ls:isNotOwnerOfTopic>
-                </div>
-            </div>
+                    <div class="col-md-4">Subscriptions</div>
 
-            <div class="grid-3">
-                <div>
-                    <ls:isAdminOrOwnerOfTopic topic="${topic}">
-                        <span class="editTopicEnabled" onclick="updateTopicName('${currentTopicClass}', '${topic.id}')">
-                            <g:submitButton name="save"/>
-                        </span>
-                        <span class="ediTopicDisabled"></span>
-                    </ls:isAdminOrOwnerOfTopic>
+                    <div class="col-md-2">Post</div>
                 </div>
 
-                <div>Subscriptions</div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ls:isNotOwnerOfTopic topic="${topic}">
+                            <span class="subscribeToTopic" onclick="subscribeToTopic('${topic.id}')">
+                                Subscribe
+                            </span>
+                            <span class="unsubscribeFromTopic" onclick="unsubscribeFromTopic('${topic.id}')">
+                                UnSubscribe
+                            </span>
+                        </ls:isNotOwnerOfTopic>
+                    </div>
 
-                <div>${listing.numSubscriptions}</div>
-            </div>
+                    <div class="col-md-4">${listing.numSubscriptions}</div>
 
-            <div class="grid-3">
-                <div>
-                    <ls:isAdminOrOwnerOfTopic topic="${topic}">
-                        <span class="editTopicEnabled" onclick="hideEditOptions('${currentTopicClass}')">
-                            <g:submitButton name="cancel"/>
-                        </span>
-                        <span class="ediTopicDisabled"></span>
-                    </ls:isAdminOrOwnerOfTopic>
+                    <div class="col-md-2">${listing.numResources}</div>
                 </div>
 
-                <div>Post</div>
-
-                <div>${listing.numResources}</div>
             </div>
         </div>
     </div>
